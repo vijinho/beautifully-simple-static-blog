@@ -35,7 +35,7 @@ e.g. `content/2015-12-25-xmas.md`
 date: 2015-04-01 12:56
 permalink: /blog/2015-04-01-cioran.html
 title: Emil Cioran Quote
-tags: [emil cioran, cioran, philosophy, quotes
+tags: [emil cioran, cioran, philosophy, quotes]
 ---
 "I have all the defects of other people, and yet everything they do seems to me inconceivable."
 Emil Cioran
