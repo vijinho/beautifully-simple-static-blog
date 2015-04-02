@@ -12,7 +12,7 @@
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0,minimal-ui">
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -33,6 +33,10 @@
 
   <!-- Social Media
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <link rel="alternate" type="application/rss+xml" title="urunu.com blog" href="http://www.urunu.com/blog/rss.xml">
+
+  <script type="text/javascript" src="https://apis.google.com/js/plusone.js" gapi_processed="true"></script>
+
   <meta property="twitter:account_id" content="16833387">
   <meta name="twitter:site" content="@vijinh0">
   <meta name="twitter:card" content="summary_large_image">
@@ -47,6 +51,7 @@
   <meta id="facebookOgimage" property="og:image" itemprop="og:image" content="https://pbs.twimg.com/media/B6cah3qIUAEdnkl.jpg:large">
   <meta id="facebookOgsite_name" property="og:site_name" itemprop="og:site_name" content="urunu">
   <meta id="facebookOgfb:app_id" property="fb:app_id" itemprop="fb:app_id" content="">
+
 
 </head>
 <body>
