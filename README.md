@@ -4,7 +4,7 @@
 Because there aren't enough static website generators already in existence that 
 look beautiful. 
 
-This is one I created for [http://www.urunu.com](my personal blog) 
+This is one I created for (http://www.urunu.com](my personal blog) 
 to learn how to build a Python website from scratch.  It's a bit of a hack but
 it does the job perfectly for my needs. For simplicity and ease-of-learning, 
 and following the Bottle design pattern, all of the Python code lives in one
@@ -23,7 +23,7 @@ sure to add you to the [docs/CREDITS.md](docs/CREDITS.md) and [www/humans.txt](w
 
 ### Features
 
-* Generates static HTML files under the `www/blog/` from [https://guides.github.com/features/mastering-markdown/](markdown) file folder input
+* Generates static HTML files under the `www/blog/` from * [https://guides.github.com/features/mastering-markdown/](markdown) `content` file folder input
 * Uses [http://docs.pylonsproject.org/projects/waitress/en/latest/index.html](Waitress WSCGI Server): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
 * Generated HTML is minified 
 * Files in `/www/js/` when served
