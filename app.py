@@ -203,7 +203,12 @@ def server_static(filepath):
 application=default_app()
 
 if __name__ in ('__main__'):
+
+    print "Clearing Cache..."
     cache_clear()
+
+    print "Generating static files in www/blog/ ..."
     generate_static_website()
+
     from waitress import serve
     run(server='waitress')
