@@ -24,6 +24,7 @@ sure to add you to the [docs/CREDITS.md](docs/CREDITS.md) and [www/humans.txt](w
 ## Setup
 
 * `pip install -r requirements.txt`
+* edit `config.py` as needed
 
 ## Usage
 Put markdown files in the folder `content/` ensuring that your markdown files use a content header:
@@ -41,6 +42,9 @@ tags: [emil cioran, cioran, philosophy, quotes]
 Emil Cioran
 ```
 
+### Command Line Interface
+* The file `cli.py` is implemented using [http://click.pocoo.org/4/](click)
+
 ## Running
 
 * `python app.py` 
@@ -49,7 +53,7 @@ Emil Cioran
 All the files are generated at startup as html in the `www/blog/` folder.  The files 
 in `www/` can then be synchronised with your website using a tool like [http://en.wikipedia.org/wiki/Rsync](rsync)
 
-### Theming
+### Theming and Customisation
 * Edit the `views/*.tpl` as needed for your website
 * Edit the blog assets (css, js etc) in `www/`
 

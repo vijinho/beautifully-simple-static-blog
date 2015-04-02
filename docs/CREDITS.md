@@ -23,3 +23,4 @@
 * [http://pythonhosted.org//Markdown/siteindex.html](Python Markdown)
 * [https://docs.python.org/2/library/pickle.html](Pickle) Object Serialization
 * [https://docs.python.org/2/library/hashlib.html](hashlib) Hashing Algorithms
+* [http://click.pocoo.org/4/](click) - CLI
