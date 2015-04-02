@@ -20,7 +20,12 @@
 * [http://www.blindtextgenerator.com/lorem-ipsum](Blind Text "Lorem Ipsum" Generator)
 
 ### Python
+#### Web Serving
 * [http://docs.pylonsproject.org/projects/waitress/en/latest/index.html](Waitress WSCGI Server)
+* [http://docs.python.org/library/htmlmin](htmlmin) HTML Minification
+* [https://bitbucket.org/dcs/jsmin/](jsmin) Javascript Minification
+
+#### Miscellaneous
 * [http://pythonhosted.org//Markdown/siteindex.html](Python Markdown)
 * [https://docs.python.org/2/library/pickle.html](Pickle) Object Serialization
 * [https://docs.python.org/2/library/hashlib.html](hashlib) Hashing Algorithms

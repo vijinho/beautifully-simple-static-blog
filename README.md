@@ -21,6 +21,13 @@ Check the [docs/TODO.md](docs/TODO.md) or [docs/ROADMAP.md](docs/ROADMAP.md)
 to see what's left to do and if you make some [docs/CHANGES.md](docs/CHANGES.md) I'll be
 sure to add you to the [docs/CREDITS.md](docs/CREDITS.md) and [www/humans.txt](www/humans.txt) files.
 
+### Features
+
+* Generates static HTML files under the `www/blog/` from [https://guides.github.com/features/mastering-markdown/](markdown) file folder input
+* Uses [http://docs.pylonsproject.org/projects/waitress/en/latest/index.html](Waitress WSCGI Server): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
+* Generated HTML is minified 
+* Files in `/www/js/` when served
+
 ## Setup
 
 * `pip install -r requirements.txt`

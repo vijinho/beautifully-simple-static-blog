@@ -6,6 +6,6 @@
 * Improve error handling
 * Improve Caching
 * CLI tool
-* Minifying CSS/JS
+* Minifying CSS
 * Zipping content
 * Show files from docs/ folder

@@ -2,12 +2,13 @@
 
 import os
 import sys
+import htmlmin
+from jsmin import jsmin
 import markdown
 import pickle
 import hashlib
 from datetime import date
 import config
-
 from bottle import error, route, get, static_file, template, default_app, run
 
 # fix for bad encoding reading files
@@ -75,8 +76,7 @@ def parse_markdown(text):
 def parse_markdown_file(filepath):
     """Read a file name and return contents as str html5, dict meta-information, original markdown"""
     with open(filepath) as fh:
-        data = fh.readlines()
-        text = "".join(data)
+        text = fh.read()
         return parse_markdown(text)
 
 def get_files_by_ext(filetype, filepath, cache = True):
@@ -116,9 +116,18 @@ def generate_static_website():
     index()
     return get_blog_posts_meta(cache = False, generate_static_html = True)
 
-def generate_page(data = {}, tpl = 'default', header = 'header.tpl', footer = 'footer.tpl', outfile = None):
+def generate_page(data = {}, tpl = 'default', header = 'header.tpl', footer = 'footer.tpl', minify = True, outfile = None):
     """Render a multiple templates using the same data dict for header, body, footer templates """
     html = template(header, data = data) + template(tpl, data = data) + template(footer, data = data)
+    if minify is True:
+        html = htmlmin.minify(html,
+            remove_comments = True,
+            remove_all_empty_space = True,
+            reduce_empty_attributes = True,
+            reduce_boolean_attributes = True,
+            remove_optional_attribute_quotes = True,
+            keep_pre = True
+        )
     try:
         if outfile is not None:
             with open('www/blog/' + outfile, 'w') as fh:
@@ -155,12 +164,6 @@ def blog(url):
     filename = url[0:-5] + '.md'
     return blog_markdown_to_html(filename)
 
-@get('/blog/<url>')
-def blog(url):
-    """Display the blog post"""
-    filename = url[0:-5] + '.md'
-    return blog_markdown_to_html(filename)
-
 def blog_markdown_to_html(filename):
     """Generate a blog post html page from a supplied markdown filename"""
     document = str()
@@ -181,16 +184,26 @@ def blog_markdown_to_html(filename):
         return generate_page(tpl = 'blog_post', data = data, outfile = filename[0:-3] + '.html')
 
 
+@get('/js/<filepath:path>')
+def js(filepath):
+    """Return minified/compressed js"""
+    try:
+        path = 'www/js/' + filepath
+        with open(path) as fh:
+            minified = jsmin(fh.read(), quote_chars="'\"`")
+            return minified
+    except IOError:
+        return static_file(filepath, root='www')
+
 @get('/<filepath:path>')
 def server_static(filepath):
     """Display static files in the web root folder"""
     return static_file(filepath, root='www')
 
-
 application=default_app()
 
 if __name__ in ('__main__'):
     cache_clear()
-    generate_static_website()
+#    generate_static_website()
     from waitress import serve
     run(server='waitress')
