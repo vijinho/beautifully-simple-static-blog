@@ -19,7 +19,8 @@
 ### Other
 * [http://www.blindtextgenerator.com/lorem-ipsum](Blind Text "Lorem Ipsum" Generator)
 
-### Python Libraries
+### Python
+* [http://docs.pylonsproject.org/projects/waitress/en/latest/index.html](Waitress WSCGI Server)
 * [http://pythonhosted.org//Markdown/siteindex.html](Python Markdown)
 * [https://docs.python.org/2/library/pickle.html](Pickle) Object Serialization
 * [https://docs.python.org/2/library/hashlib.html](hashlib) Hashing Algorithms

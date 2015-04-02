@@ -192,4 +192,5 @@ application=default_app()
 if __name__ in ('__main__'):
     cache_clear()
     generate_static_website()
-    run(host='localhost', port=8080)
+    from waitress import serve
+    run(server='waitress')
