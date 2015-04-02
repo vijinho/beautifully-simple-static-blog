@@ -1,0 +1,16 @@
+# humanstxt.org/
+# The humans responsible & technology colophon
+
+# AUTHOR
+
+    Vijay Mahrra -- http://about.me/vijay.mahrra -- @vijinh0
+
+# THANKS
+
+    Vijay Mahrra -- http://about.me/vijay.mahrra -- @vijinh0
+
+# TECHNOLOGY COLOPHON
+
+    HTML5, CSS3, Markdown
+    Normalize.css, Skeleton, html5boilerplate
+    Python, Bottle

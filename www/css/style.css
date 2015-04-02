@@ -1,0 +1,166 @@
+@import url(//fonts.googleapis.com/css?family=Raleway:300,400,600,700,900|PT+Serif:400,700,400italic);
+
+body {
+  font-size: 2em;
+  line-height: 1.7;
+  color: #404040;
+  font-family: 'Raleway', sans-serif;
+}
+
+.container {
+  max-width: 660px;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+header h2 {
+  font-size: 3.0rem;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+  text-decoration: none;
+}
+
+h1 {
+  font-size: 44px;
+}
+
+h1 a, h1 a:hover, h2 a, h2 a:hover{
+  color: #404040;
+}
+
+h1 small {
+  font-size: 0.5em;
+  font-family: 'PT Serif', serif;
+}
+
+h3 {
+  font-weight: 300;
+}
+
+header{
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+header h1 small{
+  line-height: 36px;
+  float:right;
+}
+
+#about{
+  font-family: 'PT Serif', serif;
+  text-align: justify;
+  clear: both;
+}
+
+.post{
+  font-family: 'PT Serif', serif;
+  margin-top: 40px;
+  margin-bottom: 40px;
+}
+
+.read-more {
+  font-family: 'Raleway', sans-serif;
+  font-weight: 700;
+}
+
+.left-article {
+  float: left;
+  margin-right: 20px;
+}
+
+.post p {
+  margin-bottom: 20px;
+}
+
+.published {
+  font-family: 'Raleway', sans-serif;
+  color: #aaa;
+  font-size: 0.8em;
+  text-align: right;
+  padding-bottom: 50px;
+}
+
+.post h2, .post h1 {
+  margin-top: 5px;
+  font-size: 36px;
+}
+
+.entry {
+  margin-top: 10px;
+  text-align: justify;
+}
+
+.more li {
+  list-style: none;
+  margin-bottom: 8px;
+}
+
+#archive{
+  margin-top: 40px;
+}
+
+footer{
+  font-family: 'Raleway', sans-serif;
+  font-weight: 300;
+  font-size: 0.9em;
+  margin: 60px 0 30px 0;
+  color: #aaa;
+}
+
+footer .coins {
+  float: right;
+  margin-top: -0.5em;
+  font-size: 0.7em;
+  color: #ccc;
+}
+
+footer a {
+  color: #aaa;
+}
+
+footer hr {
+  margin-bottom: 30px;
+}
+
+h3 small {
+  font-size: 0.6em;
+  font-weight: 400;
+  color: #888;
+}
+.print{
+  display: none;
+}
+.screen{
+  display: inline;
+}
+blockquote{
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+blockquote p{
+  font-size: 1.1em;
+}
+
+.full-image {
+  margin-left: -80px;
+  width: 830px;
+
+}
+@media (max-width: 830px) {
+  .full-image {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+.scrollbox-all-blogposts {
+    height: 300px;
+    width: 100%;
+    overflow: auto;
+}

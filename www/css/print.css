@@ -1,0 +1,10 @@
+h3 small{
+  display:block;
+  height: 25px;
+}
+.print{
+  display: inline;
+}
+.screen{
+  display: none;
+}
