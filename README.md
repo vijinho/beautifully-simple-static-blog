@@ -1,4 +1,4 @@
-# Beautifully Simple [http://bottlepy.org/](Bottle) Static Blog Generator
+# Beautifully Simple Static [http://bottlepy.org/](Bottle) Blog Generator
 
 ## Why?
 Because there aren't enough static website generators already in existence that 
