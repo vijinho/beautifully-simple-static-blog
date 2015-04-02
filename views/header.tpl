@@ -40,6 +40,14 @@
   <meta name="twitter:description" content="Philosopher, Photographer, F/OSS Developer, Cyclist, Atheist etc Renaissance Man">
   <meta name="twitter:image" content="https://pbs.twimg.com/media/B6cah3qIUAEdnkl.jpg:large">
 
+  <meta id="facebookOgurl" property="og:url" itemprop="og:url" content="http://www.urunu.com/">
+  <meta id="facebookOgtitle" property="og:title" itemprop="og:title" content="urunu.com – Vijay Mahrra's Blog">
+  <meta id="facebookOgdescription" property="og:description" itemprop="og:description" content="Philosopher, Photographer, F/OSS Developer, Cyclist, Atheist etc Renaissance Man">
+  <meta id="facebookOgtype" property="og:type" itemprop="og:type" content="article">
+  <meta id="facebookOgimage" property="og:image" itemprop="og:image" content="https://pbs.twimg.com/media/B6cah3qIUAEdnkl.jpg:large">
+  <meta id="facebookOgsite_name" property="og:site_name" itemprop="og:site_name" content="urunu">
+  <meta id="facebookOgfb:app_id" property="fb:app_id" itemprop="fb:app_id" content="">
+
 </head>
 <body>
 
