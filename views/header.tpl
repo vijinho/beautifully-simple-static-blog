@@ -5,14 +5,19 @@
   <!-- Basic Page Needs
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge"/>
   <title>{{!data.get('head_title')}}</title>
   <meta name="description" content="{{!data.get('head_description')}}">
   <meta name="author" content="{{!data.get('head_author')}}">
   <meta name="keywords" content="{{!data.get('head_keywords')}}">
+  <meta name="apple-mobile-web-app-title" content="urunu"/>
+  <meta name="application-name" content="urunu"/>
+  <link rel="canonical" href="http://www.urunu.com/blog"/>
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no,minimum-scale=1.0,maximum-scale=1.0,minimal-ui">
+  <meta name="HandheldFriendly" content="True"/>
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -50,8 +55,6 @@
   <meta id="facebookOgtype" property="og:type" itemprop="og:type" content="article">
   <meta id="facebookOgimage" property="og:image" itemprop="og:image" content="https://pbs.twimg.com/media/B6cah3qIUAEdnkl.jpg:large">
   <meta id="facebookOgsite_name" property="og:site_name" itemprop="og:site_name" content="urunu">
-  <meta id="facebookOgfb:app_id" property="fb:app_id" itemprop="fb:app_id" content="">
-
 
 </head>
 <body>
