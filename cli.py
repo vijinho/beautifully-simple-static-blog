@@ -7,6 +7,7 @@ Command Line Interface
 '''
 
 import click
+import config
 
 # setup config passing storage
 class Config(object):
