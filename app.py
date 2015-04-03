@@ -19,7 +19,7 @@ CONFIG = {
     'cache': True,
     'cache_dir': 'tmp/cache/',
     'content_dir': 'content/',
-    'blog_dir': 'blog_dir/',
+    'blog_dir': 'www/blog/',
     'title': 'Blog',
     'author': 'Vijay Mahrra'
 }
