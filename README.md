@@ -1,5 +1,7 @@
 # Beautifully Simple Static [Bottle](http://bottlepy.org/) Blog Generator
 
+![Blog Homepage Screenshot](tmp/homepage.png)
+
 ## Features
 
 * No database required
