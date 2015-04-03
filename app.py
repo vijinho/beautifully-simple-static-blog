@@ -16,6 +16,9 @@ sys.setdefaultencoding('utf8')
 
 CONFIG = {
     'debug': False,
+    'generate_static_files': True,
+    'minify_js': True,
+    'minify_html': True,
     'cache': True,
     'cache_dir': 'tmp/cache/',
     'content_dir': 'content/',
@@ -33,6 +36,8 @@ def make_hash(key):
 
 def cache_set(key, data):
     """Save an item of data to the cache - return boolean success"""
+    if CONFIG['cache'] is False:
+        return False
     try:
         filename = "{dir}{key}.tmp".format(dir = CONFIG['cache_dir'], key = make_hash(key))
         pickle.dump(data, open(filename, "wb"))
@@ -79,7 +84,7 @@ def parse_markdown(text):
     meta = {}
     for k,v in md.Meta.iteritems():
         v = "".join(v)
-        if k == 'tags':
+        if k == 'tags' and len(v) > 2:
             v = v[1:-1]
         meta[k] = v
     return html, meta, text
@@ -87,8 +92,7 @@ def parse_markdown(text):
 def parse_markdown_file(filepath):
     """Read a file name and return contents as str html5, dict meta-information, original markdown"""
     with open(filepath) as fh:
-        text = fh.read()
-        return parse_markdown(text)
+        return parse_markdown(fh.read())
 
 def get_files_by_ext(filetype, filepath, cache = CONFIG['cache']):
     """Return a dict of all files of a given file extension"""
@@ -117,17 +121,29 @@ def get_blog_posts_meta(cache = CONFIG['cache'], generate_static_html = False):
             meta['filename'] = filename
             meta['filepath'] = filepath
             data[filename] = meta
-            if generate_static_html is True:
-                blog_markdown_to_html(filename) # generate all html files
             cache_set(cache_key, data)
     return data
 
-def generate_static_website():
+def generate_static_blog_posts():
     """Generate static html files and website"""
-    index()
-    return get_blog_posts_meta(cache = CONFIG['cache'], generate_static_html = True)
+    data = {}
+    documents = get_files_by_ext('.md', CONFIG['content_dir'])
+    for filename, filepath in documents.items():
+        filepath = documents[filename]
+        html, meta, document = parse_markdown_file(filepath)
+        meta['filename'] = filename
+        meta['filepath'] = filepath
+        data[filename] = meta
+        blog_markdown_to_html(filename)
+    return data
 
-def generate_page(data = {}, tpl = 'default', header = 'header.tpl', footer = 'footer.tpl', minify = True, outfile = None):
+def generate_static_files():
+    """Generate the static website files"""
+    index()
+    generate_static_blog_posts()
+
+
+def generate_page(data = {}, tpl = 'default', header = 'header.tpl', footer = 'footer.tpl', minify = CONFIG['minify_html'], outfile = None):
     """Render a multiple templates using the same data dict for header, body, footer templates """
     html = template(header, data = data) + template(tpl, data = data) + template(footer, data = data)
     if minify is True:
@@ -190,19 +206,25 @@ def blog_markdown_to_html(filename):
             'meta': meta,
             'date': meta['date']
         }
-        return generate_page(tpl = 'blog_post', data = data, outfile = filename[0:-3] + '.html')
+        if CONFIG['generate_static_files'] is False:
+            return generate_page(tpl = 'blog_post', data = data)
+        else:
+            return generate_page(tpl = 'blog_post', data = data, outfile = filename[0:-3] + '.html')
 
 
 @get('/js/<filepath:path>')
 def js(filepath):
     """Return minified/compressed js"""
-    try:
-        path = CONFIG['js_dir'] + filepath
-        with open(path) as fh:
-            minified = jsmin(fh.read(), quote_chars="'\"`")
-            return minified
-    except IOError:
+    if CONFIG['minify_js'] is False:
         return static_file(filepath, root = CONFIG['web_dir'])
+    else:
+        try:
+            path = CONFIG['js_dir'] + filepath
+            with open(path) as fh:
+                minified = jsmin(fh.read(), quote_chars="'\"`")
+                return minified
+        except IOError:
+            return static_file(filepath, root = CONFIG['web_dir'])
 
 @get('/<filepath:path>')
 def server_static(filepath):
@@ -213,11 +235,18 @@ application=default_app()
 
 if __name__ in ('__main__'):
 
-    print "Clearing Cache..."
+    print "Clearing cache dir" + CONFIG['blog_dir']  + "..."
     cache_clear()
 
-    print "Generating static files in " + CONFIG['blog_dir']  + " ..."
-    generate_static_website()
+    if CONFIG['debug'] is True:
+        CONFIG['cache'] = False
+        CONFIG['generate_static_files'] = False
+        CONFIG['minify_js'] = False
+        CONFIG['minify_html'] = False
+
+    if CONFIG['generate_static_files'] is True:
+        print "Generating static files in " + CONFIG['blog_dir']  + " ..."
+        generate_static_files()
 
     from waitress import serve
     run(server='waitress')
