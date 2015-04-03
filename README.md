@@ -10,6 +10,7 @@
 * Generates static HTML files under [www/blog/](www/blog) from [markdown](https://guides.github.com/features/mastering-markdown/)
 * Generated HTML is optionally minified and saved 
 * Caching, minification and static files can be disabled if needed
+* Mobile-first, responsive design
 * RSS feed generated at `www/blog/rss.xml` and referenced in [robots.txt](www/robots.txt) to generate sitemap for blogs.
 
 ## Easy Setup
