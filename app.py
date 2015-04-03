@@ -232,16 +232,26 @@ def server_static(filepath):
 
 def generate_static_files():
     """Generate the static website files"""
-    index()
-    for doc in ['CHANGES.html', 'CREDITS.html', 'ROADMAP.html', 'TODO.html']:
-        docs(doc)
+    # files in www/blog/docs/
+    files = get_files_by_ext('.md', CONFIG['docs_dir'], cache = False)
+    for filename,filepath in files.iteritems():
+        print filename
+        docs(filename[:-3] + '.html')
+#    try:
+#    except OSError:
+#        pass
+#    except IOError:
+#        pass
+    index() # homepage blogs/index.html
+    return True
+
+    # blog posts in www/blog/
     generate_static_blog_posts()
 
 
 application=default_app()
 
 if __name__ in ('__main__'):
-
     print "Clearing cache dir " + CONFIG['blog_dir']  + "..."
     cache_clear()
 

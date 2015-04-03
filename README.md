@@ -47,6 +47,7 @@ CONFIG = {
     'cache': True,                   # cache files and output of app
     'cache_dir': 'tmp/cache/',       # default location of cached files
     'content_dir': 'content/',       # default location of .md content files
+    'docs_dir': 'docs/',             # default location for docs generated in www/blog/docs displayed under `meta` on the homepage
     'web_dir': 'www',                # default location of website root directory
     'blog_dir': 'www/blog/',         # default location of webroot for blog
     'js_dir': 'www/js/',             # default location of javascript files
@@ -79,12 +80,19 @@ Emil Cioran
 * `python app.py` 
 * Browse the website at [http://localhost:8080](http://localhost:8080/)
 
-All the files are generated at startup as html in the `www/blog/` folder.  The files 
-in `www/` can then be synchronised with your website using a tool like [rsync](http://en.wikipedia.org/wiki/Rsync)
+All the .html files are generated at startup as html in the `[www/blog](www/blog)` and `[www/blog/docs](www/blog/docs)` folders.  
+The files in `[www](www/)` can then be synchronised with your website using a tool like [rsync](http://en.wikipedia.org/wiki/Rsync)
 
 ### Theming and Customisation
-* Edit the `views/*.tpl` as needed for your website
-* Edit the blog assets (css, js etc) in `www/`
+
+* Change the `[view](views/)*.tpl` as needed for your website
+* Docs for 'Meta' information on the right column are generated from the files in [docs/](docs) folder.
+* Error 404 File Not Found page: `[www/error/404.html](www/error/404.html)` - see `[www/.htaccess](.htaccess)` file for how to use with apache.
+* Edit the css in `[www/css/](www/css/)`
+* Edit the javascript in `[www/js/](www/js/)`
+* Put images in `[www/img/](www/img/)`
+* Favourite icons: `[www/favicon.ico](www/favicon.ico)` and `[www/img/favicon.png](www/img/favicon.png)`
+* Don't forget to update `[www/humans.txt](www/humans.txt)`!
 
 ## Documentation
 
