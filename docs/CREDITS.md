@@ -10,7 +10,7 @@
 
 ### CSS
 * [normalize.css](http://necolas.github.io/normalize.css/) - css reset
-* [Skeleton](https://github.com/dhg/Skeleton/) - css boilerplate
+* [Skeleton](http://getskeleton.com/) - css boilerplate
 * [crem.in](https://github.com/kudos/crem.in/tree/master/css) - blog theme
 
 ### Images
