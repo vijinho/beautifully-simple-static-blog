@@ -10,6 +10,7 @@
 * Generates static HTML files under [www/blog/](www/blog) from [markdown](https://guides.github.com/features/mastering-markdown/)
 * Generated HTML is optionally minified and saved 
 * Caching, minification and static files can be disabled if needed
+* RSS feed generated at `www/blog/rss.xml` and referenced in [robots.txt](www/robots.txt) to generate sitemap for blogs.
 
 ## Easy Setup
 
@@ -76,20 +77,22 @@ Emil Cioran
 
 ```
 CONFIG = {
-    'debug': False,                  # debug mode
-    'generate_static_files': True,   # generate static website files
-    'minify_js': True,               # minify javascript served by webserver (not static files)
-    'minify_html': True,             # minify all output html including static files
-    'cache': True,                   # cache files and output of app
-    'cache_dir': 'tmp/cache/',       # default location of cached files
-    'content_dir': 'content/',       # default location of .md blog content files
-    'docs_dir': 'docs/',             # default location for .md docs generated in www/blog/docs displayed under `meta` on the homepage
-    'web_dir': 'www/',               # default location of website root directory
-    'blog_dir': 'www/blog/',         # default location of webroot for blog
-    'js_dir': 'www/js/',             # default location of javascript files
-    'ga_code': 'UA-36493464-1',      # google analytics code UA-XXXX-Y
-    'title': 'urunu',                # name of the blog
-    'author': 'Vijay Mahrra'         # author of the blog
+    'debug': False,                   # debug mode
+    'generate_static_files': True,    # generate static website files
+    'minify_js': True,                # minify javascript served by webserver (not static files)
+    'minify_html': True,              # minify all output html including static files
+    'cache': True,                    # cache files and output of app
+    'cache_dir': 'tmp/cache/',        # default location of cached files
+    'content_dir': 'content/',        # default location of .md blog content files
+    'docs_dir': 'docs/',              # default location for .md docs generated in www/blog/docs displayed under `meta` on the homepage
+    'web_dir': 'www/',                # default location of website root directory
+    'blog_dir': 'www/blog/',          # default location of webroot for blog
+    'js_dir': 'www/js/',              # default location of javascript files
+    'ga_code': 'UA-36493464-1',       # google analytics code UA-XXXX-Y
+    'title': 'urunu',                 # name of the blog
+    'author': 'Vijay Mahrra',         # author of the blog
+    'email': 'vijay.mahrra@gmail.com',# email of author
+    'url': 'http://www.urunu.com/'    # canonical website url
 }
 ```
 

@@ -36,14 +36,15 @@
                 <h3>Music</h3>
                 <ul>
                     <li><a href="http://www.last.fm/user/vijinho">Last.fm</a></li>
-                    <li><a href="htts://www.mixcloud.com/vijinho/">Mixcloud</a></li>
-                    <li><a href="htts://soundcloud.com/vijinho">SoundCloud</a></li>
+                    <li><a href="http://www.mixcloud.com/vijinho/">Mixcloud</a></li>
+                    <li><a href="http://soundcloud.com/vijinho">SoundCloud</a></li>
                 </ul>
                 <h3>Meta</h3>
                 <ul>
                     <li><a href="http://about.me/vijay.mahrra">About Me</a></li>
                     <li><a href="/blog/docs/cv.html">CV/Resumé</a></li>
                     <li><a href="https://github.com/vijinho/beautifully-simple-static-blog">Source Code</a></li>
+                    <li><a href="/blog/rss.xml">Subscribe (RSS)</a></li>
                 </ul>
             </small>
         </div>

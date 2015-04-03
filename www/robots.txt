@@ -1,2 +1,2 @@
 User-agent: *
-#Sitemap: http://www.urunu.com/blog/rss.xml
+Sitemap: http://www.urunu.com/blog/rss.xml

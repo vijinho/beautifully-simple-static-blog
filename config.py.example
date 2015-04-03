@@ -15,5 +15,7 @@ CONFIG = {
     'js_dir': 'www/js/',
     'ga_code': 'UA-0000000-1',
     'title': 'Vijay Mahrra',
-    'author': 'Vijay Mahrra'
+    'author': 'Vijay Mahrra',
+    'email': 'vijay.mahrra@gmail.com',
+    'url': 'http://www.urunu.com/'
 }

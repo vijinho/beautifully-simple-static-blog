@@ -10,6 +10,7 @@
   <meta name="description" content="{{!data.get('head_description')}}">
   <meta name="author" content="{{!data.get('head_author')}}">
   <meta name="keywords" content="{{!data.get('head_keywords')}}">
+  <link rel="alternate" type="application/rss+xml" href="{{cfg.get('url')}}/blog/rss.xml" title="{{cfg.get('author')}}'s Blog">
 
   <!-- Mobile Specific Metas
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

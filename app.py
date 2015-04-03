@@ -7,7 +7,8 @@ from jsmin import jsmin
 import markdown
 import pickle
 import hashlib
-from datetime import date
+import time
+from email.Utils import formatdate
 from bottle import error, route, get, static_file, template, default_app, run
 
 # setup initial config file from example
@@ -19,6 +20,18 @@ from config import CONFIG
 # fix for bad encoding reading files
 reload(sys)
 sys.setdefaultencoding('utf8')
+
+def ts_to_rfc822(timestamp = None, timezone = 'GMT'):
+    """Convert datetime from format 1976-12-25 07:30:30 to RFC822 string"""
+    l = len(timestamp)
+    fmt = '%Y-%m-%d %H:%M:%S'
+    if l == 19:
+        fmt = '%Y-%m-%d %H:%M:%S'
+    elif l == 16:
+        fmt = '%Y-%m-%d %H:%M'
+    elif l == 10:
+        fmt = '%Y-%m-%d'
+    return time.strftime("%a, %d %b %Y %H:%M:%S " + timezone, time.strptime(timestamp, fmt))
 
 def make_hash(key):
     """Generate a string hash from a given key string"""
@@ -111,6 +124,8 @@ def get_blog_posts_meta(cache = CONFIG['cache'], generate_static_html = False):
             html, meta, document = parse_markdown_file(filepath)
             meta['filename'] = filename
             meta['filepath'] = filepath
+            meta['rfc822date'] = ts_to_rfc822(meta['date'])
+            meta['id'] = make_hash(filepath)
             data[filename] = meta
             cache_set(cache_key, data)
     return data
@@ -152,6 +167,25 @@ def generate_page(data = {}, tpl = 'default', header = 'header.tpl', footer = 'f
         pass
 
     return html
+
+def generate_feed(data = {}, tpl = 'rss.tpl', outfile = 'rss.xml'):
+    """Render a multiple templates using the same data dict for header, body, footer templates """
+    xml = template(tpl,
+            data = data,
+            cfg = CONFIG,
+            date = formatdate(),
+            author = CONFIG['email'] + '(' + CONFIG['author'] + ')'
+    )
+    try:
+        if outfile is not None:
+            with open(CONFIG['blog_dir'] + outfile, 'w') as fh:
+                fh.write(xml)
+    except OSError:
+        pass
+    except IOError:
+        pass
+
+    return xml
 
 @error(404)
 def error404(error):
@@ -225,6 +259,21 @@ def js(filepath):
         except IOError:
             return static_file(filepath, root = CONFIG['web_dir'])
 
+@get('/rss')
+@get('/rss.xml')
+@get('/blog/rss')
+@get('/blog/rss.xml')
+@get('/sitemap.xml')
+def rss():
+    """Display the homepage"""
+    data = {'body_title': CONFIG['title'],
+            'head_title': CONFIG['author'] + ': ¡Hola!',
+            'head_author': CONFIG['author'],
+            'head_keywords': 'Blog',
+            'head_description': 'Blog',
+            'blog_posts_meta': get_blog_posts_meta()}
+    return generate_feed(data = data)
+
 @get('/<filepath:path>')
 def server_static(filepath):
     """Display static files in the web root folder"""
@@ -236,7 +285,6 @@ def generate_static_files():
     try:
         files = get_files_by_ext('.md', CONFIG['docs_dir'], cache = False)
         for filename,filepath in files.iteritems():
-            print filename
             docs(filename[:-3] + '.html')
     except OSError:
         pass
@@ -245,6 +293,7 @@ def generate_static_files():
 
     # blog posts in www/blog/
     generate_static_blog_posts()
+    rss() # rss feed
     index() # homepage blogs/index.html
 
 
