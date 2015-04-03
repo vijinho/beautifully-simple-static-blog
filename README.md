@@ -31,7 +31,7 @@ sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans
 ## Setup
 
 * `pip install -r requirements.txt`
-* edit `config.py` as needed
+* edit CONFIG dict in `app.py` as needed
 
 ## Usage
 Put markdown files in the folder `content/` ensuring that your markdown files use a content header:
