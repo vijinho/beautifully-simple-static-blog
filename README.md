@@ -7,8 +7,8 @@ look beautiful.
 This is one I created for [my personal blog](http://www.urunu.com)
 to learn how to build a Python website from scratch.  It's a bit of a hack but
 it does the job perfectly for my needs. For simplicity and ease-of-learning, 
-and following the Bottle design pattern, all of the Python code lives in one
-file, [app.py](app.py)
+and following the single-file Bottle design, all of the main web code lives in one
+file, [app.py](app.py) 
 
 If you're looking for a full-featured, well-written static file generator then
 I would highly recommend [acrylamid](http://posativ.org/acrylamid/) over this
@@ -33,7 +33,8 @@ sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans
 ## Setup
 
 * `pip install -r requirements.txt`
-* edit CONFIG dict in `app.py` as needed
+* Copy config file: `cp config.py.example config.py`
+* Edit `config.py` as needed
 
 ## Usage
 Put markdown files in the folder `content/` ensuring that your markdown files use a content header:

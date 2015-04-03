@@ -18,3 +18,4 @@ lib/
 content
 www/blog
 tmp/*
+config.py
