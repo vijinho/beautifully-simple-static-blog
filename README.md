@@ -36,6 +36,25 @@ sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans
 * Copy config file: `cp config.py.example config.py`
 * Edit `config.py` as needed
 
+### config.py explanation
+
+```
+CONFIG = {
+    'debug': False,                  # debug mode
+    'generate_static_files': True,   # generate static website files
+    'minify_js': True,               # minify javascript served by webserver (not static files)
+    'minify_html': True,             # minify all output html including static files
+    'cache': True,                   # cache files and output of app
+    'cache_dir': 'tmp/cache/',       # default location of cached files
+    'content_dir': 'content/',       # default location of .md content files
+    'web_dir': 'www',                # default location of website root directory
+    'blog_dir': 'www/blog/',         # default location of webroot for blog
+    'js_dir': 'www/js/',             # default location of javascript files
+    'title': 'urunu',                # name of the blog
+    'author': 'Vijay Mahrra'         # author of the blog
+}
+```
+
 ## Usage
 Put markdown files in the folder `content/` ensuring that your markdown files use a content header:
 
