@@ -4,7 +4,7 @@
 Because there aren't enough static website generators already in existence that 
 look beautiful. 
 
-This is one I created for (http://www.urunu.com](my personal blog) 
+This is one I created for [my personal blog](http://www.urunu.com)
 to learn how to build a Python website from scratch.  It's a bit of a hack but
 it does the job perfectly for my needs. For simplicity and ease-of-learning, 
 and following the Bottle design pattern, all of the Python code lives in one
@@ -17,9 +17,9 @@ project.
 However if you want a starting-point for your own experiments in making websites 
 and static sites in Python, this isn't the worst place that you could start.  
 
-Check the [docs/TODO.md](docs/TODO.md) or [docs/ROADMAP.md](docs/ROADMAP.md) 
-to see what's left to do and if you make some [docs/CHANGES.md](docs/CHANGES.md) I'll be
-sure to add you to the [docs/CREDITS.md](docs/CREDITS.md) and [www/humans.txt](www/humans.txt) files.
+Check the [TODO.md](docs/TODO.md) or [ROADMAP.md](docs/ROADMAP.md) 
+to see what's left to do and if you make some [CHANGES.md](docs/CHANGES.md) I'll be
+sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans.txt) files.
 
 ### Features
 
