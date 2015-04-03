@@ -33,15 +33,6 @@
   <link rel="apple-touch-icon" sizes="114x114" href="/apple-touch-icon-114x114.png">
   <link rel="apple-touch-icon" sizes="144x144" href="/apple-touch-icon-144x144.png">
 
-  <!-- Social Media
-  –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <meta property="twitter:account_id" content="">
-  <meta name="twitter:site" content="{{cfg.get('twitter').get('handle')}}">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="{{cfg.get('twitter').get('title')}}">
-  <meta name="twitter:description" content="{{cfg.get('twitter').get('description')}}">
-  <meta name="twitter:image" content="{{cfg.get('twitter').get('image')}}">
-
 </head>
 <body>
 

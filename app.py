@@ -29,16 +29,6 @@ CONFIG = {
     'author': 'Vijay Mahrra'
 }
 
-CONFIG['twitter'] = {
-    'id': '16833387',
-    'handle': '@vijinho',
-    'title': 'Vijay Mahrra on Twitter',
-    'description': 'Philosopher, Photographer, F/OSS Developer, Cyclist, Atheist etc Renaissance Man',
-    'image': 'https://pbs.twimg.com/media/B6cah3qIUAEdnkl.jpg:large'
-}
-
-
-
 def make_hash(key):
     """Generate a string hash from a given key string"""
     key = hashlib.md5(key)
@@ -260,6 +250,5 @@ if __name__ in ('__main__'):
         print "Generating static files in " + CONFIG['blog_dir']  + " ..."
         generate_static_files()
 
-    print index()
     from waitress import serve
     run(server='waitress')
