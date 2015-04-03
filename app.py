@@ -25,7 +25,7 @@ CONFIG = {
     'web_dir': 'www',
     'blog_dir': 'www/blog/',
     'js_dir': 'www/js/',
-    'title': 'Blog',
+    'title': 'urunu',
     'author': 'Vijay Mahrra'
 }
 
@@ -137,14 +137,6 @@ def generate_static_blog_posts():
         blog_markdown_to_html(filename)
     return data
 
-def generate_static_files():
-    """Generate the static website files"""
-    index()
-    for doc in ['CHANGES.html', 'CREDITS.html', 'ROADMAP.html', 'TODO.html']:
-        docs(doc)
-    generate_static_blog_posts()
-
-
 def generate_page(data = {}, tpl = 'default', header = 'header.tpl', footer = 'footer.tpl', minify = CONFIG['minify_html'], outfile = None):
     """Render a multiple templates using the same data dict for header, body, footer templates """
     html = template(header, data = data, cfg = CONFIG) + \
@@ -246,6 +238,14 @@ def js(filepath):
 def server_static(filepath):
     """Display static files in the web root folder"""
     return static_file(filepath, root = CONFIG['web_dir'])
+
+def generate_static_files():
+    """Generate the static website files"""
+    index()
+    for doc in ['CHANGES.html', 'CREDITS.html', 'ROADMAP.html', 'TODO.html']:
+        docs(doc)
+    generate_static_blog_posts()
+
 
 application=default_app()
 
