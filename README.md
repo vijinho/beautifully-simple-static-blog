@@ -24,16 +24,16 @@ sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans
 ### Features
 
 * No database required
-* Generates static HTML files under the [www/blog/](www/blog) from * [markdown](https://guides.github.com/features/mastering-markdown/) [content](content) files folder input
+* Generates static HTML files under [www/blog/](www/blog) from * [markdown](https://guides.github.com/features/mastering-markdown/)
 * Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
 * Generated HTML is optionally minified and saved to webroot
-* JS files in [/www/js/](www/js) optionally minified when served direct
-* Caching, minification and static files can be disabled
+* JS files in [/www/js/](www/js) optionally minified when served direct from Waitress 
+* Caching, minification and static files can be disabled if needed
 
 ## Setup
 
 * `pip install -r requirements.txt`
-* Copy config file: `cp config.py.example config.py`
+* Copy config file: `cp config.py.example config.py` - this is done automatically the first time [app.py](app.py) is run if the [config.py](config.py) file does not exist
 * Edit `config.py` as needed
 
 ### config.py explanation
