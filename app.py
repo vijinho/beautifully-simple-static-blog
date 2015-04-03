@@ -10,24 +10,15 @@ import hashlib
 from datetime import date
 from bottle import error, route, get, static_file, template, default_app, run
 
+# setup initial config file from example
+if not os.path.exists('config.py'):
+    from shutil import copyfile
+    copyfile('config.py.example', 'config.py')
+from config import CONFIG
+
 # fix for bad encoding reading files
 reload(sys)
 sys.setdefaultencoding('utf8')
-
-CONFIG = {
-    'debug': False,
-    'generate_static_files': True,
-    'minify_js': True,
-    'minify_html': True,
-    'cache': True,
-    'cache_dir': 'tmp/cache/',
-    'content_dir': 'content/',
-    'web_dir': 'www',
-    'blog_dir': 'www/blog/',
-    'js_dir': 'www/js/',
-    'title': 'urunu',
-    'author': 'Vijay Mahrra'
-}
 
 def make_hash(key):
     """Generate a string hash from a given key string"""
