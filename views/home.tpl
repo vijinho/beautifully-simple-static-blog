@@ -3,7 +3,7 @@
 
   <div class="container">
     <div class="row">
-      <div class="two-thirds column" style="margin-top: 25%">
+        <div class="nine columns" style="margin-top: 25%">
           <h1>{{!data.get('body_title')}}</h1>
           <p>
           I'm <b>Vijay Mahrra</b> and this is my personal blog, I work as a
@@ -24,6 +24,8 @@
               </p>
             %end
           </div>
-      </div>
+        </div>
+        <div class="three columns" style="margin-top: 30%">
+        </div>
     </div>
   </div>
