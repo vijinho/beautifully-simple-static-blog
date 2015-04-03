@@ -9,5 +9,14 @@
           <hr>
           <small><a href="/blog/index.html">home</a></small>
       </div>
+        <div class="three columns" style="margin-top: 25%">
+            <small>
+                <h3>Meta</h3>
+                <ul>
+                    <li><a href="/blog/docs/cv.html">CV/Resumé</a></li>
+                    <li><a href="https://github.com/vijinho/beautifully-simple-static-blog">Source Code</a></li>
+                </ul>
+            </small>
+        </div>
     </div>
   </div>
