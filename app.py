@@ -19,7 +19,9 @@ CONFIG = {
     'cache': True,
     'cache_dir': 'tmp/cache/',
     'content_dir': 'content/',
+    'web_dir': 'www',
     'blog_dir': 'www/blog/',
+    'js_dir': 'www/js/',
     'title': 'Blog',
     'author': 'Vijay Mahrra'
 }
@@ -157,7 +159,6 @@ def error404(error):
 @get('/blog/index.html')
 def index():
     """Display the homepage"""
-    #return static_file('index.html', root='www')
     data = {'body_title': CONFIG['title'],
             'head_title': CONFIG['author'] + ': ¡Hola!',
             'head_author': CONFIG['author'],
@@ -165,7 +166,6 @@ def index():
             'head_description': 'Blog',
             'blog_posts_meta': get_blog_posts_meta()}
     return generate_page(data = data, tpl = 'home.tpl', outfile = 'index.html')
-    #return static_file('index.html', root='www')
 
 @get('/blog/<url>')
 def blog(url):
@@ -197,17 +197,17 @@ def blog_markdown_to_html(filename):
 def js(filepath):
     """Return minified/compressed js"""
     try:
-        path = 'www/js/' + filepath
+        path = CONFIG['js_dir'] + filepath
         with open(path) as fh:
             minified = jsmin(fh.read(), quote_chars="'\"`")
             return minified
     except IOError:
-        return static_file(filepath, root='www')
+        return static_file(filepath, root = CONFIG['web_dir'])
 
 @get('/<filepath:path>')
 def server_static(filepath):
     """Display static files in the web root folder"""
-    return static_file(filepath, root='www')
+    return static_file(filepath, root = CONFIG['web_dir'])
 
 application=default_app()
 
@@ -216,7 +216,7 @@ if __name__ in ('__main__'):
     print "Clearing Cache..."
     cache_clear()
 
-    print "Generating static files in www/blog/ ..."
+    print "Generating static files in " + CONFIG['blog_dir']  + " ..."
     generate_static_website()
 
     from waitress import serve
