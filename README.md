@@ -1,5 +1,28 @@
 # Beautifully Simple Static [Bottle](http://bottlepy.org/) Blog Generator
 
+## Features
+
+* No database required
+* Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
+* JS files in [/www/js/](www/js) optionally minified when served direct from Waitress 
+* Generates static HTML files under [www/blog/](www/blog) from [markdown](https://guides.github.com/features/mastering-markdown/)
+* Generated HTML is optionally minified and saved 
+* Caching, minification and static files can be disabled if needed
+
+## Easy Setup
+
+* `pip install -r requirements.txt`
+* Copy config file: `cp config.py.example config.py` - this is done automatically the first time [app.py](app.py) is run if the [config.py](config.py.example) file does not exist
+* Edit `config.py` as needed
+
+## Running
+
+* `python app.py` 
+* Browse the website at [http://localhost:8080](http://localhost:8080/)
+
+All the .html files are generated at startup in the [www/blog](www/blog) and [www/blog/docs](www/blog/docs) folders.  
+The files in [www](www/) can then be synchronised with your website using a tool like [rsync](http://en.wikipedia.org/wiki/Rsync)
+
 ## Why?
 Because there aren't enough static website generators already in existence that 
 look beautiful. 
@@ -21,22 +44,33 @@ Check the [TODO.md](docs/TODO.md) or [ROADMAP.md](docs/ROADMAP.md)
 to see what's left to do and if you make some [CHANGES.md](docs/CHANGES.md) I'll be
 sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans.txt) files.
 
-### Features
+## Example Blog Post
+Put markdown files in the folder [content/](content/) ensuring that your markdown files use a content header:
 
-* No database required
-* Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
-* JS files in [/www/js/](www/js) optionally minified when served direct from Waitress 
-* Generates static HTML files under [www/blog/](www/blog) from [markdown](https://guides.github.com/features/mastering-markdown/)
-* Generated HTML is optionally minified and saved 
-* Caching, minification and static files can be disabled if needed
+e.g. `content/2015-12-25-xmas.md` - be sure to use the meta information header on each file as shown below
 
-## Setup
+```
+---
+date: 2015-04-01 12:56
+title: Emil Cioran Quote
+tags: [emil cioran, cioran, philosophy, quotes]
+---
+"I have all the defects of other people, and yet everything they do seems to me inconceivable."
+Emil Cioran
+```
 
-* `pip install -r requirements.txt`
-* Copy config file: `cp config.py.example config.py` - this is done automatically the first time [app.py](app.py) is run if the [config.py](config.py.example) file does not exist
-* Edit `config.py` as needed
+### Theming and Customisation
 
-### config.py explanation
+* Change the [views](views/) .tpl files as needed for your website
+* Docs for 'Meta' information on the right column are generated from the files in [docs/](docs) folder.
+* Error 404 File Not Found page: [www/error/404.html](www/error/404.html) - see [www/.htaccess](www/.htaccess) file for how to use with apache.
+* Edit the css in [www/css/](www/css/)
+* Edit the javascript in [www/js/](www/js/)
+* Put images in [www/img/](www/img/)
+* Favourite icons: [www/favicon.ico](www/favicon.ico) and [www/img/favicon.png](www/img/favicon.png)
+* Don't forget to update [www/humans.txt](www/humans.txt)!
+
+### config.py explained
 
 ```
 CONFIG = {
@@ -56,42 +90,8 @@ CONFIG = {
 }
 ```
 
-## Usage
-Put markdown files in the folder [content/](content/) ensuring that your markdown files use a content header:
-
-e.g. `content/2015-12-25-xmas.md` - be sure to use the meta information header on each file as shown below
-
-```
----
-date: 2015-04-01 12:56
-title: Emil Cioran Quote
-tags: [emil cioran, cioran, philosophy, quotes]
----
-"I have all the defects of other people, and yet everything they do seems to me inconceivable."
-Emil Cioran
-```
-
 ### Command Line Interface
 * The file [cli.py](cli.py) is implemented using [click](http://click.pocoo.org/4/) (TO BE DONE!)
-
-## Running
-
-* `python app.py` 
-* Browse the website at [http://localhost:8080](http://localhost:8080/)
-
-All the .html files are generated at startup in the [www/blog](www/blog) and [www/blog/docs](www/blog/docs) folders.  
-The files in [www](www/) can then be synchronised with your website using a tool like [rsync](http://en.wikipedia.org/wiki/Rsync)
-
-### Theming and Customisation
-
-* Change the [views](views/) .tpl files as needed for your website
-* Docs for 'Meta' information on the right column are generated from the files in [docs/](docs) folder.
-* Error 404 File Not Found page: [www/error/404.html](www/error/404.html) - see [www/.htaccess](www/.htaccess) file for how to use with apache.
-* Edit the css in [www/css/](www/css/)
-* Edit the javascript in [www/js/](www/js/)
-* Put images in [www/img/](www/img/)
-* Favourite icons: [www/favicon.ico](www/favicon.ico) and [www/img/favicon.png](www/img/favicon.png)
-* Don't forget to update [www/humans.txt](www/humans.txt)!
 
 ## Documentation
 
