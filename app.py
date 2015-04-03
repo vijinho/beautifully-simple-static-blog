@@ -8,7 +8,6 @@ import markdown
 import pickle
 import hashlib
 from datetime import date
-import config
 from bottle import error, route, get, static_file, template, default_app, run
 
 # fix for bad encoding reading files
