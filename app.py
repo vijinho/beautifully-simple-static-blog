@@ -58,8 +58,8 @@ def cache_remove(key):
 
 def cache_clear():
     """Wipe the cache - return boolean success"""
-    files = get_files_by_ext('.tmp', CONFIG['cache_dir'], cache = False)
     try:
+        files = get_files_by_ext('.tmp', CONFIG['cache_dir'], cache = False)
         for filename,filepath in files.iteritems():
             os.remove(filepath)
     except OSError:
@@ -233,15 +233,15 @@ def server_static(filepath):
 def generate_static_files():
     """Generate the static website files"""
     # files in www/blog/docs/
-    files = get_files_by_ext('.md', CONFIG['docs_dir'], cache = False)
-    for filename,filepath in files.iteritems():
-        print filename
-        docs(filename[:-3] + '.html')
-#    try:
-#    except OSError:
-#        pass
-#    except IOError:
-#        pass
+    try:
+        files = get_files_by_ext('.md', CONFIG['docs_dir'], cache = False)
+        for filename,filepath in files.iteritems():
+            print filename
+            docs(filename[:-3] + '.html')
+    except OSError:
+        pass
+    except IOError:
+        pass
     index() # homepage blogs/index.html
     return True
 
