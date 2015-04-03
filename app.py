@@ -242,11 +242,10 @@ def generate_static_files():
         pass
     except IOError:
         pass
-    index() # homepage blogs/index.html
-    return True
 
     # blog posts in www/blog/
     generate_static_blog_posts()
+    index() # homepage blogs/index.html
 
 
 application=default_app()
