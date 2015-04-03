@@ -24,16 +24,16 @@ sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans
 ### Features
 
 * No database required
-* Generates static HTML files under [www/blog/](www/blog) from * [markdown](https://guides.github.com/features/mastering-markdown/)
 * Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
-* Generated HTML is optionally minified and saved to webroot
 * JS files in [/www/js/](www/js) optionally minified when served direct from Waitress 
+* Generates static HTML files under [www/blog/](www/blog) from [markdown](https://guides.github.com/features/mastering-markdown/)
+* Generated HTML is optionally minified and saved 
 * Caching, minification and static files can be disabled if needed
 
 ## Setup
 
 * `pip install -r requirements.txt`
-* Copy config file: `cp config.py.example config.py` - this is done automatically the first time [app.py](app.py) is run if the [config.py](config.py) file does not exist
+* Copy config file: `cp config.py.example config.py` - this is done automatically the first time [app.py](app.py) is run if the [config.py](config.py.example) file does not exist
 * Edit `config.py` as needed
 
 ### config.py explanation
@@ -59,12 +59,11 @@ CONFIG = {
 ## Usage
 Put markdown files in the folder [content/](content/) ensuring that your markdown files use a content header:
 
-e.g. `content/2015-12-25-xmas.md`
+e.g. `content/2015-12-25-xmas.md` - be sure to use the meta information header on each file as shown below
 
 ```
 ---
 date: 2015-04-01 12:56
-permalink: /blog/2015-04-01-cioran.html
 title: Emil Cioran Quote
 tags: [emil cioran, cioran, philosophy, quotes]
 ---
@@ -80,14 +79,14 @@ Emil Cioran
 * `python app.py` 
 * Browse the website at [http://localhost:8080](http://localhost:8080/)
 
-All the .html files are generated at startup as html in the [www/blog](www/blog) and [www/blog/docs](www/blog/docs) folders.  
+All the .html files are generated at startup in the [www/blog](www/blog) and [www/blog/docs](www/blog/docs) folders.  
 The files in [www](www/) can then be synchronised with your website using a tool like [rsync](http://en.wikipedia.org/wiki/Rsync)
 
 ### Theming and Customisation
 
-* Change the [view](views/)*.tpl as needed for your website
+* Change the [views](views/) .tpl files as needed for your website
 * Docs for 'Meta' information on the right column are generated from the files in [docs/](docs) folder.
-* Error 404 File Not Found page: [www/error/404.html](www/error/404.html) - see [www/.htaccess](.htaccess) file for how to use with apache.
+* Error 404 File Not Found page: [www/error/404.html](www/error/404.html) - see [www/.htaccess](www/.htaccess) file for how to use with apache.
 * Edit the css in [www/css/](www/css/)
 * Edit the javascript in [www/js/](www/js/)
 * Put images in [www/img/](www/img/)
