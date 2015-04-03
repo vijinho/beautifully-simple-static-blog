@@ -23,10 +23,12 @@ sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans
 
 ### Features
 
+* No database required
 * Generates static HTML files under the `www/blog/` from * [markdown](https://guides.github.com/features/mastering-markdown/) `content` file folder input
 * Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
-* Generated HTML is minified 
-* Files in `/www/js/` when served
+* Generated HTML is optionally minified and saved to webroot
+* JS files in `/www/js/` optionally minified when served direct
+* Caching, minification and static files can be disabled
 
 ## Setup
 
