@@ -231,7 +231,7 @@ def blog_markdown_to_html(filename):
         html, meta, document = parse_markdown_file(filepath)
         data = {
             'body_title': "".join(meta['title']),
-            'head_title': CONFIG['author'] + "".join(meta['title']),
+            'head_title': CONFIG['author'] + " ".join(meta['title']),
             'head_author': CONFIG['author'],
             'head_keywords': meta['tags'],
             'head_description': "".join(meta['title']),
