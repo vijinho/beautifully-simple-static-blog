@@ -9,24 +9,24 @@
 ## CREDITS
 
 ### CSS
-* [http://necolas.github.io/normalize.css/](normalize.css) - css reset
-* [https://github.com/dhg/Skeleton/](Skeleton) - css boilerplate
-* [https://github.com/kudos/crem.in/tree/master/css](crem.in) - blog theme
+* [normalize.css](http://necolas.github.io/normalize.css/) - css reset
+* [Skeleton](https://github.com/dhg/Skeleton/) - css boilerplate
+* [crem.in](https://github.com/kudos/crem.in/tree/master/css) - blog theme
 
 ### Images
-* [https://html5boilerplate.com/](html5boilerplate) - placeholder images
+* [html5boilerplate](https://html5boilerplate.com/) - placeholder images
 
 ### Other
-* [http://www.blindtextgenerator.com/lorem-ipsum](Blind Text "Lorem Ipsum" Generator)
+* [Blind Text "Lorem Ipsum" Generator](http://www.blindtextgenerator.com/lorem-ipsum)
 
 ### Python
 #### Web Serving
-* [http://docs.pylonsproject.org/projects/waitress/en/latest/index.html](Waitress WSCGI Server)
-* [http://docs.python.org/library/htmlmin](htmlmin) HTML Minification
-* [https://bitbucket.org/dcs/jsmin/](jsmin) Javascript Minification
+* [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html)
+* [htmlmin](http://docs.python.org/library/htmlmin) HTML Minification
+* [jsmin](https://bitbucket.org/dcs/jsmin/) Javascript Minification
 
 #### Miscellaneous
-* [http://pythonhosted.org//Markdown/siteindex.html](Python Markdown)
-* [https://docs.python.org/2/library/pickle.html](Pickle) Object Serialization
-* [https://docs.python.org/2/library/hashlib.html](hashlib) Hashing Algorithms
-* [http://click.pocoo.org/4/](click) - CLI
+* [Python Markdown](http://pythonhosted.org//Markdown/siteindex.html) - Markdown Parser
+* [Pickle](https://docs.python.org/2/library/pickle.html) - Object Serialization
+* [hashlib](https://docs.python.org/2/library/hashlib.html) - Hashing Algorithms
+* [click](http://click.pocoo.org/4/) - CLI

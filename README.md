@@ -1,4 +1,4 @@
-# Beautifully Simple Static [http://bottlepy.org/](Bottle) Blog Generator
+# Beautifully Simple Static [Bottle](http://bottlepy.org/) Blog Generator
 
 ## Why?
 Because there aren't enough static website generators already in existence that 
@@ -11,7 +11,7 @@ and following the Bottle design pattern, all of the Python code lives in one
 file, [app.py](app.py)
 
 If you're looking for a full-featured, well-written static file generator then
-I would highly recommend [http://posativ.org/acrylamid/](acrylamid) over this
+I would highly recommend [acrylamid](http://posativ.org/acrylamid/) over this
 project.  
 
 However if you want a starting-point for your own experiments in making websites 
@@ -23,8 +23,8 @@ sure to add you to the [docs/CREDITS.md](docs/CREDITS.md) and [www/humans.txt](w
 
 ### Features
 
-* Generates static HTML files under the `www/blog/` from * [https://guides.github.com/features/mastering-markdown/](markdown) `content` file folder input
-* Uses [http://docs.pylonsproject.org/projects/waitress/en/latest/index.html](Waitress WSCGI Server): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
+* Generates static HTML files under the `www/blog/` from * [markdown](https://guides.github.com/features/mastering-markdown/) `content` file folder input
+* Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
 * Generated HTML is minified 
 * Files in `/www/js/` when served
 
@@ -50,7 +50,7 @@ Emil Cioran
 ```
 
 ### Command Line Interface
-* The file `cli.py` is implemented using [http://click.pocoo.org/4/](click)
+* The file `cli.py` is implemented using [click](http://click.pocoo.org/4/)
 
 ## Running
 
@@ -58,7 +58,7 @@ Emil Cioran
 * Browse the website at [http://localhost:8080](http://localhost:8080/)
 
 All the files are generated at startup as html in the `www/blog/` folder.  The files 
-in `www/` can then be synchronised with your website using a tool like [http://en.wikipedia.org/wiki/Rsync](rsync)
+in `www/` can then be synchronised with your website using a tool like [rsync](http://en.wikipedia.org/wiki/Rsync)
 
 ### Theming and Customisation
 * Edit the `views/*.tpl` as needed for your website
