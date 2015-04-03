@@ -87,6 +87,7 @@ CONFIG = {
     'web_dir': 'www/',               # default location of website root directory
     'blog_dir': 'www/blog/',         # default location of webroot for blog
     'js_dir': 'www/js/',             # default location of javascript files
+    'ga_code': 'UA-36493464-1',      # google analytics code UA-XXXX-Y
     'title': 'urunu',                # name of the blog
     'author': 'Vijay Mahrra'         # author of the blog
 }

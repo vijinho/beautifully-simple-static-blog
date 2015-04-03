@@ -9,9 +9,11 @@ CONFIG = {
     'cache': True,
     'cache_dir': 'tmp/cache/',
     'content_dir': 'content/',
+    'docs_dir': 'docs/',
     'web_dir': 'www',
     'blog_dir': 'www/blog/',
     'js_dir': 'www/js/',
-    'title': 'urunu',
+    'ga_code': 'UA-0000000-1',
+    'title': 'Vijay Mahrra',
     'author': 'Vijay Mahrra'
 }
