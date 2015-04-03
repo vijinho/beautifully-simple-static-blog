@@ -140,6 +140,8 @@ def generate_static_blog_posts():
 def generate_static_files():
     """Generate the static website files"""
     index()
+    for doc in ['CHANGES.html', 'CREDITS.html', 'ROADMAP.html', 'TODO.html']:
+        docs(doc)
     generate_static_blog_posts()
 
 
@@ -188,8 +190,20 @@ def index():
 @get('/blog/<url>')
 def blog(url):
     """Display the blog post"""
-    filename = url[0:-5] + '.md'
+    filename = url[:-5] + '.md'
     return blog_markdown_to_html(filename)
+
+@get('/blog/docs/<filename>')
+def docs(filename):
+    """Display the docs folder files"""
+    html, meta, text = parse_markdown_file('docs/' + filename[:-5] + '.md')
+    data = {'head_title': filename[:-5],
+            'head_author': CONFIG['author'],
+            'head_keywords': filename[:-5] + ' file',
+            'head_description': filename[:-5] + ' for website ' + CONFIG['title'],
+            'blog_posts_meta': get_blog_posts_meta(),
+            'body_content': html}
+    return generate_page(data = data, tpl = 'default.tpl', outfile = 'docs/' + filename)
 
 def blog_markdown_to_html(filename):
     """Generate a blog post html page from a supplied markdown filename"""
@@ -237,7 +251,7 @@ application=default_app()
 
 if __name__ in ('__main__'):
 
-    print "Clearing cache dir" + CONFIG['blog_dir']  + "..."
+    print "Clearing cache dir " + CONFIG['blog_dir']  + "..."
     cache_clear()
 
     if CONFIG['debug'] is True:

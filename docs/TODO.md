@@ -5,4 +5,3 @@
 * CLI tool
 * Minifying CSS
 * Zipping served content
-* Show files from docs/ folder
