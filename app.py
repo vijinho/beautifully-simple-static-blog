@@ -29,6 +29,16 @@ CONFIG = {
     'author': 'Vijay Mahrra'
 }
 
+CONFIG['twitter'] = {
+    'id': '16833387',
+    'handle': '@vijinho',
+    'title': 'Vijay Mahrra on Twitter',
+    'description': 'Philosopher, Photographer, F/OSS Developer, Cyclist, Atheist etc Renaissance Man',
+    'image': 'https://pbs.twimg.com/media/B6cah3qIUAEdnkl.jpg:large'
+}
+
+
+
 def make_hash(key):
     """Generate a string hash from a given key string"""
     key = hashlib.md5(key)
@@ -145,7 +155,9 @@ def generate_static_files():
 
 def generate_page(data = {}, tpl = 'default', header = 'header.tpl', footer = 'footer.tpl', minify = CONFIG['minify_html'], outfile = None):
     """Render a multiple templates using the same data dict for header, body, footer templates """
-    html = template(header, data = data) + template(tpl, data = data) + template(footer, data = data)
+    html = template(header, data = data, cfg = CONFIG) + \
+           template(tpl, data = data, cfg = CONFIG) + \
+           template(footer, data = data, cfg = CONFIG)
     if minify is True:
         html = htmlmin.minify(html,
             remove_comments = True,
@@ -248,5 +260,6 @@ if __name__ in ('__main__'):
         print "Generating static files in " + CONFIG['blog_dir']  + " ..."
         generate_static_files()
 
+    print index()
     from waitress import serve
     run(server='waitress')
