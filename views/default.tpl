@@ -2,9 +2,10 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <div class="row">
-      <div class="one-half column" style="margin-top: 25%">
-          <h1>{{!data.get('body_title')}}</h1>
+      <div class="two-thirds column" style="margin-top: 25%">
           {{!data.get('body_content')}}
+          <hr>
+          <small><a href="/blog/index.html">home</a></small>
       </div>
     </div>
   </div>

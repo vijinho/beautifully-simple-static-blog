@@ -1,12 +1,12 @@
-# APPLICATION TEAM
+# Application Team
 
-* Vijay Mahrra -- vijay.mahrra@gmail.com -- @vijinh0
+* Vijay Mahrra -- vijay.mahrra@gmail.com -- [@vijinh0](https://twitter.com/vijinh0)
 
-# CONTRIBUTORS
+# Contributors
 
 * Nobody for now - give something back to this project!
 
-## CREDITS
+## Credits
 
 ### CSS
 * [normalize.css](http://necolas.github.io/normalize.css/) - css reset

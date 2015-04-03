@@ -25,7 +25,17 @@
             %end
           </div>
         </div>
-        <div class="three columns" style="margin-top: 30%">
+        <div class="three columns" style="margin-top: 80%">
+            <small>
+                <h3>Meta</h3>
+                <ul>
+                    <li><a href="https://github.com/vijinho/beautifully-simple-static-blog">GitHub</a></li>
+                    <li><a href="/blog/docs/CREDITS.html">Credits</a></li>
+                    <li><a href="/blog/docs/CHANGES.html">Changes</a></li>
+                    <li><a href="/blog/docs/TODO.html">TODO</a></li>
+                    <li><a href="/blog/docs/ROADMAP.html">Roadmap</a></li>
+                </ul>
+            </small>
         </div>
     </div>
   </div>
