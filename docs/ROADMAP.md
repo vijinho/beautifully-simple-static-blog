@@ -1,3 +1,2 @@
 # Roadmap
 
-* Add CLI suppport
