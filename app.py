@@ -62,7 +62,7 @@ class MyUtils:
                              time.strptime(timestamp, fmt))
 
     @staticmethod
-    def hashify(key):
+    def hashed(key):
         """Generate a string hash from a given key string"""
         return hashlib.sha1(key).hexdigest()
 
@@ -80,7 +80,7 @@ class MyCache:
             return False
         try:
             filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                               key=Utils.hashify(key))
+                                               key=Utils.hashed(key))
             pickle.dump(data, open(filename, "wb"))
             return True
         except IOError:
@@ -91,7 +91,7 @@ class MyCache:
         """Get an item of data from the cache - return data or empty dict"""
         try:
             filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                               key=Utils.hashify(key))
+                                               key=Utils.hashed(key))
             data = pickle.load(open(filename, "rb"))
             return data
         except IOError:
@@ -102,7 +102,7 @@ class MyCache:
         """Remove an item of data from the cache - return boolean success"""
         try:
             filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                               key=Utils.hashify(key))
+                                               key=Utils.hashed(key))
             os.remove(filename)
             return True
         except OSError:
@@ -194,7 +194,7 @@ class MyBlog:
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
                 # add some extra information we might find useful
-                meta['id'] = Utils.hashify(filepath)
+                meta['id'] = Utils.hashed(filepath)
                 meta['rfc822date'] = Utils.ts_to_rfc822(meta['date'])
                 meta['filename'] = filename
                 meta['filepath'] = filepath
