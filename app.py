@@ -6,11 +6,14 @@ import pickle
 import hashlib
 import time
 import shutil
+
 import htmlmin
 from jsmin import jsmin
 import markdown
 from bottle import error, get, static_file, template, default_app, run
+
 import email.Utils
+
 
 reload(sys)
 sys.setdefaultencoding('utf8')
@@ -19,13 +22,15 @@ if not os.path.exists('config.py'):
     shutil.copyfile('config.py.example', 'config.py')
 from config import CONFIG
 
+
 class MyUtils:
     """General utility helper functions used by the app"""
 
     def __init__(self):
         pass
 
-    def ts_to_rfc822(self, timestamp=None, timezone='GMT'):
+    @staticmethod
+    def ts_to_rfc822(timestamp=None, timezone='GMT'):
         """Convert datetime from format 1976-12-25 07:30:30 to RFC822 string"""
         l = len(timestamp)
         fmt = '%Y-%m-%d %H:%M:%S'
@@ -38,11 +43,12 @@ class MyUtils:
         return time.strftime("%a, %d %b %Y %H:%M:%S " + timezone,
                              time.strptime(timestamp, fmt))
 
-
-    def hashify(self,key):
+    @staticmethod
+    def hashify(key):
         """Generate a string hash from a given key string"""
         key = hashlib.md5(key)
         return key.hexdigest()
+
 
 class MyCache:
     """Handle caching for objects using picklet"""
@@ -50,7 +56,8 @@ class MyCache:
     def __init__(self):
         pass
 
-    def set(self, key, data):
+    @staticmethod
+    def set(key, data):
         """Save an item of data to the cache - return boolean success"""
         if CONFIG['cache'] is False:
             return False
@@ -62,8 +69,8 @@ class MyCache:
         except IOError:
             return False
 
-
-    def get(self, key):
+    @staticmethod
+    def get(key):
         """Get an item of data from the cache - return data or empty dict"""
         try:
             filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
@@ -73,8 +80,8 @@ class MyCache:
         except IOError:
             return {}
 
-
-    def rm(self, key):
+    @staticmethod
+    def rm(key):
         """Remove an item of data from the cache - return boolean success"""
         try:
             filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
@@ -86,8 +93,8 @@ class MyCache:
         except IOError:
             return False
 
-
-    def wipe(self):
+    @staticmethod
+    def wipe():
         """Wipe the cache - return boolean success"""
         try:
             files = Files.by_extension('.tmp', CONFIG['cache_dir'], cache=False)
@@ -99,13 +106,15 @@ class MyCache:
             pass
         return True
 
+
 class MyMarkdown:
     """My Markdown Utility"""
 
     def __init__(self):
         pass
 
-    def parse(self, text):
+    @staticmethod
+    def parse(text):
         """Return text contents as (str html5, dict meta-information,
         str original markdown)
         """
@@ -120,20 +129,22 @@ class MyMarkdown:
             meta[k] = v
         return html, meta, text
 
-
-    def file(self, filepath):
-        """Read a file name and return contents as str html5, dict meta-information,
-        original markdown
+    @staticmethod
+    def file(filepath):
+        """Read a file name and return contents as str html5,
+        dict meta-information, original markdown
         """
         with open(filepath) as fh:
             return Markdown.parse(fh.read())
 
 
 class MyFiles:
+    """File handling methods"""
     def __init__(self):
         pass
 
-    def by_extension(self, filetype, filepath, cache=None):
+    @staticmethod
+    def by_extension(filetype, filepath, cache=None):
         """Return a dict of all files of a given file extension"""
         if cache is None:
             cache = CONFIG['cache']
@@ -149,12 +160,13 @@ class MyFiles:
             Cache.set(cache_key, matches)
         return matches
 
-class MyBlog:
 
+class MyBlog:
     def __init__(self):
         pass
 
-    def metadata(self, cache=None):
+    @staticmethod
+    def metadata(cache=None):
         """Return a dict of meta-information for all blog posts"""
         if cache is None:
             cache = CONFIG['cache']
@@ -174,8 +186,8 @@ class MyBlog:
                 Cache.set(cache_key, data)
         return data
 
-
-    def generate(self):
+    @staticmethod
+    def generate():
         """Generate static www/blog/*.html files from content/*.md files"""
         data = {}
         documents = Files.by_extension('.md', CONFIG['content_dir'])
@@ -187,9 +199,9 @@ class MyBlog:
             data[filename] = meta
             Blog.html(filename)
         return data
-    
 
-    def html(self, filename):
+    @staticmethod
+    def html(filename):
         """Generate a blog post html page from a supplied markdown filename"""
         documents = Files.by_extension('.md', CONFIG['content_dir'])
         if filename in documents:
@@ -213,16 +225,17 @@ class MyBlog:
 
 
 class MyGenerate:
+    """Output file rendering and website generation"""
     def __init__(self):
         pass
 
-    def page(self,
-             data=None,
-              header='header.tpl',
-              tpl='default',
-              footer='footer.tpl',
-              minify=None,
-              outfile=None):
+    @staticmethod
+    def page(data=None,
+             header='header.tpl',
+             tpl='default',
+             footer='footer.tpl',
+             minify=None,
+             outfile=None):
         """Combine multiple (header, body, footer) templates injecting dict data
         and return generated output
         """
@@ -247,13 +260,13 @@ class MyGenerate:
             pass
         except IOError:
             pass
-    
+
         return html
-    
-    
-    def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml'):
-        """Render a multiple templates using the same data dict for header, body,
-        footer templates
+
+    @staticmethod
+    def feed(data=None, tpl='rss.tpl', outfile='rss.xml'):
+        """Render a multiple templates using the same data dict for header,
+        body, footer templates
         """
         xml = template(tpl,
                        data=data,
@@ -268,11 +281,11 @@ class MyGenerate:
             pass
         except IOError:
             pass
-    
+
         return xml
-    
-    
-    def website(self):
+
+    @staticmethod
+    def website():
         """Generate the static website files"""
         try:
             files = Files.by_extension('.md', CONFIG['docs_dir'], cache=False)
@@ -328,21 +341,6 @@ def docs(filename):
                          outfile='docs/' + filename)
 
 
-@get('/js/<filepath:path>')
-def js(filepath):
-    """Return minified/compressed js"""
-    if CONFIG['minify_js'] is False:
-        return static_file(filepath, root=CONFIG['web_dir'])
-    else:
-        try:
-            path = CONFIG['js_dir'] + filepath
-            with open(path) as fh:
-                minified = jsmin(fh.read(), quote_chars="'\"`")
-                return minified
-        except IOError:
-            return static_file(filepath, root=CONFIG['web_dir'])
-
-
 @get('/rss')
 @get('/rss.xml')
 @get('/blog/rss')
@@ -357,6 +355,21 @@ def rss():
             'head_description': 'Blog',
             'blog_posts_meta': Blog.metadata()}
     return Generate.feed(data=data)
+
+
+@get('/js/<filepath:path>')
+def js(filepath):
+    """Return minified/compressed js"""
+    if CONFIG['minify_js'] is False:
+        return static_file(filepath, root=CONFIG['web_dir'])
+    else:
+        try:
+            path = CONFIG['js_dir'] + filepath
+            with open(path) as fh:
+                minified = jsmin(fh.read(), quote_chars="'\"`")
+                return minified
+        except IOError:
+            return static_file(filepath, root=CONFIG['web_dir'])
 
 
 @get('/<filepath:path>')
