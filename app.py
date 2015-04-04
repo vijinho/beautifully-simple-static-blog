@@ -1,5 +1,8 @@
-# -*- coding: utf-8 -*-
-
+# -*- coding: utf8 -*-
+"""
+Website Application - Runs webserver for markdown files and generates
+static content.
+"""
 import os
 import sys
 import pickle
@@ -14,6 +17,14 @@ from bottle import error, get, static_file, template, default_app, run
 
 import email.Utils
 
+__author__ = "Vijay Mahrra"
+__copyright__ = "Copyright 2015, Vijay Mahrra"
+__credits__ = ["Vijay Mahrra"]
+__license__ = "MIT"
+__version__ = "1.0"
+__maintainer__ = "Vijay Mahrra"
+__email__ = "vijay.mahrra@gmail.com"
+__status__ = "Production"
 
 reload(sys)
 sys.setdefaultencoding('utf8')
