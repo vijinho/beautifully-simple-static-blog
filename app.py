@@ -79,6 +79,8 @@ class ObjectCache:
         self.directory = directory
         if fileformat is None:
             self.fileformat = "{dir}/{key}.tmp"
+        else:
+            self.fileformat = fileformat
 
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
@@ -128,24 +130,35 @@ class ObjectCache:
 
 class MyMarkdown:
     """My Markdown Utility"""
+    output_format = None
+    extensions = None
 
-    def __init__(self):
-        pass
+    def __init__(self, output_format = None, extensions = []):
+        """set the default output format and extensions to use"""
+        if output_format is None:
+            self.output_format = 'html5'
+        else:
+            self.output_format = output_format
 
-    @staticmethod
-    def parse(text):
+        if len(extensions) is 0:
+            self.extensions = ['markdown.extensions.meta']
+        else:
+            self.extensions = extensions
+
+    def parse(self, text):
         """Return text contents as (str html5, dict meta-information,
         str original markdown)
         """
-        md = markdown.Markdown(output_format='html5',
-                               extensions=['markdown.extensions.meta'])
+        md = markdown.Markdown(output_format=self.output_format,
+                               extensions=self.extensions)
         html = md.convert(text)
         meta = {}
-        for k, v in md.Meta.iteritems():
-            v = "".join(v)
-            if k == 'tags' and len(v) > 2:
-                v = v[1:-1]
-            meta[k] = v
+        if len(md.Meta) > 0:
+            for k, v in md.Meta.iteritems():
+                v = "".join(v)
+                if k == 'tags' and len(v) > 2:
+                    v = v[1:-1]
+                meta[k] = v
         return html, meta, text
 
     @staticmethod
@@ -402,7 +415,7 @@ application = default_app()
 if __name__ in '__main__':
     Utils = MyUtils()
     Cache = ObjectCache(CONFIG['cache_dir'])
-    Markdown = MyMarkdown()
+    Markdown = MyMarkdown('html5', ['markdown.extensions.meta'])
     Files = MyFiles()
     Blog = MyBlog()
     Generate = MyGenerate()
