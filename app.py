@@ -369,12 +369,18 @@ def blog(url):
         filename = url[:-5] + '.md'
         return Blog.html(filename)
     else:
+        m = re.match('^[^\.]+\.html', url)
+        if hasattr(m, 'group'):
+            return docs(url)
         return error404()
 
 
 @get('/blog/docs/<filename>')
 def docs(filename):
     """Display the docs folder files"""
+    m = re.match('^[^\.]+\.html', filename)
+    if not hasattr(m, 'group'):
+        return error404()
     html, meta, text = Markdown.file('docs/' + filename[:-5] + '.md')
     data = {'head_title': filename[:-5],
             'head_author': CONFIG['author'],
