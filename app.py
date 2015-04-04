@@ -254,7 +254,7 @@ class MyGenerate:
         self.config = config
 
         if directory is None:
-            self.directory = config['blog_dir']
+            self.directory = config['output_dir']
         else:
             self.directory = directory
 
@@ -263,7 +263,8 @@ class MyGenerate:
         else:
             self.docs_directory = docs_directory
 
-    def page(self, data=None,
+    def page(self,
+             data=None,
              header='header.tpl',
              tpl='default',
              footer='footer.tpl',
@@ -286,7 +287,7 @@ class MyGenerate:
                                   remove_optional_attribute_quotes=True,
                                   keep_pre=True)
         try:
-            if outfile is not None:
+            if outfile is not None and self.config['generate'] is True:
                 with open(self.directory + '/' + outfile, 'w') as fh:
                     fh.write(html)
         except OSError:
@@ -370,7 +371,7 @@ def docs(filename):
             'body_content': html}
     return Generate.page(data=data,
                          tpl='default.tpl',
-                         outfile='docs/' + filename)
+                         outfile=filename)
 
 
 @get('/rss')
@@ -393,7 +394,7 @@ def rss():
 def js(filepath):
     """Return minified/compressed js"""
     if CONFIG['minify_js'] is False:
-        return static_file(filepath, root=CONFIG['web_dir'])
+        return static_file(filepath, root=CONFIG['www_root'])
     else:
         try:
             path = CONFIG['js_dir'] + '/' + filepath
@@ -401,13 +402,13 @@ def js(filepath):
                 minified = jsmin(fh.read(), quote_chars="'\"`")
                 return minified
         except IOError:
-            return static_file(filepath, root=CONFIG['web_dir'])
+            return static_file(filepath, root=CONFIG['www_root'])
 
 
 @get('/<filepath:path>')
 def server_static(filepath):
     """Display static files in the web root folder"""
-    return static_file(filepath, root=CONFIG['web_dir'])
+    return static_file(filepath, root=CONFIG['www_root'])
 
 
 application = default_app()

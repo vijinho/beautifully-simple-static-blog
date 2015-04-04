@@ -1,21 +1,21 @@
 # -*- coding: utf-8 -*-
 
 # Configuration for app.py
-CONFIG = {
-    'debug': False,
-    'generate': True,
-    'minify_js': True,
-    'minify_html': True,
-    'cache': True,
-    'cache_dir': 'tmp/cache',
-    'content_dir': 'content',
-    'docs_dir': 'docs',
-    'web_dir': 'www',
-    'blog_dir': 'www/blog',
-    'js_dir': 'www/js',
-    'ga_code': 'UA-0000000-1',
-    'title': 'Vijay Mahrra',
-    'author': 'Vijay Mahrra',
-    'email': 'vijay.mahrra@gmail.com',
-    'url': 'http://www.urunu.com'
-}
+CONFIG = dict(debug=False,
+              generate=True,
+              minify_html=True,
+              minify_js=True,
+              minify_css=True,
+              cache=True,
+              cache_dir='tmp/cache',
+              content_dir='content',
+              docs_dir='docs',
+              www_root='www',
+              js_dir='www/js',
+              css_dir='www/css',
+              output_dir='www/blog',
+              ga_code='UA-00000000-1',
+              title='Blog',
+              author='Anonymous',
+              email='anonymousa@example.com',
+              url='http://www.example.com')
