@@ -43,15 +43,21 @@ class MyUtils:
 
     @staticmethod
     def ts_to_rfc822(timestamp=None, timezone='GMT'):
-        """Convert datetime from format 1976-12-25 07:30:30 to RFC822 string"""
+        """Convert datetime from (mysql-style) timestamp format
+        1976-12-25 07:30:30 to RFC822 string
+        """
         l = len(timestamp)
-        fmt = '%Y-%m-%d %H:%M:%S'
         if l == 19:
             fmt = '%Y-%m-%d %H:%M:%S'
         elif l == 16:
             fmt = '%Y-%m-%d %H:%M'
         elif l == 10:
             fmt = '%Y-%m-%d'
+        elif l == 8:
+            fmt = '%y-%m-%d'
+        else:
+            return ''
+
         return time.strftime("%a, %d %b %Y %H:%M:%S " + timezone,
                              time.strptime(timestamp, fmt))
 
