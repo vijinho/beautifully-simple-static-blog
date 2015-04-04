@@ -238,11 +238,11 @@ class MyBlog:
 
 class MyGenerate:
     """Output file rendering and website generation"""
-    def __init__(self):
-        pass
+    def __init__(self, directory, docs_directory):
+        self.directory = directory
+        self.docs_directory = docs_directory
 
-    @staticmethod
-    def page(data=None,
+    def page(self, data=None,
              header='header.tpl',
              tpl='default',
              footer='footer.tpl',
@@ -266,7 +266,7 @@ class MyGenerate:
                                   keep_pre=True)
         try:
             if outfile is not None:
-                with open(CONFIG['blog_dir'] + outfile, 'w') as fh:
+                with open(self.directory + '/' + outfile, 'w') as fh:
                     fh.write(html)
         except OSError:
             pass
@@ -275,8 +275,7 @@ class MyGenerate:
 
         return html
 
-    @staticmethod
-    def feed(data=None, tpl='rss.tpl', outfile='rss.xml'):
+    def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml'):
         """Render a multiple templates using the same data dict for header,
         body, footer templates
         """
@@ -287,7 +286,7 @@ class MyGenerate:
                        author=CONFIG['email'] + '(' + CONFIG['author'] + ')')
         try:
             if outfile is not None:
-                with open(CONFIG['blog_dir'] + outfile, 'w') as fh:
+                with open(self.directory + '/' + outfile, 'w') as fh:
                     fh.write(xml)
         except OSError:
             pass
@@ -296,11 +295,10 @@ class MyGenerate:
 
         return xml
 
-    @staticmethod
-    def website():
+    def website(self):
         """Generate the static website files"""
         try:
-            files = Files.by_extension('md', CONFIG['docs_dir'], cache=False)
+            files = Files.by_extension('md', self.docs_directory, cache=False)
             for filename, filepath in files.iteritems():
                 docs(filename[:-3] + '.html')
         except OSError:
@@ -376,7 +374,7 @@ def js(filepath):
         return static_file(filepath, root=CONFIG['web_dir'])
     else:
         try:
-            path = CONFIG['js_dir'] + filepath
+            path = CONFIG['js_dir'] + '/' + filepath
             with open(path) as fh:
                 minified = jsmin(fh.read(), quote_chars="'\"`")
                 return minified
@@ -398,7 +396,7 @@ if __name__ in '__main__':
     Markdown = MyMarkdown('html5', ['markdown.extensions.meta'])
     Files = MyFiles()
     Blog = MyBlog(CONFIG['content_dir'])
-    Generate = MyGenerate()
+    Generate = MyGenerate(CONFIG['blog_dir'], CONFIG['docs_dir'])
 
     print "Clearing cache dir " + CONFIG['blog_dir'] + "..."
     Cache.wipe()

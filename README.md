@@ -84,16 +84,16 @@ CONFIG = {
     'minify_html': True,              # minify all output html including static files
     'cache': True,                    # cache files and output of app
     'cache_dir': 'tmp/cache',         # default location of cached files
-    'content_dir': 'content/',        # default location of .md blog content files
-    'docs_dir': 'docs/',              # default location for .md docs generated in www/blog/docs displayed under `meta` on the homepage
+    'content_dir': 'content',         # default location of .md blog content files
+    'docs_dir': 'docs',               # default location for .md docs generated in www/blog/docs displayed under `meta` on the homepage
     'web_dir': 'www/',                # default location of website root directory
-    'blog_dir': 'www/blog/',          # default location of webroot for blog
-    'js_dir': 'www/js/',              # default location of javascript files
+    'blog_dir': 'www/blog',           # default location of webroot for blog
+    'js_dir': 'www/js',               # default location of javascript files
     'ga_code': 'UA-36493464-1',       # google analytics code UA-XXXX-Y
     'title': 'urunu',                 # name of the blog
     'author': 'Vijay Mahrra',         # author of the blog
     'email': 'vijay.mahrra@gmail.com',# email of author
-    'url': 'http://www.urunu.com/'    # canonical website url
+    'url': 'http://www.urunu.com'     # canonical website url
 }
 ```
 
