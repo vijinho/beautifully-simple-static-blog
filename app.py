@@ -13,6 +13,7 @@ from fnmatch import fnmatch
 import re
 import htmlmin
 from jsmin import jsmin
+import csscompressor
 import markdown
 from bottle import error, get, static_file, template, default_app, run
 
@@ -439,8 +440,7 @@ def css(filepath):
             try:
                 path = CONFIG['css_dir'] + '/' + filepath
                 with open(path) as fh:
-                    minified = fh.read()
-                    return minified
+                    return csscompressor.compress(fh.read())
             except IOError:
                 return static_file(filepath, root=CONFIG['www_root'])
     else:

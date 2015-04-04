@@ -6,6 +6,7 @@
 waitress
 htmlmin
 jsmin
+csscompressor
 bottle
 markdown
 click

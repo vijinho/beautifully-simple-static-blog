@@ -23,9 +23,9 @@
 ### Python
 #### Web Serving
 * [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html)
-* [htmlmin](http://docs.python.org/library/htmlmin) HTML Minification
-* [jsmin](https://bitbucket.org/dcs/jsmin/) Javascript Minification
-
+* [htmlmin](http://docs.python.org/library/htmlmin) - HTML Minification
+* [jsmin](https://bitbucket.org/dcs/jsmin/) - Javascript Minification
+* [csscompressor](https://pypi.python.org/pypi/csscompressor) - CSS Minification
 #### Libs
 * [Python Markdown](http://pythonhosted.org//Markdown/siteindex.html) - Markdown Parser
 * [Pickle](https://docs.python.org/2/library/pickle.html) - Object Serialization
