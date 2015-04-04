@@ -21,6 +21,10 @@ from config import CONFIG
 
 class MyUtils:
     """General utility helper functions used by the app"""
+
+    def __init__(self):
+        pass
+
     def ts_to_rfc822(self, timestamp=None, timezone='GMT'):
         """Convert datetime from format 1976-12-25 07:30:30 to RFC822 string"""
         l = len(timestamp)
@@ -42,6 +46,10 @@ class MyUtils:
 
 class MyCache:
     """Handle caching for objects using picklet"""
+
+    def __init__(self):
+        pass
+
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
         if CONFIG['cache'] is False:
@@ -94,6 +102,9 @@ class MyCache:
 class MyMarkdown:
     """My Markdown Utility"""
 
+    def __init__(self):
+        pass
+
     def parse(self, text):
         """Return text contents as (str html5, dict meta-information,
         str original markdown)
@@ -119,6 +130,9 @@ class MyMarkdown:
 
 
 class MyFiles:
+    def __init__(self):
+        pass
+
     def by_extension(self, filetype, filepath, cache=None):
         """Return a dict of all files of a given file extension"""
         if cache is None:
@@ -136,6 +150,9 @@ class MyFiles:
         return matches
 
 class MyBlog:
+
+    def __init__(self):
+        pass
 
     def metadata(self, cache=None):
         """Return a dict of meta-information for all blog posts"""
@@ -196,6 +213,9 @@ class MyBlog:
 
 
 class MyGenerate:
+    def __init__(self):
+        pass
+
     def page(self,
              data=None,
               header='header.tpl',
