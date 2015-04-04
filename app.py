@@ -162,12 +162,11 @@ class MyFiles:
         pass
 
     @staticmethod
-    def by_extension(ext, path, cache=None):
+    def by_extension(ext, path, cache=False):
         """Return a dict of all files of a given file extension"""
-        if cache is None:
-            cache = CONFIG['cache']
         cache_key = ext + path
-        matches = Cache.get(cache_key)
+        if cache is True:
+            matches = Cache.get(cache_key)
         if cache is False or matches is False or len(matches) is 0:
             matches = {}
             ext = '*.' + ext
@@ -180,18 +179,15 @@ class MyFiles:
 
 
 class MyBlog:
-    def __init__(self):
-        pass
+    def __init__(self, directory = None):
+        self.directory = directory
 
-    @staticmethod
-    def metadata(cache=None):
+    def metadata(self, cache=False):
         """Return a dict of meta-information for all blog posts"""
-        if cache is None:
-            cache = CONFIG['cache']
         cache_key = 'blog_posts_meta'
         data = Cache.get(cache_key)
         if cache is False or data is False or len(data) is 0:
-            documents = Files.by_extension('md', CONFIG['content_dir'])
+            documents = Files.by_extension('md', self.directory, cache)
             for filename, filepath in documents.items():
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
@@ -204,11 +200,10 @@ class MyBlog:
                 Cache.set(cache_key, data)
         return data
 
-    @staticmethod
-    def generate():
+    def generate(self):
         """Generate static www/blog/*.html files from content/*.md files"""
         data = {}
-        documents = Files.by_extension('md', CONFIG['content_dir'])
+        documents = Files.by_extension('md', self.directory)
         for filename, filepath in documents.items():
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
@@ -218,10 +213,9 @@ class MyBlog:
             Blog.html(filename)
         return data
 
-    @staticmethod
-    def html(filename):
+    def html(self, filename):
         """Generate a blog post html page from a supplied markdown filename"""
-        documents = Files.by_extension('md', CONFIG['content_dir'])
+        documents = Files.by_extension('md', self.directory)
         if filename in documents:
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
@@ -333,7 +327,7 @@ def index():
             'head_author': CONFIG['author'],
             'head_keywords': 'Blog',
             'head_description': 'Blog',
-            'blog_posts_meta': Blog.metadata()}
+            'blog_posts_meta': Blog.metadata(cache=True)}
     return Generate.page(data=data, tpl='home.tpl', outfile='index.html')
 
 
@@ -353,7 +347,7 @@ def docs(filename):
             'head_keywords': filename[:-5] + ' file',
             'head_description': filename[:-5] + ' for website ' + CONFIG[
                 'title'],
-            'blog_posts_meta': Blog.metadata(),
+            'blog_posts_meta': Blog.metadata(cache=True),
             'body_content': html}
     return Generate.page(data=data, tpl='default.tpl',
                          outfile='docs/' + filename)
@@ -371,7 +365,7 @@ def rss():
             'head_author': CONFIG['author'],
             'head_keywords': 'Blog',
             'head_description': 'Blog',
-            'blog_posts_meta': Blog.metadata()}
+            'blog_posts_meta': Blog.metadata(cache=True)}
     return Generate.feed(data=data)
 
 
@@ -403,7 +397,7 @@ if __name__ in '__main__':
     Cache = ObjectCache(CONFIG['cache_dir'])
     Markdown = MyMarkdown('html5', ['markdown.extensions.meta'])
     Files = MyFiles()
-    Blog = MyBlog()
+    Blog = MyBlog(CONFIG['content_dir'])
     Generate = MyGenerate()
 
     print "Clearing cache dir " + CONFIG['blog_dir'] + "..."
