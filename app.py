@@ -412,6 +412,7 @@ def rss():
 
 
 @get('/js/<filepath:path>')
+@get('/blog/js/<filepath:path>')
 def js(filepath):
     """Return minified/compressed js"""
     m = re.match('^[^\.]+\.js', filepath)
@@ -431,6 +432,7 @@ def js(filepath):
         return error404()
 
 @get('/css/<filepath:path>')
+@get('/blog/css/<filepath:path>')
 def css(filepath):
     """Return minified/compressed css"""
     m = re.match('^[^\.]+\.css', filepath)
