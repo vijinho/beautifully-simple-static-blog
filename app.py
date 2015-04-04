@@ -113,8 +113,8 @@ def get_files_by_ext(filetype, filepath, cache = CONFIG['cache']):
         cache_set(cache_key, matches)
     return matches
 
-def get_blog_posts_meta(cache = CONFIG['cache'], generate_static_html = False):
-    """Return a dict of meta-information for all blog posts and generate static html files in www"""
+def get_blog_posts_meta(cache = CONFIG['cache']):
+    """Return a dict of meta-information for all blog posts"""
     cache_key = 'blog_posts_meta'
     data = cache_get(cache_key)
     if cache is False or data is False or len(data) is 0:
@@ -122,16 +122,17 @@ def get_blog_posts_meta(cache = CONFIG['cache'], generate_static_html = False):
         for filename, filepath in documents.items():
             filepath = documents[filename]
             html, meta, document = parse_markdown_file(filepath)
+            # add some extra information we might find useful
+            meta['id'] = make_hash(filepath)
+            meta['rfc822date'] = ts_to_rfc822(meta['date'])
             meta['filename'] = filename
             meta['filepath'] = filepath
-            meta['rfc822date'] = ts_to_rfc822(meta['date'])
-            meta['id'] = make_hash(filepath)
             data[filename] = meta
             cache_set(cache_key, data)
     return data
 
 def generate_static_blog_posts():
-    """Generate static html files and website"""
+    """Generate static www/blog/*.html files from content/*.md files"""
     data = {}
     documents = get_files_by_ext('.md', CONFIG['content_dir'])
     for filename, filepath in documents.items():
@@ -143,8 +144,13 @@ def generate_static_blog_posts():
         blog_markdown_to_html(filename)
     return data
 
-def generate_page(data = {}, tpl = 'default', header = 'header.tpl', footer = 'footer.tpl', minify = CONFIG['minify_html'], outfile = None):
-    """Render a multiple templates using the same data dict for header, body, footer templates """
+def generate_page(data = {},
+                  header = 'header.tpl',
+                  tpl = 'default',
+                  footer = 'footer.tpl',
+                  minify = CONFIG['minify_html'],
+                  outfile = None):
+    """Combine multiple (header, body, footer) templates injecting dict data and return generated output"""
     html = template(header, data = data, cfg = CONFIG) + \
            template(tpl, data = data, cfg = CONFIG) + \
            template(footer, data = data, cfg = CONFIG)
