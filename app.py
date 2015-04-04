@@ -65,16 +65,16 @@ class ObjectCache:
     """Handle caching for objects using picklet"""
 
     def __init__(self,
-                 config=None,
+                 cfg=None,
                  directory=None,
                  fileformat="{dir}/{key}.tmp"):
         """"directory is where cache files are stored
         and naming format for the cache files
         """
-        self.config = config
+        self.config = cfg
         self.fileformat = fileformat
         if directory is None:
-            self.directory = config['cache_dir']
+            self.directory = cfg['cache_dir']
         else:
             self.directory = directory
 
@@ -127,10 +127,9 @@ class ObjectCache:
 class MyMarkdown:
     """My Markdown Utility"""
 
-    def __init__(self,
-                 output_format='html5',
-                 extensions=['markdown.extensions.meta']):
+    def __init__(self, output_format='html5', extensions=None):
         """set the default output format and extensions to use"""
+        if not extensions: extensions = ['markdown.extensions.meta']
         self.output_format = output_format
         self.extensions = extensions
 
@@ -168,6 +167,7 @@ class MyFiles:
     @staticmethod
     def by_extension(ext, path, cache=False):
         """Return a dict of all files of a given file extension"""
+        global matches
         cache_key = ext + path
         if cache is True:
             matches = Cache.get(cache_key)
@@ -183,10 +183,10 @@ class MyFiles:
 
 
 class MyBlog:
-    def __init__(self, config=None, directory=None):
-        self.config = config
+    def __init__(self, cfg=None, directory=None):
+        self.config = cfg
         if directory is None:
-            self.directory = config['content_dir']
+            self.directory = cfg['content_dir']
         else:
             self.directory = directory
 
@@ -248,16 +248,16 @@ class MyBlog:
 class MyGenerate:
     """Output file rendering and website generation"""
 
-    def __init__(self, config=None, directory=None, docs_directory=None):
-        self.config = config
+    def __init__(self, cfg=None, directory=None, docs_directory=None):
+        self.config = cfg
 
         if directory is None:
-            self.directory = config['output_dir']
+            self.directory = cfg['output_dir']
         else:
             self.directory = directory
 
         if docs_directory is None:
-            self.docs_directory = config['docs_dir']
+            self.docs_directory = cfg['docs_dir']
         else:
             self.docs_directory = docs_directory
 
@@ -425,12 +425,16 @@ if __name__ in '__main__':
 
     Utils = MyUtils()
     Files = MyFiles()
-    Cache = ObjectCache(config=CONFIG)
+
+    Cache = ObjectCache(cfg=CONFIG)
     Cache.wipe()
+
     Markdown = MyMarkdown(output_format='html5',
                           extensions=['markdown.extensions.meta'])
-    Blog = MyBlog(config=CONFIG)
-    Generate = MyGenerate(config=CONFIG)
+
+    Blog = MyBlog(cfg=CONFIG)
+
+    Generate = MyGenerate(cfg=CONFIG)
     if CONFIG['generate'] is True:
         Generate.website()
 
