@@ -221,24 +221,29 @@ class MyBlog:
             Blog.html(filename)
         return data
 
-    def html(self, filename):
-        """Generate a blog post html page from a supplied markdown filename"""
+    def html(self, filename, config=None):
+        """Generate a blog post html page from a supplied markdown filename
+        default config values used if no config specified
+        """
+        if config is None:
+            config = self.config
+
         documents = Files.by_extension('md', self.directory)
         if filename in documents:
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
             data = {
                 'body_title': "".join(meta['title']),
-                'head_title': self.config['author'] + ": " + "".join(
+                'head_title': config['author'] + ": " + "".join(
                     meta['title']),
-                'head_author': self.config['author'],
+                'head_author': config['author'],
                 'head_keywords': meta['tags'],
                 'head_description': "".join(meta['title']),
                 'body_content': html,
                 'meta': meta,
                 'date': meta['date']
             }
-            if self.config['generate'] is False:
+            if config['generate'] is False:
                 return Generate.page(tpl='blog_post', data=data)
             else:
                 return Generate.page(tpl='blog_post', data=data,
@@ -267,15 +272,19 @@ class MyGenerate:
              tpl='default',
              footer='footer.tpl',
              minify=None,
-             outfile=None):
+             outfile=None,
+             config=None):
         """Combine multiple (header, body, footer) templates injecting dict data
         and return generated output
         """
+        if config is None:
+            config = self.config
+
         if minify is None:
-            minify = self.config['minify_html']
-        html = template(header, data=data, cfg=self.config) + \
-               template(tpl, data=data, cfg=self.config) + \
-               template(footer, data=data, cfg=self.config)
+            minify = config['minify_html']
+        html = template(header, data=data, cfg=config) + \
+               template(tpl, data=data, cfg=config) + \
+               template(footer, data=data, cfg=config)
         if minify is True:
             html = htmlmin.minify(html,
                                   remove_comments=True,
@@ -285,7 +294,7 @@ class MyGenerate:
                                   remove_optional_attribute_quotes=True,
                                   keep_pre=True)
         try:
-            if outfile is not None and self.config['generate'] is True:
+            if outfile is not None and config['generate'] is True:
                 with open(self.directory + '/' + outfile, 'w') as fh:
                     fh.write(html)
         except OSError:
@@ -295,15 +304,17 @@ class MyGenerate:
 
         return html
 
-    def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml'):
+    def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml', config=None):
         """Render a multiple templates using the same data dict for header,
         body, footer templates
         """
+        if config is None:
+            config = self.config
         xml = template(tpl,
                        data=data,
-                       cfg=self.config,
+                       cfg=config,
                        date=email.Utils.formatdate(),
-                       author=self.config['email'] + '(' + self.config[
+                       author=config['email'] + '(' + config[
                            'author'] + ')')
         try:
             if outfile is not None:
