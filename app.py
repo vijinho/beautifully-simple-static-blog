@@ -141,11 +141,11 @@ class MyMarkdown:
         return html, meta, text
 
     @staticmethod
-    def file(filepath):
+    def file(path):
         """Read a file name and return contents as str html5,
         dict meta-information, original markdown
         """
-        with open(filepath) as fh:
+        with open(path) as fh:
             return Markdown.parse(fh.read())
 
 
@@ -155,20 +155,19 @@ class MyFiles:
         pass
 
     @staticmethod
-    def by_extension(filetype, filepath, cache=None):
+    def by_extension(ext, path, cache=None):
         """Return a dict of all files of a given file extension"""
         if cache is None:
             cache = CONFIG['cache']
-        cache_key = filetype + filepath
+        cache_key = ext + path
         matches = Cache.get(cache_key)
         if cache is False or matches is False or len(matches) is 0:
             matches = {}
-            ext = '*.' + filetype
-            for root, dirs, files in os.walk(filepath):
+            ext = '*.' + ext
+            for root, dirs, files in os.walk(path):
                 for f in files:
                     if fnmatch(f, ext):
-                        path = os.path.join(root, f)
-                        matches[f] = str(path)
+                        matches[f] = str(os.path.join(root, f))
             Cache.set(cache_key, matches)
         return matches
 
