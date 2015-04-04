@@ -452,12 +452,11 @@ def server_static(filepath):
     return static_file(filepath, root=CONFIG['www_root'])
 
 
+reload(sys)
+sys.setdefaultencoding('utf8')
 application = default_app()
 
 if __name__ in '__main__':
-
-    reload(sys)
-    sys.setdefaultencoding('utf8')
 
     if not os.path.exists('config.py'):
         shutil.copyfile('config.py.example', 'config.py')
