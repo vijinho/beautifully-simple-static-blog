@@ -19,25 +19,26 @@ if not os.path.exists('config.py'):
     shutil.copyfile('config.py.example', 'config.py')
 from config import CONFIG
 
-
-def ts_to_rfc822(timestamp=None, timezone='GMT'):
-    """Convert datetime from format 1976-12-25 07:30:30 to RFC822 string"""
-    l = len(timestamp)
-    fmt = '%Y-%m-%d %H:%M:%S'
-    if l == 19:
+class MyUtils:
+    """General utility helper functions used by the app"""
+    def ts_to_rfc822(self, timestamp=None, timezone='GMT'):
+        """Convert datetime from format 1976-12-25 07:30:30 to RFC822 string"""
+        l = len(timestamp)
         fmt = '%Y-%m-%d %H:%M:%S'
-    elif l == 16:
-        fmt = '%Y-%m-%d %H:%M'
-    elif l == 10:
-        fmt = '%Y-%m-%d'
-    return time.strftime("%a, %d %b %Y %H:%M:%S " + timezone,
-                         time.strptime(timestamp, fmt))
+        if l == 19:
+            fmt = '%Y-%m-%d %H:%M:%S'
+        elif l == 16:
+            fmt = '%Y-%m-%d %H:%M'
+        elif l == 10:
+            fmt = '%Y-%m-%d'
+        return time.strftime("%a, %d %b %Y %H:%M:%S " + timezone,
+                             time.strptime(timestamp, fmt))
 
 
-def hashify(key):
-    """Generate a string hash from a given key string"""
-    key = hashlib.md5(key)
-    return key.hexdigest()
+    def hashify(self,key):
+        """Generate a string hash from a given key string"""
+        key = hashlib.md5(key)
+        return key.hexdigest()
 
 class MyCache:
     """Handle caching for objects using picklet"""
@@ -47,7 +48,7 @@ class MyCache:
             return False
         try:
             filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                               key=hashify(key))
+                                               key=Utils.hashify(key))
             pickle.dump(data, open(filename, "wb"))
             return True
         except IOError:
@@ -58,7 +59,7 @@ class MyCache:
         """Get an item of data from the cache - return data or empty dict"""
         try:
             filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                               key=hashify(key))
+                                               key=Utils.hashify(key))
             data = pickle.load(open(filename, "rb"))
             return data
         except IOError:
@@ -69,7 +70,7 @@ class MyCache:
         """Remove an item of data from the cache - return boolean success"""
         try:
             filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                               key=hashify(key))
+                                               key=Utils.hashify(key))
             os.remove(filename)
             return True
         except OSError:
@@ -148,8 +149,8 @@ class MyBlog:
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
                 # add some extra information we might find useful
-                meta['id'] = hashify(filepath)
-                meta['rfc822date'] = ts_to_rfc822(meta['date'])
+                meta['id'] = Utils.hashify(filepath)
+                meta['rfc822date'] = Utils.ts_to_rfc822(meta['date'])
                 meta['filename'] = filename
                 meta['filepath'] = filepath
                 data[filename] = meta
@@ -347,10 +348,11 @@ def server_static(filepath):
 application = default_app()
 
 if __name__ in '__main__':
+    Utils = MyUtils()
+    Cache = MyCache()
     Markdown = MyMarkdown()
     Files = MyFiles()
     Blog = MyBlog()
-    Cache = MyCache()
     Generate = MyGenerate()
 
     print "Clearing cache dir " + CONFIG['blog_dir'] + "..."
