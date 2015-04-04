@@ -16,6 +16,7 @@ import markdown
 from bottle import error, get, static_file, template, default_app, run
 
 import email.Utils
+from fnmatch import fnmatch
 
 __author__ = "Vijay Mahrra"
 __copyright__ = "Copyright 2015, Vijay Mahrra"
@@ -165,7 +166,7 @@ class MyFiles:
             matches = {}
             for root, dirs, files in os.walk(filepath):
                 for f in files:
-                    if f.endswith(filetype):
+                    if fnmatch(f, '*.' + filetype):
                         path = os.path.join(root, f)
                         matches[f] = str(path)
             Cache.set(cache_key, matches)
