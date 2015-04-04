@@ -69,18 +69,13 @@ class MyUtils:
 
 class ObjectCache:
     """Handle caching for objects using picklet"""
-    directory = None
-    fileformat = None
 
-    def __init__(self, directory = None, fileformat = None):
+    def __init__(self, directory = None, fileformat = "{dir}/{key}.tmp"):
         """"directory is where cache files are stored
         and naming format for the cache files
         """
         self.directory = directory
-        if fileformat is None:
-            self.fileformat = "{dir}/{key}.tmp"
-        else:
-            self.fileformat = fileformat
+        self.fileformat = fileformat
 
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
@@ -130,20 +125,11 @@ class ObjectCache:
 
 class MyMarkdown:
     """My Markdown Utility"""
-    output_format = None
-    extensions = None
 
-    def __init__(self, output_format = None, extensions = []):
+    def __init__(self, output_format = 'html5', extensions = ['markdown.extensions.meta']):
         """set the default output format and extensions to use"""
-        if output_format is None:
-            self.output_format = 'html5'
-        else:
-            self.output_format = output_format
-
-        if len(extensions) is 0:
-            self.extensions = ['markdown.extensions.meta']
-        else:
-            self.extensions = extensions
+        self.output_format = output_format
+        self.extensions = extensions
 
     def parse(self, text):
         """Return text contents as (str html5, dict meta-information,
