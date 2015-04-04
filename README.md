@@ -83,7 +83,7 @@ CONFIG = {
     'minify_js': True,                # minify javascript served by webserver (not static files)
     'minify_html': True,              # minify all output html including static files
     'cache': True,                    # cache files and output of app
-    'cache_dir': 'tmp/cache/',        # default location of cached files
+    'cache_dir': 'tmp/cache',         # default location of cached files
     'content_dir': 'content/',        # default location of .md blog content files
     'docs_dir': 'docs/',              # default location for .md docs generated in www/blog/docs displayed under `meta` on the homepage
     'web_dir': 'www/',                # default location of website root directory

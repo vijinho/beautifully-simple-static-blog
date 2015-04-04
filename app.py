@@ -67,41 +67,45 @@ class MyUtils:
         return hashlib.sha1(key).hexdigest()
 
 
-class MyCache:
+class ObjectCache:
     """Handle caching for objects using picklet"""
+    directory = None
+    fileformat = None
 
-    def __init__(self):
-        pass
+    def __init__(self, directory = None, fileformat = None):
+        """"directory is where cache files are stored
+        and naming format for the cache files
+        """
+        self.directory = directory
+        if fileformat is None:
+            self.fileformat = "{dir}/{key}.tmp"
 
-    @staticmethod
-    def set(key, data):
+    def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
         if CONFIG['cache'] is False:
             return False
         try:
-            filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
+            filename = self.fileformat.format(dir=self.directory,
                                                key=Utils.hashed(key))
             pickle.dump(data, open(filename, "wb"))
             return True
         except IOError:
             return False
 
-    @staticmethod
-    def get(key):
+    def get(self, key):
         """Get an item of data from the cache - return data or empty dict"""
         try:
-            filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
+            filename = self.fileformat.format(dir=self.directory,
                                                key=Utils.hashed(key))
             data = pickle.load(open(filename, "rb"))
             return data
         except IOError:
             return {}
 
-    @staticmethod
-    def rm(key):
+    def rm(self, key):
         """Remove an item of data from the cache - return boolean success"""
         try:
-            filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
+            filename = self.fileformat.format(dir=self.directory,
                                                key=Utils.hashed(key))
             os.remove(filename)
             return True
@@ -110,11 +114,10 @@ class MyCache:
         except IOError:
             return False
 
-    @staticmethod
-    def wipe():
+    def wipe(self):
         """Wipe the cache - return removed files list"""
         try:
-            files = Files.by_extension('tmp', CONFIG['cache_dir'], cache=False)
+            files = Files.by_extension('tmp', self.directory, cache=False)
             removed = [os.remove(path) for filename, path in files.iteritems()]
         except OSError:
             return []
@@ -398,7 +401,7 @@ application = default_app()
 
 if __name__ in '__main__':
     Utils = MyUtils()
-    Cache = MyCache()
+    Cache = ObjectCache(CONFIG['cache_dir'])
     Markdown = MyMarkdown()
     Files = MyFiles()
     Blog = MyBlog()

@@ -7,7 +7,7 @@ CONFIG = {
     'minify_js': True,
     'minify_html': True,
     'cache': True,
-    'cache_dir': 'tmp/cache/',
+    'cache_dir': 'tmp/cache',
     'content_dir': 'content/',
     'docs_dir': 'docs/',
     'web_dir': 'www',
