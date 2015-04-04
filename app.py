@@ -109,7 +109,7 @@ class MyCache:
     def wipe():
         """Wipe the cache - return boolean success"""
         try:
-            files = Files.by_extension('.tmp', CONFIG['cache_dir'], cache=False)
+            files = Files.by_extension('tmp', CONFIG['cache_dir'], cache=False)
             for filename, filepath in files.iteritems():
                 os.remove(filepath)
         except OSError:
@@ -164,9 +164,10 @@ class MyFiles:
         matches = Cache.get(cache_key)
         if cache is False or matches is False or len(matches) is 0:
             matches = {}
+            ext = '*.' + filetype
             for root, dirs, files in os.walk(filepath):
                 for f in files:
-                    if fnmatch(f, '*.' + filetype):
+                    if fnmatch(f, ext):
                         path = os.path.join(root, f)
                         matches[f] = str(path)
             Cache.set(cache_key, matches)
@@ -185,7 +186,7 @@ class MyBlog:
         cache_key = 'blog_posts_meta'
         data = Cache.get(cache_key)
         if cache is False or data is False or len(data) is 0:
-            documents = Files.by_extension('.md', CONFIG['content_dir'])
+            documents = Files.by_extension('md', CONFIG['content_dir'])
             for filename, filepath in documents.items():
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
@@ -202,7 +203,7 @@ class MyBlog:
     def generate():
         """Generate static www/blog/*.html files from content/*.md files"""
         data = {}
-        documents = Files.by_extension('.md', CONFIG['content_dir'])
+        documents = Files.by_extension('md', CONFIG['content_dir'])
         for filename, filepath in documents.items():
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
@@ -215,7 +216,7 @@ class MyBlog:
     @staticmethod
     def html(filename):
         """Generate a blog post html page from a supplied markdown filename"""
-        documents = Files.by_extension('.md', CONFIG['content_dir'])
+        documents = Files.by_extension('md', CONFIG['content_dir'])
         if filename in documents:
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
@@ -300,7 +301,7 @@ class MyGenerate:
     def website():
         """Generate the static website files"""
         try:
-            files = Files.by_extension('.md', CONFIG['docs_dir'], cache=False)
+            files = Files.by_extension('md', CONFIG['docs_dir'], cache=False)
             for filename, filepath in files.iteritems():
                 docs(filename[:-3] + '.html')
         except OSError:
