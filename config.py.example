@@ -3,7 +3,7 @@
 # Configuration for app.py
 CONFIG = {
     'debug': False,
-    'generate_static_files': True,
+    'generate': True,
     'minify_js': True,
     'minify_html': True,
     'cache': True,

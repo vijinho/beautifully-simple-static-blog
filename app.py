@@ -6,18 +6,15 @@ import pickle
 import hashlib
 import time
 import shutil
-
 import htmlmin
 from jsmin import jsmin
 import markdown
 from bottle import error, get, static_file, template, default_app, run
-
 import email.Utils
 
 reload(sys)
 sys.setdefaultencoding('utf8')
 
-# setup initial config file from example
 if not os.path.exists('config.py'):
     shutil.copyfile('config.py.example', 'config.py')
 from config import CONFIG
@@ -42,7 +39,7 @@ def hashify(key):
     key = hashlib.md5(key)
     return key.hexdigest()
 
-class ObjectStore:
+class MyCache:
     """Handle caching for objects using picklet"""
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
@@ -84,7 +81,7 @@ class ObjectStore:
     def wipe(self):
         """Wipe the cache - return boolean success"""
         try:
-            files = files_by_extension('.tmp', CONFIG['cache_dir'], cache=False)
+            files = Files.by_extension('.tmp', CONFIG['cache_dir'], cache=False)
             for filename, filepath in files.iteritems():
                 os.remove(filepath)
         except OSError:
@@ -117,114 +114,156 @@ class MyMarkdown:
         original markdown
         """
         with open(filepath) as fh:
-            return Md.parse(fh.read())
+            return Markdown.parse(fh.read())
 
 
-def files_by_extension(filetype, filepath, cache=None):
-    """Return a dict of all files of a given file extension"""
-    if cache is None:
-        cache = CONFIG['cache']
-    cache_key = filetype + filepath
-    matches = Cache.get(cache_key)
-    if cache is False or matches is False or len(matches) is 0:
-        matches = {}
-        for root, dirs, files in os.walk(filepath):
-            for f in files:
-                if f.endswith(filetype):
-                    path = os.path.join(root, f)
-                    matches[f] = str(path)
-        Cache.set(cache_key, matches)
-    return matches
+class MyFiles:
+    def by_extension(self, filetype, filepath, cache=None):
+        """Return a dict of all files of a given file extension"""
+        if cache is None:
+            cache = CONFIG['cache']
+        cache_key = filetype + filepath
+        matches = Cache.get(cache_key)
+        if cache is False or matches is False or len(matches) is 0:
+            matches = {}
+            for root, dirs, files in os.walk(filepath):
+                for f in files:
+                    if f.endswith(filetype):
+                        path = os.path.join(root, f)
+                        matches[f] = str(path)
+            Cache.set(cache_key, matches)
+        return matches
+
+class MyBlog:
+
+    def metadata(self, cache=None):
+        """Return a dict of meta-information for all blog posts"""
+        if cache is None:
+            cache = CONFIG['cache']
+        cache_key = 'blog_posts_meta'
+        data = Cache.get(cache_key)
+        if cache is False or data is False or len(data) is 0:
+            documents = Files.by_extension('.md', CONFIG['content_dir'])
+            for filename, filepath in documents.items():
+                filepath = documents[filename]
+                html, meta, document = Markdown.file(filepath)
+                # add some extra information we might find useful
+                meta['id'] = hashify(filepath)
+                meta['rfc822date'] = ts_to_rfc822(meta['date'])
+                meta['filename'] = filename
+                meta['filepath'] = filepath
+                data[filename] = meta
+                Cache.set(cache_key, data)
+        return data
 
 
-def get_blog_posts_meta(cache=None):
-    """Return a dict of meta-information for all blog posts"""
-    if cache is None:
-        cache = CONFIG['cache']
-    cache_key = 'blog_posts_meta'
-    data = Cache.get(cache_key)
-    if cache is False or data is False or len(data) is 0:
-        documents = files_by_extension('.md', CONFIG['content_dir'])
+    def generate(self):
+        """Generate static www/blog/*.html files from content/*.md files"""
+        data = {}
+        documents = Files.by_extension('.md', CONFIG['content_dir'])
         for filename, filepath in documents.items():
             filepath = documents[filename]
-            html, meta, document = Md.file(filepath)
-            # add some extra information we might find useful
-            meta['id'] = hashify(filepath)
-            meta['rfc822date'] = ts_to_rfc822(meta['date'])
+            html, meta, document = Markdown.file(filepath)
             meta['filename'] = filename
             meta['filepath'] = filepath
             data[filename] = meta
-            Cache.set(cache_key, data)
-    return data
+            Blog.html(filename)
+        return data
+    
+
+    def html(self, filename):
+        """Generate a blog post html page from a supplied markdown filename"""
+        documents = Files.by_extension('.md', CONFIG['content_dir'])
+        if filename in documents:
+            filepath = documents[filename]
+            html, meta, document = Markdown.file(filepath)
+            data = {
+                'body_title': "".join(meta['title']),
+                'head_title': CONFIG['author'] + ": " + "".join(meta['title']),
+                'head_author': CONFIG['author'],
+                'head_keywords': meta['tags'],
+                'head_description': "".join(meta['title']),
+                'body_content': html,
+                'meta': meta,
+                'date': meta['date']
+            }
+            if CONFIG['generate'] is False:
+                return Generate.page(tpl='blog_post', data=data)
+            else:
+                return Generate.page(tpl='blog_post', data=data,
+                                     outfile=filename[0:-3] + '.html')
 
 
-def generate_static_blog_posts():
-    """Generate static www/blog/*.html files from content/*.md files"""
-    data = {}
-    documents = files_by_extension('.md', CONFIG['content_dir'])
-    for filename, filepath in documents.items():
-        filepath = documents[filename]
-        html, meta, document = Md.file(filepath)
-        meta['filename'] = filename
-        meta['filepath'] = filepath
-        data[filename] = meta
-        blog_markdown_to_html(filename)
-    return data
-
-
-def generate_page(data=None,
-                  header='header.tpl',
-                  tpl='default',
-                  footer='footer.tpl',
-                  minify=None,
-                  outfile=None):
-    """Combine multiple (header, body, footer) templates injecting dict data
-    and return generated output
-    """
-    if minify is None:
-        minify = CONFIG['minify_html']
-    html = template(header, data=data, cfg=CONFIG) + \
-        template(tpl, data=data, cfg=CONFIG) + \
-        template(footer, data=data, cfg=CONFIG)
-    if minify is True:
-        html = htmlmin.minify(html,
-                              remove_comments=True,
-                              remove_all_empty_space=True,
-                              reduce_empty_attributes=True,
-                              reduce_boolean_attributes=True,
-                              remove_optional_attribute_quotes=True,
-                              keep_pre=True)
-    try:
-        if outfile is not None:
-            with open(CONFIG['blog_dir'] + outfile, 'w') as fh:
-                fh.write(html)
-    except OSError:
-        pass
-    except IOError:
-        pass
-
-    return html
-
-
-def generate_feed(data=None, tpl='rss.tpl', outfile='rss.xml'):
-    """Render a multiple templates using the same data dict for header, body,
-    footer templates
-    """
-    xml = template(tpl,
-                   data=data,
-                   cfg=CONFIG,
-                   date=email.Utils.formatdate(),
-                   author=CONFIG['email'] + '(' + CONFIG['author'] + ')')
-    try:
-        if outfile is not None:
-            with open(CONFIG['blog_dir'] + outfile, 'w') as fh:
-                fh.write(xml)
-    except OSError:
-        pass
-    except IOError:
-        pass
-
-    return xml
+class MyGenerate:
+    def page(self,
+             data=None,
+              header='header.tpl',
+              tpl='default',
+              footer='footer.tpl',
+              minify=None,
+              outfile=None):
+        """Combine multiple (header, body, footer) templates injecting dict data
+        and return generated output
+        """
+        if minify is None:
+            minify = CONFIG['minify_html']
+        html = template(header, data=data, cfg=CONFIG) + \
+            template(tpl, data=data, cfg=CONFIG) + \
+            template(footer, data=data, cfg=CONFIG)
+        if minify is True:
+            html = htmlmin.minify(html,
+                                  remove_comments=True,
+                                  remove_all_empty_space=True,
+                                  reduce_empty_attributes=True,
+                                  reduce_boolean_attributes=True,
+                                  remove_optional_attribute_quotes=True,
+                                  keep_pre=True)
+        try:
+            if outfile is not None:
+                with open(CONFIG['blog_dir'] + outfile, 'w') as fh:
+                    fh.write(html)
+        except OSError:
+            pass
+        except IOError:
+            pass
+    
+        return html
+    
+    
+    def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml'):
+        """Render a multiple templates using the same data dict for header, body,
+        footer templates
+        """
+        xml = template(tpl,
+                       data=data,
+                       cfg=CONFIG,
+                       date=email.Utils.formatdate(),
+                       author=CONFIG['email'] + '(' + CONFIG['author'] + ')')
+        try:
+            if outfile is not None:
+                with open(CONFIG['blog_dir'] + outfile, 'w') as fh:
+                    fh.write(xml)
+        except OSError:
+            pass
+        except IOError:
+            pass
+    
+        return xml
+    
+    
+    def website(self):
+        """Generate the static website files"""
+        try:
+            files = Files.by_extension('.md', CONFIG['docs_dir'], cache=False)
+            for filename, filepath in files.iteritems():
+                docs(filename[:-3] + '.html')
+        except OSError:
+            pass
+        except IOError:
+            pass
+        Blog.generate()
+        rss()
+        index()
 
 
 @error(404)
@@ -242,53 +281,30 @@ def index():
             'head_author': CONFIG['author'],
             'head_keywords': 'Blog',
             'head_description': 'Blog',
-            'blog_posts_meta': get_blog_posts_meta()}
-    return generate_page(data=data, tpl='home.tpl', outfile='index.html')
+            'blog_posts_meta': Blog.metadata()}
+    return Generate.page(data=data, tpl='home.tpl', outfile='index.html')
 
 
 @get('/blog/<url>')
 def blog(url):
     """Display the blog post"""
     filename = url[:-5] + '.md'
-    return blog_markdown_to_html(filename)
+    return Blog.html(filename)
 
 
 @get('/blog/docs/<filename>')
 def docs(filename):
     """Display the docs folder files"""
-    html, meta, text = Md.file('docs/' + filename[:-5] + '.md')
+    html, meta, text = Markdown.file('docs/' + filename[:-5] + '.md')
     data = {'head_title': filename[:-5],
             'head_author': CONFIG['author'],
             'head_keywords': filename[:-5] + ' file',
             'head_description': filename[:-5] + ' for website ' + CONFIG[
                 'title'],
-            'blog_posts_meta': get_blog_posts_meta(),
+            'blog_posts_meta': Blog.metadata(),
             'body_content': html}
-    return generate_page(data=data, tpl='default.tpl',
+    return Generate.page(data=data, tpl='default.tpl',
                          outfile='docs/' + filename)
-
-
-def blog_markdown_to_html(filename):
-    """Generate a blog post html page from a supplied markdown filename"""
-    documents = files_by_extension('.md', CONFIG['content_dir'])
-    if filename in documents:
-        filepath = documents[filename]
-        html, meta, document = Md.file(filepath)
-        data = {
-            'body_title': "".join(meta['title']),
-            'head_title': CONFIG['author'] + ": " + "".join(meta['title']),
-            'head_author': CONFIG['author'],
-            'head_keywords': meta['tags'],
-            'head_description': "".join(meta['title']),
-            'body_content': html,
-            'meta': meta,
-            'date': meta['date']
-        }
-        if CONFIG['generate_static_files'] is False:
-            return generate_page(tpl='blog_post', data=data)
-        else:
-            return generate_page(tpl='blog_post', data=data,
-                                 outfile=filename[0:-3] + '.html')
 
 
 @get('/js/<filepath:path>')
@@ -318,8 +334,8 @@ def rss():
             'head_author': CONFIG['author'],
             'head_keywords': 'Blog',
             'head_description': 'Blog',
-            'blog_posts_meta': get_blog_posts_meta()}
-    return generate_feed(data=data)
+            'blog_posts_meta': Blog.metadata()}
+    return Generate.feed(data=data)
 
 
 @get('/<filepath:path>')
@@ -328,41 +344,26 @@ def server_static(filepath):
     return static_file(filepath, root=CONFIG['web_dir'])
 
 
-def generate_static_files():
-    """Generate the static website files"""
-    # files in www/blog/docs/
-    try:
-        files = files_by_extension('.md', CONFIG['docs_dir'], cache=False)
-        for filename, filepath in files.iteritems():
-            docs(filename[:-3] + '.html')
-    except OSError:
-        pass
-    except IOError:
-        pass
-
-    # blog posts in www/blog/
-    generate_static_blog_posts()
-    rss()  # rss feed
-    index()  # homepage blogs/index.html
-
-
 application = default_app()
 
 if __name__ in '__main__':
-    Cache = ObjectStore()
+    Markdown = MyMarkdown()
+    Files = MyFiles()
+    Blog = MyBlog()
+    Cache = MyCache()
+    Generate = MyGenerate()
+
     print "Clearing cache dir " + CONFIG['blog_dir'] + "..."
     Cache.wipe()
 
-    Md = MyMarkdown()
-
     if CONFIG['debug'] is True:
         CONFIG['cache'] = False
-        CONFIG['generate_static_files'] = False
+        CONFIG['generate'] = False
         CONFIG['minify_js'] = False
         CONFIG['minify_html'] = False
 
-    if CONFIG['generate_static_files'] is True:
+    if CONFIG['generate'] is True:
         print "Generating static files in " + CONFIG['blog_dir'] + " ..."
-        generate_static_files()
+        Generate.website()
 
     run(server='waitress')

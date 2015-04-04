@@ -79,7 +79,7 @@ Emil Cioran
 ```
 CONFIG = {
     'debug': False,                   # debug mode
-    'generate_static_files': True,    # generate static website files
+    'generate': True,                 # generate static website files
     'minify_js': True,                # minify javascript served by webserver (not static files)
     'minify_html': True,              # minify all output html including static files
     'cache': True,                    # cache files and output of app
