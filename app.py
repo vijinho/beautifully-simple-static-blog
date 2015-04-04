@@ -34,7 +34,6 @@ if not os.path.exists('config.py'):
     shutil.copyfile('config.py.example', 'config.py')
 from config import CONFIG
 
-
 class MyUtils:
     """General utility helper functions used by the app"""
 
@@ -70,16 +69,23 @@ class MyUtils:
 class ObjectCache:
     """Handle caching for objects using picklet"""
 
-    def __init__(self, directory = None, fileformat = "{dir}/{key}.tmp"):
+    def __init__(self,
+                 config=None,
+                 directory=None,
+                 fileformat="{dir}/{key}.tmp"):
         """"directory is where cache files are stored
         and naming format for the cache files
         """
-        self.directory = directory
+        self.config = config
         self.fileformat = fileformat
+        if directory is None:
+            self.directory = config['cache_dir']
+        else:
+            self.directory = directory
 
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
-        if CONFIG['cache'] is False:
+        if self.config['cache'] is False:
             return False
         try:
             filename = self.fileformat.format(dir=self.directory,
@@ -126,7 +132,9 @@ class ObjectCache:
 class MyMarkdown:
     """My Markdown Utility"""
 
-    def __init__(self, output_format = 'html5', extensions = ['markdown.extensions.meta']):
+    def __init__(self,
+                 output_format='html5',
+                 extensions=['markdown.extensions.meta']):
         """set the default output format and extensions to use"""
         self.output_format = output_format
         self.extensions = extensions
@@ -179,8 +187,12 @@ class MyFiles:
 
 
 class MyBlog:
-    def __init__(self, directory = None):
-        self.directory = directory
+    def __init__(self, config=None, directory=None):
+        self.config = config
+        if directory is None:
+            self.directory = config['content_dir']
+        else:
+            self.directory = directory
 
     def metadata(self, cache=False):
         """Return a dict of meta-information for all blog posts"""
@@ -221,15 +233,15 @@ class MyBlog:
             html, meta, document = Markdown.file(filepath)
             data = {
                 'body_title': "".join(meta['title']),
-                'head_title': CONFIG['author'] + ": " + "".join(meta['title']),
-                'head_author': CONFIG['author'],
+                'head_title': self.config['author'] + ": " + "".join(meta['title']),
+                'head_author': self.config['author'],
                 'head_keywords': meta['tags'],
                 'head_description': "".join(meta['title']),
                 'body_content': html,
                 'meta': meta,
                 'date': meta['date']
             }
-            if CONFIG['generate'] is False:
+            if self.config['generate'] is False:
                 return Generate.page(tpl='blog_post', data=data)
             else:
                 return Generate.page(tpl='blog_post', data=data,
@@ -238,9 +250,18 @@ class MyBlog:
 
 class MyGenerate:
     """Output file rendering and website generation"""
-    def __init__(self, directory, docs_directory):
-        self.directory = directory
-        self.docs_directory = docs_directory
+    def __init__(self, config=None, directory=None, docs_directory=None):
+        self.config = config
+
+        if directory is None:
+            self.directory = config['blog_dir']
+        else:
+            self.directory = directory
+
+        if docs_directory is None:
+            self.docs_directory = config['docs_dir']
+        else:
+            self.docs_directory = docs_directory
 
     def page(self, data=None,
              header='header.tpl',
@@ -252,10 +273,10 @@ class MyGenerate:
         and return generated output
         """
         if minify is None:
-            minify = CONFIG['minify_html']
-        html = template(header, data=data, cfg=CONFIG) + \
-            template(tpl, data=data, cfg=CONFIG) + \
-            template(footer, data=data, cfg=CONFIG)
+            minify = self.config['minify_html']
+        html = template(header, data=data, cfg=self.config) + \
+            template(tpl, data=data, cfg=self.config) + \
+            template(footer, data=data, cfg=self.config)
         if minify is True:
             html = htmlmin.minify(html,
                                   remove_comments=True,
@@ -281,9 +302,9 @@ class MyGenerate:
         """
         xml = template(tpl,
                        data=data,
-                       cfg=CONFIG,
+                       cfg=self.config,
                        date=email.Utils.formatdate(),
-                       author=CONFIG['email'] + '(' + CONFIG['author'] + ')')
+                       author=self.config['email'] + '(' + self.config['author'] + ')')
         try:
             if outfile is not None:
                 with open(self.directory + '/' + outfile, 'w') as fh:
@@ -347,7 +368,8 @@ def docs(filename):
                 'title'],
             'blog_posts_meta': Blog.metadata(cache=True),
             'body_content': html}
-    return Generate.page(data=data, tpl='default.tpl',
+    return Generate.page(data=data,
+                         tpl='default.tpl',
                          outfile='docs/' + filename)
 
 
@@ -392,23 +414,14 @@ application = default_app()
 
 if __name__ in '__main__':
     Utils = MyUtils()
-    Cache = ObjectCache(CONFIG['cache_dir'])
-    Markdown = MyMarkdown('html5', ['markdown.extensions.meta'])
     Files = MyFiles()
-    Blog = MyBlog(CONFIG['content_dir'])
-    Generate = MyGenerate(CONFIG['blog_dir'], CONFIG['docs_dir'])
-
-    print "Clearing cache dir " + CONFIG['blog_dir'] + "..."
+    Cache = ObjectCache(config=CONFIG)
     Cache.wipe()
-
-    if CONFIG['debug'] is True:
-        CONFIG['cache'] = False
-        CONFIG['generate'] = False
-        CONFIG['minify_js'] = False
-        CONFIG['minify_html'] = False
-
+    Markdown = MyMarkdown(output_format='html5',
+                          extensions=['markdown.extensions.meta'])
+    Blog = MyBlog(config=CONFIG)
+    Generate = MyGenerate(config=CONFIG)
     if CONFIG['generate'] is True:
-        print "Generating static files in " + CONFIG['blog_dir'] + " ..."
         Generate.website()
-
+        
     run(server='waitress')
