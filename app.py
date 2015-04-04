@@ -15,7 +15,7 @@ import htmlmin
 from jsmin import jsmin
 import csscompressor
 import markdown
-from bottle import error, get, static_file, template, default_app, run
+from bottle import error, get, static_file, response, template, default_app, run
 
 import email.Utils
 
@@ -416,6 +416,7 @@ def js(filepath):
     """Return minified/compressed js"""
     m = re.match('^[^\.]+\.js', filepath)
     if hasattr(m, 'group'):
+        response.content_type = 'application/javascript; charset=utf8'
         if CONFIG['minify_js'] is False:
             return static_file(filepath, root=CONFIG['www_root'])
         else:
@@ -434,6 +435,7 @@ def css(filepath):
     """Return minified/compressed css"""
     m = re.match('^[^\.]+\.css', filepath)
     if hasattr(m, 'group'):
+        response.content_type = 'text/css; charset=utf8'
         if CONFIG['minify_css'] is False:
             return static_file(filepath, root=CONFIG['www_root'])
         else:
