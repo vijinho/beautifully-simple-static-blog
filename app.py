@@ -42,54 +42,56 @@ def hashify(key):
     key = hashlib.md5(key)
     return key.hexdigest()
 
-def cache_set(key, data):
-    """Save an item of data to the cache - return boolean success"""
-    if CONFIG['cache'] is False:
-        return False
-    try:
-        filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                           key=hashify(key))
-        pickle.dump(data, open(filename, "wb"))
+class ObjectStore:
+    """Handle caching for objects using picklet"""
+    def set(self, key, data):
+        """Save an item of data to the cache - return boolean success"""
+        if CONFIG['cache'] is False:
+            return False
+        try:
+            filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
+                                               key=hashify(key))
+            pickle.dump(data, open(filename, "wb"))
+            return True
+        except IOError:
+            return False
+
+
+    def get(self, key):
+        """Get an item of data from the cache - return data or empty dict"""
+        try:
+            filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
+                                               key=hashify(key))
+            data = pickle.load(open(filename, "rb"))
+            return data
+        except IOError:
+            return {}
+
+
+    def rm(self, key):
+        """Remove an item of data from the cache - return boolean success"""
+        try:
+            filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
+                                               key=hashify(key))
+            os.remove(filename)
+            return True
+        except OSError:
+            return False
+        except IOError:
+            return False
+
+
+    def wipe(self):
+        """Wipe the cache - return boolean success"""
+        try:
+            files = files_by_extension('.tmp', CONFIG['cache_dir'], cache=False)
+            for filename, filepath in files.iteritems():
+                os.remove(filepath)
+        except OSError:
+            pass
+        except IOError:
+            pass
         return True
-    except IOError:
-        return False
-
-
-def cache_get(key):
-    """Get an item of data from the cache - return data or empty dict"""
-    try:
-        filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                           key=hashify(key))
-        data = pickle.load(open(filename, "rb"))
-        return data
-    except IOError:
-        return {}
-
-
-def cache_remove(key):
-    """Remove an item of data from the cache - return boolean success"""
-    try:
-        filename = "{dir}{key}.tmp".format(dir=CONFIG['cache_dir'],
-                                           key=hashify(key))
-        os.remove(filename)
-        return True
-    except OSError:
-        return False
-    except IOError:
-        return False
-
-
-def cache_clear():
-    """Wipe the cache - return boolean success"""
-    try:
-        files = files_by_extension('.tmp', CONFIG['cache_dir'], cache=False)
-        for filename, filepath in files.iteritems():
-            os.remove(filepath)
-    except OSError:
-        pass
-    except IOError:
-        pass
-    return True
 
 
 def parse_markdown(text):
@@ -121,7 +123,7 @@ def files_by_extension(filetype, filepath, cache=None):
     if cache is None:
         cache = CONFIG['cache']
     cache_key = filetype + filepath
-    matches = cache_get(cache_key)
+    matches = Cache.get(cache_key)
     if cache is False or matches is False or len(matches) is 0:
         matches = {}
         for root, dirs, files in os.walk(filepath):
@@ -129,7 +131,7 @@ def files_by_extension(filetype, filepath, cache=None):
                 if f.endswith(filetype):
                     path = os.path.join(root, f)
                     matches[f] = str(path)
-        cache_set(cache_key, matches)
+        Cache.set(cache_key, matches)
     return matches
 
 
@@ -138,7 +140,7 @@ def get_blog_posts_meta(cache=None):
     if cache is None:
         cache = CONFIG['cache']
     cache_key = 'blog_posts_meta'
-    data = cache_get(cache_key)
+    data = Cache.get(cache_key)
     if cache is False or data is False or len(data) is 0:
         documents = files_by_extension('.md', CONFIG['content_dir'])
         for filename, filepath in documents.items():
@@ -150,7 +152,7 @@ def get_blog_posts_meta(cache=None):
             meta['filename'] = filename
             meta['filepath'] = filepath
             data[filename] = meta
-            cache_set(cache_key, data)
+            Cache.set(cache_key, data)
     return data
 
 
@@ -345,8 +347,9 @@ def generate_static_files():
 application = default_app()
 
 if __name__ in '__main__':
+    Cache = ObjectStore()
     print "Clearing cache dir " + CONFIG['blog_dir'] + "..."
-    cache_clear()
+    Cache.wipe()
 
     if CONFIG['debug'] is True:
         CONFIG['cache'] = False
