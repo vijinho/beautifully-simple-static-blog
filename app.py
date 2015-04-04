@@ -58,7 +58,7 @@ class MyUtils:
     @staticmethod
     def hashify(key):
         """Generate a string hash from a given key string"""
-        return hashlib.sha1('key').hexdigest()
+        return hashlib.sha1(key).hexdigest()
 
 
 class MyCache:
