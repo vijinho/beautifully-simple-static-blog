@@ -107,16 +107,15 @@ class MyCache:
 
     @staticmethod
     def wipe():
-        """Wipe the cache - return boolean success"""
+        """Wipe the cache - return removed files list"""
         try:
             files = Files.by_extension('tmp', CONFIG['cache_dir'], cache=False)
-            for filename, filepath in files.iteritems():
-                os.remove(filepath)
+            removed = [os.remove(filepath) for filename, filepath in files.iteritems()]
         except OSError:
-            pass
+            return []
         except IOError:
-            pass
-        return True
+            return []
+        return removed
 
 
 class MyMarkdown:
