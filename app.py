@@ -110,7 +110,7 @@ class MyCache:
         """Wipe the cache - return removed files list"""
         try:
             files = Files.by_extension('tmp', CONFIG['cache_dir'], cache=False)
-            removed = [os.remove(filepath) for filename, filepath in files.iteritems()]
+            removed = [os.remove(path) for filename, path in files.iteritems()]
         except OSError:
             return []
         except IOError:
