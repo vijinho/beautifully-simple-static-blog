@@ -413,17 +413,38 @@ def rss():
 @get('/js/<filepath:path>')
 def js(filepath):
     """Return minified/compressed js"""
-    if CONFIG['minify_js'] is False:
-        return static_file(filepath, root=CONFIG['www_root'])
-    else:
-        try:
-            path = CONFIG['js_dir'] + '/' + filepath
-            with open(path) as fh:
-                minified = jsmin(fh.read(), quote_chars="'\"`")
-                return minified
-        except IOError:
+    m = re.match('^[^\.]+\.js', filepath)
+    if hasattr(m, 'group'):
+        if CONFIG['minify_js'] is False:
             return static_file(filepath, root=CONFIG['www_root'])
+        else:
+            try:
+                path = CONFIG['js_dir'] + '/' + filepath
+                with open(path) as fh:
+                    minified = jsmin(fh.read(), quote_chars="'\"`")
+                    return minified
+            except IOError:
+                return static_file(filepath, root=CONFIG['www_root'])
+    else:
+        return error404()
 
+@get('/css/<filepath:path>')
+def css(filepath):
+    """Return minified/compressed css"""
+    m = re.match('^[^\.]+\.css', filepath)
+    if hasattr(m, 'group'):
+        if CONFIG['minify_css'] is False:
+            return static_file(filepath, root=CONFIG['www_root'])
+        else:
+            try:
+                path = CONFIG['css_dir'] + '/' + filepath
+                with open(path) as fh:
+                    minified = fh.read()
+                    return minified
+            except IOError:
+                return static_file(filepath, root=CONFIG['www_root'])
+    else:
+        return error404()
 
 @get('/<filepath:path>')
 def server_static(filepath):
