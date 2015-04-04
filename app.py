@@ -27,13 +27,6 @@ __maintainer__ = "Vijay Mahrra"
 __email__ = "vijay.mahrra@gmail.com"
 __status__ = "Production"
 
-reload(sys)
-sys.setdefaultencoding('utf8')
-
-if not os.path.exists('config.py'):
-    shutil.copyfile('config.py.example', 'config.py')
-from config import CONFIG
-
 class MyUtils:
     """General utility helper functions used by the app"""
 
@@ -414,6 +407,15 @@ def server_static(filepath):
 application = default_app()
 
 if __name__ in '__main__':
+
+    reload(sys)
+    sys.setdefaultencoding('utf8')
+
+    if not os.path.exists('config.py'):
+        shutil.copyfile('config.py.example', 'config.py')
+    import config
+    CONFIG = config.Config().get()
+
     Utils = MyUtils()
     Files = MyFiles()
     Cache = ObjectCache(config=CONFIG)

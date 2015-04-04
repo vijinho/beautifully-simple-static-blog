@@ -1,21 +1,32 @@
 # -*- coding: utf-8 -*-
 
-# Configuration for app.py
-CONFIG = dict(debug=False,
-              generate=True,
-              minify_html=True,
-              minify_js=True,
-              minify_css=True,
-              cache=True,
-              cache_dir='tmp/cache',
-              content_dir='content',
-              docs_dir='docs',
-              www_root='www',
-              js_dir='www/js',
-              css_dir='www/css',
-              output_dir='www/blog',
-              ga_code='UA-00000000-1',
-              title='Blog',
-              author='Anonymous',
-              email='anonymousa@example.com',
-              url='http://www.example.com')
+class Config:
+    """Application Configuration Data"""
+    data = dict(debug=True,
+                generate=False,
+                minify_html=False,
+                minify_js=False,
+                minify_css=False,
+                cache=True,
+                cache_dir='tmp/cache',
+                content_dir='content',
+                docs_dir='docs',
+                www_root='www',
+                js_dir='www/js',
+                css_dir='www/css',
+                output_dir='www/blog',
+                ga_code='UA-0000000-1',
+                title='Blog',
+                author='Anonymous',
+                email='anonymous@example.com',
+                url='http://www.example.com')
+
+    def __init__(self, data=None):
+        if data is not None:
+            self.data = data
+
+    def get(self):
+        return self.data
+
+    def set(self, data):
+        self.data = data

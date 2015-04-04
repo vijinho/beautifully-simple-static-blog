@@ -75,9 +75,8 @@ Emil Cioran
 * Don't forget to update [www/humans.txt](www/humans.txt)!
 
 ### config.py explained
-
+Config.data is a dict() of the following configuration values:
 ```
-CONFIG = {
     'debug': False,                   # debug mode
     'generate': True,                 # generate static website files
     'minify_css': True,               # minify css served by webserver (not static files)
@@ -96,7 +95,6 @@ CONFIG = {
     'author': 'Anonymous',            # author of the blog
     'email': 'anonymous@example.com', # email of author
     'url': 'http://www.example.com'   # canonical website url
-}
 ```
 
 ### Command Line Interface
