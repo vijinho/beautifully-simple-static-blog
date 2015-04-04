@@ -9,6 +9,7 @@ import pickle
 import hashlib
 import time
 import shutil
+from fnmatch import fnmatch
 
 import htmlmin
 from jsmin import jsmin
@@ -16,7 +17,7 @@ import markdown
 from bottle import error, get, static_file, template, default_app, run
 
 import email.Utils
-from fnmatch import fnmatch
+
 
 __author__ = "Vijay Mahrra"
 __copyright__ = "Copyright 2015, Vijay Mahrra"
@@ -26,6 +27,7 @@ __version__ = "1.0"
 __maintainer__ = "Vijay Mahrra"
 __email__ = "vijay.mahrra@gmail.com"
 __status__ = "Production"
+
 
 class MyUtils:
     """General utility helper functions used by the app"""
@@ -82,7 +84,7 @@ class ObjectCache:
             return False
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                               key=Utils.hashed(key))
+                                              key=Utils.hashed(key))
             pickle.dump(data, open(filename, "wb"))
             return True
         except IOError:
@@ -92,7 +94,7 @@ class ObjectCache:
         """Get an item of data from the cache - return data or empty dict"""
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                               key=Utils.hashed(key))
+                                              key=Utils.hashed(key))
             data = pickle.load(open(filename, "rb"))
             return data
         except IOError:
@@ -102,7 +104,7 @@ class ObjectCache:
         """Remove an item of data from the cache - return boolean success"""
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                               key=Utils.hashed(key))
+                                              key=Utils.hashed(key))
             os.remove(filename)
             return True
         except OSError:
@@ -159,6 +161,7 @@ class MyMarkdown:
 
 class MyFiles:
     """File handling methods"""
+
     def __init__(self):
         pass
 
@@ -226,7 +229,8 @@ class MyBlog:
             html, meta, document = Markdown.file(filepath)
             data = {
                 'body_title': "".join(meta['title']),
-                'head_title': self.config['author'] + ": " + "".join(meta['title']),
+                'head_title': self.config['author'] + ": " + "".join(
+                    meta['title']),
                 'head_author': self.config['author'],
                 'head_keywords': meta['tags'],
                 'head_description': "".join(meta['title']),
@@ -243,6 +247,7 @@ class MyBlog:
 
 class MyGenerate:
     """Output file rendering and website generation"""
+
     def __init__(self, config=None, directory=None, docs_directory=None):
         self.config = config
 
@@ -269,8 +274,8 @@ class MyGenerate:
         if minify is None:
             minify = self.config['minify_html']
         html = template(header, data=data, cfg=self.config) + \
-            template(tpl, data=data, cfg=self.config) + \
-            template(footer, data=data, cfg=self.config)
+               template(tpl, data=data, cfg=self.config) + \
+               template(footer, data=data, cfg=self.config)
         if minify is True:
             html = htmlmin.minify(html,
                                   remove_comments=True,
@@ -298,7 +303,8 @@ class MyGenerate:
                        data=data,
                        cfg=self.config,
                        date=email.Utils.formatdate(),
-                       author=self.config['email'] + '(' + self.config['author'] + ')')
+                       author=self.config['email'] + '(' + self.config[
+                           'author'] + ')')
         try:
             if outfile is not None:
                 with open(self.directory + '/' + outfile, 'w') as fh:
@@ -414,6 +420,7 @@ if __name__ in '__main__':
     if not os.path.exists('config.py'):
         shutil.copyfile('config.py.example', 'config.py')
     import config
+
     CONFIG = config.Config().get()
 
     Utils = MyUtils()
@@ -426,5 +433,5 @@ if __name__ in '__main__':
     Generate = MyGenerate(config=CONFIG)
     if CONFIG['generate'] is True:
         Generate.website()
-        
+
     run(server='waitress')
