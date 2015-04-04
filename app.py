@@ -10,7 +10,7 @@ import hashlib
 import time
 import shutil
 from fnmatch import fnmatch
-
+import re
 import htmlmin
 from jsmin import jsmin
 import markdown
@@ -364,8 +364,12 @@ def index():
 @get('/blog/<url>')
 def blog(url):
     """Display the blog post"""
-    filename = url[:-5] + '.md'
-    return Blog.html(filename)
+    m = re.match('^[\d]+[\d]+[\d]+.*\.html', url)
+    if hasattr(m, 'group'):
+        filename = url[:-5] + '.md'
+        return Blog.html(filename)
+    else:
+        return error404()
 
 
 @get('/blog/docs/<filename>')
