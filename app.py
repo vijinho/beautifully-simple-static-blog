@@ -93,29 +93,31 @@ class ObjectStore:
             pass
         return True
 
+class MyMarkdown:
+    """My Markdown Utility"""
 
-def parse_markdown(text):
-    """Return text contents as (str html5, dict meta-information,
-    str original markdown)
-    """
-    md = markdown.Markdown(output_format='html5',
-                           extensions=['markdown.extensions.meta'])
-    html = md.convert(text)
-    meta = {}
-    for k, v in md.Meta.iteritems():
-        v = "".join(v)
-        if k == 'tags' and len(v) > 2:
-            v = v[1:-1]
-        meta[k] = v
-    return html, meta, text
+    def parse(self, text):
+        """Return text contents as (str html5, dict meta-information,
+        str original markdown)
+        """
+        md = markdown.Markdown(output_format='html5',
+                               extensions=['markdown.extensions.meta'])
+        html = md.convert(text)
+        meta = {}
+        for k, v in md.Meta.iteritems():
+            v = "".join(v)
+            if k == 'tags' and len(v) > 2:
+                v = v[1:-1]
+            meta[k] = v
+        return html, meta, text
 
 
-def parse_markdown_file(filepath):
-    """Read a file name and return contents as str html5, dict meta-information,
-    original markdown
-    """
-    with open(filepath) as fh:
-        return parse_markdown(fh.read())
+    def file(self, filepath):
+        """Read a file name and return contents as str html5, dict meta-information,
+        original markdown
+        """
+        with open(filepath) as fh:
+            return Md.parse(fh.read())
 
 
 def files_by_extension(filetype, filepath, cache=None):
@@ -145,7 +147,7 @@ def get_blog_posts_meta(cache=None):
         documents = files_by_extension('.md', CONFIG['content_dir'])
         for filename, filepath in documents.items():
             filepath = documents[filename]
-            html, meta, document = parse_markdown_file(filepath)
+            html, meta, document = Md.file(filepath)
             # add some extra information we might find useful
             meta['id'] = hashify(filepath)
             meta['rfc822date'] = ts_to_rfc822(meta['date'])
@@ -162,7 +164,7 @@ def generate_static_blog_posts():
     documents = files_by_extension('.md', CONFIG['content_dir'])
     for filename, filepath in documents.items():
         filepath = documents[filename]
-        html, meta, document = parse_markdown_file(filepath)
+        html, meta, document = Md.file(filepath)
         meta['filename'] = filename
         meta['filepath'] = filepath
         data[filename] = meta
@@ -254,7 +256,7 @@ def blog(url):
 @get('/blog/docs/<filename>')
 def docs(filename):
     """Display the docs folder files"""
-    html, meta, text = parse_markdown_file('docs/' + filename[:-5] + '.md')
+    html, meta, text = Md.file('docs/' + filename[:-5] + '.md')
     data = {'head_title': filename[:-5],
             'head_author': CONFIG['author'],
             'head_keywords': filename[:-5] + ' file',
@@ -271,7 +273,7 @@ def blog_markdown_to_html(filename):
     documents = files_by_extension('.md', CONFIG['content_dir'])
     if filename in documents:
         filepath = documents[filename]
-        html, meta, document = parse_markdown_file(filepath)
+        html, meta, document = Md.file(filepath)
         data = {
             'body_title': "".join(meta['title']),
             'head_title': CONFIG['author'] + ": " + "".join(meta['title']),
@@ -350,6 +352,8 @@ if __name__ in '__main__':
     Cache = ObjectStore()
     print "Clearing cache dir " + CONFIG['blog_dir'] + "..."
     Cache.wipe()
+
+    Md = MyMarkdown()
 
     if CONFIG['debug'] is True:
         CONFIG['cache'] = False
