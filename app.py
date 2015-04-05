@@ -363,7 +363,7 @@ class MyGenerate:
                 data = fh.read()
         else:
             with open(path) as fh:
-                data = str(csscompressor.compress(fh.read()))
+                data = csscompressor.compress(fh.read())
 
         try:
             if self.config['generate'] is True and len(data) > 0:
@@ -385,7 +385,7 @@ class MyGenerate:
                 data = fh.read()
         else:
             with open(path) as fh:
-                data = str(jsmin(fh.read(), quote_chars="'\"`"))
+                data = jsmin(fh.read(), quote_chars="'\"`")
         try:
             if self.config['generate'] is True and len(data) > 0:
                 outfile = self.config['js_output'] + '/' + os.path.basename(
