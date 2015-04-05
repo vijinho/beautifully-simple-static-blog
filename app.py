@@ -289,7 +289,8 @@ class MyGenerate:
             if len(styles) is 0 or styles is False:
                 styles = "\n<!-- Inline CSS -->\n<style>\n"
                 for css in config['css_inline']:
-                    styles = "\n" + styles + self.css(self.config['css_dir'] + '/' + css)
+                    styles = "\n" + styles + self.css(
+                        self.config['css_dir'] + '/' + css)
                 styles = styles + "\n</style>\n<!-- End Inline CSS -->\n"
                 Cache.set(cache_key, styles)
         data['css'] = styles
@@ -302,7 +303,8 @@ class MyGenerate:
             if len(source) is 0 or source is False:
                 source = "\n<!-- Inline Javascript -->\n<script type=\"text/javascript\">\n/* <![CDATA[ */\n"
                 for js in config['js_inline']:
-                    source = "\n" + source + self.js(self.config['js_dir'] + '/' + js)
+                    source = "\n" + source + self.js(
+                        self.config['js_dir'] + '/' + js)
                 source = source + "\n/* ]]> */\n</script>\n<!-- End Inline Javascript -->\n"
                 Cache.set(cache_key, styles)
         data['js'] = source
@@ -361,11 +363,12 @@ class MyGenerate:
                 data = fh.read()
         else:
             with open(path) as fh:
-                data = str(jsmin(fh.read(), quote_chars="'\"`"))
+                data = str(csscompressor.compress(fh.read(), quote_chars="'\"`"))
 
         try:
             if self.config['generate'] is True and len(data) > 0:
-                outfile = self.config['css_output'] + '/' + os.path.basename(path)
+                outfile = self.config['css_output'] + '/' + os.path.basename(
+                    path)
                 with open(outfile, 'w') as fh:
                     fh.write(data)
         except OSError:
@@ -385,7 +388,8 @@ class MyGenerate:
                 data = str(jsmin(fh.read(), quote_chars="'\"`"))
         try:
             if self.config['generate'] is True and len(data) > 0:
-                outfile = self.config['js_output'] + '/' + os.path.basename(path)
+                outfile = self.config['js_output'] + '/' + os.path.basename(
+                    path)
                 with open(outfile, 'w') as fh:
                     fh.write(data)
         except OSError:
@@ -494,6 +498,7 @@ def js(filepath):
     else:
         return error404()
 
+
 @get('/blog/css/<filepath:path>')
 def css(filepath):
     """Return minified/compressed css"""
@@ -508,6 +513,7 @@ def css(filepath):
                 return fh.read()
     else:
         return error404()
+
 
 @get('/<filepath:path>')
 def server_static(filepath):
@@ -524,6 +530,7 @@ if __name__ in '__main__':
     if not os.path.exists('config.py'):
         shutil.copyfile('config.py.example', 'config.py')
     import config
+
     CONFIG = config.Config().get()
 
     Utils = MyUtils()
