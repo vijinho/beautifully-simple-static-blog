@@ -3,7 +3,7 @@
 class Config:
     """Application Configuration Data"""
     data = dict(debug=True,
-                generate=False,
+                generate=True,
                 minify_html=True,
                 minify_js=True,
                 minify_css=True,
@@ -17,7 +17,7 @@ class Config:
                 js_inline=[],
                 css_dir='www/css',
                 css_output='www/blog/css',
-                css_inline=["normalize.css", "skeleton.css", "style.css"],
+                css_inline=["normalize.css", "skeleton.css"],
                 output_dir='www/blog',
                 ga_code='UA-0000000-1',
                 title='Blog',
