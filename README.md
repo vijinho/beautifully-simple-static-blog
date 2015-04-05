@@ -11,7 +11,7 @@
 * Caching, minification and static files can be disabled if needed
 * JS files in [/www/js/](www/js) optionally minified to [/blog/js/](/blog/js/)
 * CSS files in [/www/css/](www/css) optionally minified to [/blog/css/](/blog/css/)
-* Generates static files under [www/blog/](www/blog) from [markdown](https://guides.github.com/features/mastering-markdown/) by default
+* Generates static from [markdown](https://guides.github.com/features/mastering-markdown/) files in `content` and `docs` folders under [www/blog/](www/blog) by default
 * Mobile-first, responsive design
 * RSS feed generated at `www/blog/rss.xml` and referenced in [robots.txt](www/robots.txt) to generate sitemap for blogs.
 
@@ -38,13 +38,6 @@ to learn how to build a Python website from scratch.  It's a bit of a hack but
 it does the job perfectly for my needs. For simplicity and ease-of-learning, 
 and following the single-file Bottle design, all of the main web code lives in one
 file, [app.py](app.py) 
-
-If you're looking for a full-featured, well-written static file generator then
-I would highly recommend [acrylamid](http://posativ.org/acrylamid/) over this
-project.  
-
-However if you want a starting-point for your own experiments in making websites 
-and static sites in Python, this isn't the worst place that you could start.  
 
 Check the [TODO.md](docs/TODO.md) or [ROADMAP.md](docs/ROADMAP.md) 
 to see what's left to do and if you make some [CHANGES.md](docs/CHANGES.md) I'll be
