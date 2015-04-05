@@ -7,6 +7,7 @@
 * No database required
 * Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
 * Generated HTML, JS and CSS is optionally minified and saved 
+* Supports in-line concatenation and embedding of javascript and CSS files.
 * Caching, minification and static files can be disabled if needed
 * JS files in [/www/js/](www/js) optionally minified to [/blog/js/](/blog/js/)
 * CSS files in [/www/css/](www/css) optionally minified to [/blog/css/](/blog/css/)
