@@ -363,7 +363,7 @@ class MyGenerate:
                 data = fh.read()
         else:
             with open(path) as fh:
-                data = str(csscompressor.compress(fh.read(), quote_chars="'\"`"))
+                data = str(csscompressor.compress(fh.read()))
 
         try:
             if self.config['generate'] is True and len(data) > 0:
