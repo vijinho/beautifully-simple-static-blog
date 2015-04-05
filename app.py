@@ -469,6 +469,7 @@ def docs(filename):
 @get('/sitemap.xml')
 def rss():
     """Display the homepage"""
+    response.content_type = 'application/rss+xml; charset=utf8'
     data = {'body_title': CONFIG['title'],
             'head_title': CONFIG['author'] + ': ¡Hola!',
             'head_author': CONFIG['author'],
