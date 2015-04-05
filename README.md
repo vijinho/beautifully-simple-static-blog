@@ -6,11 +6,11 @@
 
 * No database required
 * Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
-* JS files in [/www/js/](www/js) optionally minified when served direct from Waitress 
-* CSS files in [/www/css/](www/css) optionally minified when served direct from Waitress 
-* Generates static HTML files under [www/blog/](www/blog) from [markdown](https://guides.github.com/features/mastering-markdown/)
-* Generated HTML is optionally minified and saved 
+* Generated HTML, JS and CSS is optionally minified and saved 
 * Caching, minification and static files can be disabled if needed
+* JS files in [/www/js/](www/js) optionally minified to [/blog/js/](/blog/js/)
+* CSS files in [/www/css/](www/css) optionally minified to [/blog/css/](/blog/css/)
+* Generates static files under [www/blog/](www/blog) from [markdown](https://guides.github.com/features/mastering-markdown/) by default
 * Mobile-first, responsive design
 * RSS feed generated at `www/blog/rss.xml` and referenced in [robots.txt](www/robots.txt) to generate sitemap for blogs.
 
@@ -90,7 +90,9 @@ Config.data is a dict() of the following configuration values:
     'www_root': 'www',                # default location of website root directory
     'output_dir': 'www/blog',         # default location of webroot for blog
     'js_dir': 'www/js',               # default location of javascript files
+    'js_output': 'www/blog/js',       # minified js output directory
     'css_dir': 'www/css',             # default location of css files
+    'css_output': 'www/blog/css',     # minified js output directory
     'ga_code': 'UA-00000000-1',       # google analytics code UA-XXXX-Y
     'title': 'Blog',                  # name of the blog
     'author': 'Anonymous',            # author of the blog

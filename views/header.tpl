@@ -19,10 +19,10 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" media="all" href="/css/normalize.css">
-  <link rel="stylesheet" media="all" href="/css/skeleton.css">
-  <link rel="stylesheet" media="all" href="/css/style.css">
-  <link rel="stylesheet" media="print" href="/css/print.css">
+  <link rel="stylesheet" media="all" href="/blog/css/normalize.css">
+  <link rel="stylesheet" media="all" href="/blog/css/skeleton.css">
+  <link rel="stylesheet" media="all" href="/blog/css/style.css">
+  <link rel="stylesheet" media="print" href="/blog/css/print.css">
 
   <!-- Favicon
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->

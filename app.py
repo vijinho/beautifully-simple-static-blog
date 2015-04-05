@@ -328,6 +328,47 @@ class MyGenerate:
 
         return xml
 
+    def css(self, path):
+        """Return minified CSS for filepath"""
+        if self.config['minify_css'] is False:
+            with open(path) as fh:
+                data = fh.read()
+        else:
+            with open(path) as fh:
+                data = str(jsmin(fh.read(), quote_chars="'\"`"))
+
+        try:
+            if self.config['generate'] is True and len(data) > 0:
+                outfile = self.config['css_output'] + '/' + os.path.basename(path)
+                with open(outfile, 'w') as fh:
+                    fh.write(data)
+        except OSError:
+            pass
+        except IOError:
+            pass
+
+        return data
+
+    def js(self, path):
+        """Return minified JS for filepath"""
+        if self.config['minify_js'] is False:
+            with open(path) as fh:
+                data = fh.read()
+        else:
+            with open(path) as fh:
+                data = str(jsmin(fh.read(), quote_chars="'\"`"))
+        try:
+            if self.config['generate'] is True and len(data) > 0:
+                outfile = self.config['js_output'] + '/' + os.path.basename(path)
+                with open(outfile, 'w') as fh:
+                    fh.write(data)
+        except OSError:
+            pass
+        except IOError:
+            pass
+
+        return data
+
     def website(self):
         """Generate the static website files"""
         try:
@@ -411,42 +452,33 @@ def rss():
     return Generate.feed(data=data)
 
 
-@get('/js/<filepath:path>')
 @get('/blog/js/<filepath:path>')
 def js(filepath):
     """Return minified/compressed js"""
     m = re.match('^[^\.]+\.js', filepath)
     if hasattr(m, 'group'):
         response.content_type = 'application/javascript; charset=utf8'
-        if CONFIG['minify_js'] is False:
-            return static_file(filepath, root=CONFIG['www_root'])
-        else:
-            try:
-                path = CONFIG['js_dir'] + '/' + filepath
-                with open(path) as fh:
-                    minified = jsmin(fh.read(), quote_chars="'\"`")
-                    return minified
-            except IOError:
-                return static_file(filepath, root=CONFIG['www_root'])
+        path = CONFIG['js_dir'] + '/' + filepath
+        try:
+            return Generate.js(path)
+        except IOError:
+            with open(path) as fh:
+                return fh.read()
     else:
         return error404()
 
-@get('/css/<filepath:path>')
 @get('/blog/css/<filepath:path>')
 def css(filepath):
     """Return minified/compressed css"""
     m = re.match('^[^\.]+\.css', filepath)
     if hasattr(m, 'group'):
         response.content_type = 'text/css; charset=utf8'
-        if CONFIG['minify_css'] is False:
-            return static_file(filepath, root=CONFIG['www_root'])
-        else:
-            try:
-                path = CONFIG['css_dir'] + '/' + filepath
-                with open(path) as fh:
-                    return csscompressor.compress(fh.read())
-            except IOError:
-                return static_file(filepath, root=CONFIG['www_root'])
+        path = CONFIG['css_dir'] + '/' + filepath
+        try:
+            return Generate.css(path)
+        except IOError:
+            with open(path) as fh:
+                return fh.read()
     else:
         return error404()
 
