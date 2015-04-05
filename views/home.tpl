@@ -17,7 +17,7 @@
           <div class="scrollbox-all-blogposts">
             %for filename, meta in sorted(data.get('blog_posts_meta').iteritems(), reverse=True):
               <p>
-                  <a href="/blog/{{filename[0:-3]}}.html">{{meta.get('title')}}</a></em>
+                  <a href="/blog/{{filename[0:-3]}}.html">{{meta.get('title')}}</a>
                   <br/>
                   <small>{{meta.get('date')[0:11]}}</small>
               </p>
@@ -25,28 +25,26 @@
           </div>
         </div>
         <div class="three columns" style="margin-top: 25%">
-            <small>
-                <h3>Hobbies</h3>
-                <ul>
-                    <li><a href="http://eyeem.com/u/vijinho">EyeEm</a></li>
-                    <li><a href="http://vijinho.tumblr.com/">Tumblr</a></li>
-                    <li><a href="http://instagram.com/vijinho/">Instagram</a></li>
-                    <li><a href="http://vimeo.com/vijinho">Vimeo</a></li>
-                </ul>
-                <h3>Music</h3>
-                <ul>
-                    <li><a href="http://www.last.fm/user/vijinho">Last.fm</a></li>
-                    <li><a href="http://www.mixcloud.com/vijinho/">Mixcloud</a></li>
-                    <li><a href="http://soundcloud.com/vijinho">SoundCloud</a></li>
-                </ul>
-                <h3>Meta</h3>
-                <ul>
-                    <li><a href="http://about.me/vijay.mahrra">About Me</a></li>
-                    <li><a href="/blog/cv.html">CV/Resumé</a></li>
-                    <li><a href="https://github.com/vijinho/beautifully-simple-static-blog">Source Code</a></li>
-                    <li><a href="/blog/rss.xml">Subscribe (RSS)</a></li>
-                </ul>
-            </small>
+            <h3>Hobbies</h3>
+            <ul>
+                <li><a href="http://eyeem.com/u/vijinho">EyeEm</a></li>
+                <li><a href="http://vijinho.tumblr.com/">Tumblr</a></li>
+                <li><a href="http://instagram.com/vijinho/">Instagram</a></li>
+                <li><a href="http://vimeo.com/vijinho">Vimeo</a></li>
+            </ul>
+            <h3>Music</h3>
+            <ul>
+                <li><a href="http://www.last.fm/user/vijinho">Last.fm</a></li>
+                <li><a href="http://www.mixcloud.com/vijinho/">Mixcloud</a></li>
+                <li><a href="http://soundcloud.com/vijinho">SoundCloud</a></li>
+            </ul>
+            <h3>Meta</h3>
+            <ul>
+                <li><a href="http://about.me/vijay.mahrra">About Me</a></li>
+                <li><a href="/blog/cv.html">CV/Resumé</a></li>
+                <li><a href="https://github.com/vijinho/beautifully-simple-static-blog">Source Code</a></li>
+                <li><a href="/blog/rss.xml">Subscribe (RSS)</a></li>
+            </ul>
         </div>
     </div>
   </div>
