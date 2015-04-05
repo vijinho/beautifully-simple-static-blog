@@ -11,6 +11,7 @@ import time
 import shutil
 from fnmatch import fnmatch
 import re
+
 import htmlmin
 from jsmin import jsmin
 import csscompressor
@@ -130,7 +131,8 @@ class MyMarkdown:
 
     def __init__(self, output_format='html5', extensions=None):
         """set the default output format and extensions to use"""
-        if not extensions: extensions = ['markdown.extensions.meta']
+        if not extensions:
+            extensions = ['markdown.extensions.meta']
         self.output_format = output_format
         self.extensions = extensions
 
@@ -222,12 +224,12 @@ class MyBlog:
             Blog.html(filename)
         return data
 
-    def html(self, filename, config=None):
+    def html(self, filename, cfg=None):
         """Generate a blog post html page from a supplied markdown filename
         default config values used if no config specified
         """
-        if config is None:
-            config = self.config
+        if cfg is None:
+            cfg = self.config
 
         documents = Files.by_extension('md', self.directory)
         if filename in documents:
@@ -235,16 +237,16 @@ class MyBlog:
             html, meta, document = Markdown.file(filepath)
             data = {
                 'body_title': "".join(meta['title']),
-                'head_title': config['author'] + ": " + "".join(
+                'head_title': cfg['author'] + ": " + "".join(
                     meta['title']),
-                'head_author': config['author'],
+                'head_author': cfg['author'],
                 'head_keywords': meta['tags'],
                 'head_description': "".join(meta['title']),
                 'body_content': html,
                 'meta': meta,
                 'date': meta['date']
             }
-            if config['generate'] is False:
+            if cfg['generate'] is False:
                 return Generate.page(tpl='blog_post', data=data)
             else:
                 return Generate.page(tpl='blog_post', data=data,
@@ -274,46 +276,46 @@ class MyGenerate:
              footer='footer.tpl',
              minify=None,
              outfile=None,
-             config=None):
+             cfg=None):
         """Combine multiple (header, body, footer) templates injecting dict data
         and return generated output
         """
-        if config is None:
-            config = self.config
+        if cfg is None:
+            cfg = self.config
 
         styles = ''
-        if len(config['css_inline']) > 0:
+        if len(cfg['css_inline']) > 0:
             cache_key = 'inline-styles'
             if self.config['cache'] is True:
                 styles = Cache.get(cache_key)
             if len(styles) is 0 or styles is False:
                 styles = "\n<!-- Inline CSS -->\n<style>\n"
-                for css in config['css_inline']:
+                for stylesheet in cfg['css_inline']:
                     styles = "\n" + styles + self.css(
-                        self.config['css_dir'] + '/' + css)
-                styles = styles + "\n</style>\n<!-- End Inline CSS -->\n"
+                        self.config['css_dir'] + '/' + stylesheet)
+                styles += "\n</style>\n<!-- End Inline CSS -->\n"
                 Cache.set(cache_key, styles)
         data['css'] = styles
 
         source = ''
-        if len(config['js_inline']) > 0:
+        if len(cfg['js_inline']) > 0:
             cache_key = 'inline-js'
             if self.config['cache'] is True:
                 source = Cache.get(cache_key)
             if len(source) is 0 or source is False:
                 source = "\n<!-- Inline Javascript -->\n<script type=\"text/javascript\">\n/* <![CDATA[ */\n"
-                for js in config['js_inline']:
+                for script in cfg['js_inline']:
                     source = "\n" + source + self.js(
-                        self.config['js_dir'] + '/' + js)
-                source = source + "\n/* ]]> */\n</script>\n<!-- End Inline Javascript -->\n"
+                        self.config['js_dir'] + '/' + script)
+                source += "\n/* ]]> */\n</script>\n<!-- End Inline Javascript -->\n"
                 Cache.set(cache_key, styles)
         data['js'] = source
 
         if minify is None:
-            minify = config['minify_html']
-        html = template(header, data=data, cfg=config) + \
-               template(tpl, data=data, cfg=config) + \
-               template(footer, data=data, cfg=config)
+            minify = cfg['minify_html']
+        html = template(header, data=data, cfg=cfg) + \
+               template(tpl, data=data, cfg=cfg) + \
+               template(footer, data=data, cfg=cfg)
 
         if minify is True:
             html = htmlmin.minify(html,
@@ -324,7 +326,7 @@ class MyGenerate:
                                   remove_optional_attribute_quotes=True,
                                   keep_pre=True)
         try:
-            if outfile is not None and config['generate'] is True:
+            if outfile is not None and cfg['generate'] is True:
                 with open(self.directory + '/' + outfile, 'w') as fh:
                     fh.write(html)
         except OSError:
@@ -333,17 +335,17 @@ class MyGenerate:
             pass
         return html
 
-    def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml', config=None):
+    def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml', cfg=None):
         """Render a multiple templates using the same data dict for header,
         body, footer templates
         """
-        if config is None:
-            config = self.config
+        if cfg is None:
+            cfg = self.config
         xml = template(tpl,
                        data=data,
-                       cfg=config,
+                       cfg=cfg,
                        date=email.Utils.formatdate(),
-                       author=config['email'] + '(' + config[
+                       author=cfg['email'] + '(' + cfg[
                            'author'] + ')')
         try:
             if outfile is not None:
