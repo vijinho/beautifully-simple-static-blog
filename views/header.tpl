@@ -20,6 +20,7 @@
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   {{!data.get('css')}}
+  <link rel="stylesheet" media="all" href="/blog/css/style.css">
   <link rel="stylesheet" media="print" href="/blog/css/print.css">
 
   <!-- Favicon
