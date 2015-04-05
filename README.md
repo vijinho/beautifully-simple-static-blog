@@ -4,6 +4,7 @@
 
 ## Features
 
+* Can run dynamically serving files via WSCGI or generate a static site from the files
 * No database required
 * Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
 * Generated HTML, JS and CSS is optionally minified and saved 
