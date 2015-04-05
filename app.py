@@ -281,11 +281,38 @@ class MyGenerate:
         if config is None:
             config = self.config
 
+        styles = ''
+        if len(config['css_inline']) > 0:
+            cache_key = 'inline-styles'
+            if self.config['cache'] is True:
+                styles = Cache.get(cache_key)
+            if len(styles) is 0 or styles is False:
+                styles = "\n<!-- Inline CSS -->\n<style>\n"
+                for css in config['css_inline']:
+                    styles = "\n" + styles + self.css(self.config['css_dir'] + '/' + css)
+                styles = styles + "\n</style>\n<!-- End Inline CSS -->\n"
+                Cache.set(cache_key, styles)
+        data['css'] = styles
+
+        source = ''
+        if len(config['js_inline']) > 0:
+            cache_key = 'inline-js'
+            if self.config['cache'] is True:
+                source = Cache.get(cache_key)
+            if len(source) is 0 or source is False:
+                source = "\n<!-- Inline Javascript -->\n<script type=\"text/javascript\">\n/* <![CDATA[ */\n"
+                for js in config['js_inline']:
+                    source = "\n" + source + self.js(self.config['js_dir'] + '/' + js)
+                source = source + "\n/* ]]> */\n</script>\n<!-- End Inline Javascript -->\n"
+                Cache.set(cache_key, styles)
+        data['js'] = source
+
         if minify is None:
             minify = config['minify_html']
         html = template(header, data=data, cfg=config) + \
                template(tpl, data=data, cfg=config) + \
                template(footer, data=data, cfg=config)
+
         if minify is True:
             html = htmlmin.minify(html,
                                   remove_comments=True,
@@ -302,7 +329,6 @@ class MyGenerate:
             pass
         except IOError:
             pass
-
         return html
 
     def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml', config=None):

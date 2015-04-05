@@ -15,5 +15,7 @@ ga('send', 'pageview');
 </script>
 <!-- End Google Analytics -->
 
+{{!data.get('js')}}
+
 </body>
 </html>

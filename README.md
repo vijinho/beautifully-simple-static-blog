@@ -91,8 +91,10 @@ Config.data is a dict() of the following configuration values:
     'output_dir': 'www/blog',         # default location of webroot for blog
     'js_dir': 'www/js',               # default location of javascript files
     'js_output': 'www/blog/js',       # minified js output directory
+    'js_inline': []                   # inline js to compile into page (default:footer) <script>
     'css_dir': 'www/css',             # default location of css files
     'css_output': 'www/blog/css',     # minified js output directory
+    'css_inline': ["normalize.css", "skeleton.css", "style.css"] # inline css to compile into page  (default:header) <style>
     'ga_code': 'UA-00000000-1',       # google analytics code UA-XXXX-Y
     'title': 'Blog',                  # name of the blog
     'author': 'Anonymous',            # author of the blog

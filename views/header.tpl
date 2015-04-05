@@ -19,9 +19,7 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
-  <link rel="stylesheet" media="all" href="/blog/css/normalize.css">
-  <link rel="stylesheet" media="all" href="/blog/css/skeleton.css">
-  <link rel="stylesheet" media="all" href="/blog/css/style.css">
+  {{!data.get('css')}}
   <link rel="stylesheet" media="print" href="/blog/css/print.css">
 
   <!-- Favicon
