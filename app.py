@@ -82,6 +82,7 @@ class ObjectCache(object):
             self.directory = cfg['cache_dir']
         else:
             self.directory = directory
+        self.MyFiles = MyFiles()
 
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
@@ -120,7 +121,7 @@ class ObjectCache(object):
     def wipe(self):
         """Wipe the cache - return removed files list"""
         try:
-            files = Files.by_extension('tmp', self.directory, cache=False)
+            files = self.MyFiles.by_extension('tmp', self.directory, cache=False)
             removed = [os.remove(path) for filename, path in list(files.items())]
         except OSError:
             return []
@@ -195,13 +196,14 @@ class MyBlog(object):
             self.directory = cfg['content_dir']
         else:
             self.directory = directory
+        self.MyFiles = MyFiles()
 
     def metadata(self, cache=False):
         """Return a dict of meta-information for all blog posts"""
         cache_key = 'blog_posts_meta'
         data = Cache.get(cache_key)
         if cache is False or data is False or len(data) is 0:
-            documents = Files.by_extension('md', self.directory, cache)
+            documents = self.MyFiles.by_extension('md', self.directory, cache)
             for filename, filepath in list(documents.items()):
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
@@ -217,7 +219,7 @@ class MyBlog(object):
     def generate(self):
         """Generate static www/blog/*.html files from content/*.md files"""
         data = {}
-        documents = Files.by_extension('md', self.directory)
+        documents = self.MyFiles.by_extension('md', self.directory)
         for filename, filepath in list(documents.items()):
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
@@ -234,7 +236,7 @@ class MyBlog(object):
         if cfg is None:
             cfg = self.config
 
-        documents = Files.by_extension('md', self.directory)
+        documents = self.MyFiles.by_extension('md', self.directory)
         if filename in documents:
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
@@ -271,6 +273,8 @@ class MyGenerate(object):
             self.docs_directory = cfg['docs_dir']
         else:
             self.docs_directory = docs_directory
+
+        self.MyFiles = MyFiles()
 
     @staticmethod
     def minify_html(html):
@@ -435,7 +439,7 @@ class MyGenerate(object):
     def website(self):
         """Generate the static website files"""
         try:
-            files = Files.by_extension('md', self.docs_directory, cache=False)
+            files = self.MyFiles.by_extension('md', self.docs_directory, cache=False)
             for filename, filepath in list(files.items()):
                 docs(filename[:-3] + '.html')
         except OSError:
@@ -567,7 +571,6 @@ if __name__ in '__main__':
     CONFIG = config.Config().get()
 
     Utils = MyUtils()
-    Files = MyFiles()
     Cache = ObjectCache(cfg=CONFIG)
     Cache.wipe()
     Blog = MyBlog(cfg=CONFIG)
