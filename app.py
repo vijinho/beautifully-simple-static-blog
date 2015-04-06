@@ -575,9 +575,9 @@ if __name__ in '__main__':
     Markdown = MyMarkdown()
     Blog = MyBlog(cfg=CONFIG)
     Cache = ObjectCache(cfg=CONFIG)
-    Cache.wipe()
     Generate = MyGenerate(cfg=CONFIG)
     if CONFIG['generate'] is True:
+        Cache.wipe()
         Generate.website()
 
     run(server='waitress')
