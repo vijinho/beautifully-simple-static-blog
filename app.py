@@ -82,7 +82,9 @@ class ObjectCache(object):
             self.directory = cfg['cache_dir']
         else:
             self.directory = directory
+
         self.MyFiles = MyFiles()
+        self.Utils = MyUtils()
 
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
@@ -90,7 +92,7 @@ class ObjectCache(object):
             return False
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                              key=Utils.hashed(key))
+                                              key=self.Utils.hashed(key))
             pickle.dump(data, open(filename, "wb"))
             return True
         except IOError:
@@ -100,7 +102,7 @@ class ObjectCache(object):
         """Get an item of data from the cache - return data or empty dict"""
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                              key=Utils.hashed(key))
+                                              key=self.Utils.hashed(key))
             data = pickle.load(open(filename, "rb"))
             return data
         except IOError:
@@ -110,7 +112,7 @@ class ObjectCache(object):
         """Remove an item of data from the cache - return boolean success"""
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                              key=Utils.hashed(key))
+                                              key=self.Utils.hashed(key))
             os.remove(filename)
             return True
         except OSError:
@@ -196,7 +198,9 @@ class MyBlog(object):
             self.directory = cfg['content_dir']
         else:
             self.directory = directory
+
         self.MyFiles = MyFiles()
+        self.Utils = MyUtils()
 
     def metadata(self, cache=False):
         """Return a dict of meta-information for all blog posts"""
@@ -208,8 +212,8 @@ class MyBlog(object):
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
                 # add some extra information we might find useful
-                meta['id'] = Utils.hashed(filepath)
-                meta['rfc822date'] = Utils.ts_to_rfc822(meta['date'])
+                meta['id'] = self.Utils.hashed(filepath)
+                meta['rfc822date'] = self.Utils.ts_to_rfc822(meta['date'])
                 meta['filename'] = filename
                 meta['filepath'] = filepath
                 data[filename] = meta
@@ -570,7 +574,6 @@ if __name__ in '__main__':
 
     CONFIG = config.Config().get()
 
-    Utils = MyUtils()
     Cache = ObjectCache(cfg=CONFIG)
     Cache.wipe()
     Blog = MyBlog(cfg=CONFIG)
