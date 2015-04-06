@@ -21,6 +21,7 @@ import markdown
 from bottle import error, get, static_file, response, template, default_app, run
 
 import email.Utils
+import imp
 
 
 __author__ = "Vijay Mahrra"
@@ -120,7 +121,7 @@ class ObjectCache(object):
         """Wipe the cache - return removed files list"""
         try:
             files = Files.by_extension('tmp', self.directory, cache=False)
-            removed = [os.remove(path) for filename, path in files.items()]
+            removed = [os.remove(path) for filename, path in list(files.items())]
         except OSError:
             return []
         except IOError:
@@ -147,7 +148,7 @@ class MyMarkdown(object):
         html = md.convert(text)
         meta = {}
         if len(md.Meta) > 0:
-            for k, v in md.Meta.items():
+            for k, v in list(md.Meta.items()):
                 v = "".join(v)
                 if k == 'tags' and len(v) > 2:
                     v = v[1:-1]
@@ -435,7 +436,7 @@ class MyGenerate(object):
         """Generate the static website files"""
         try:
             files = Files.by_extension('md', self.docs_directory, cache=False)
-            for filename, filepath in files.items():
+            for filename, filepath in list(files.items()):
                 docs(filename[:-3] + '.html')
         except OSError:
             pass
@@ -553,7 +554,7 @@ def server_static(filepath):
     return static_file(filepath, root=CONFIG['www_root'])
 
 
-reload(sys)
+imp.reload(sys)
 sys.setdefaultencoding('utf8')
 application = default_app()
 

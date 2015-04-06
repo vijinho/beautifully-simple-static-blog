@@ -15,7 +15,7 @@
 * Generates static from [markdown](https://guides.github.com/features/mastering-markdown/) files in `content` and `docs` folders under [www/blog/](www/blog) by default
 * Mobile-first, responsive design
 * RSS feed generated at `www/blog/rss.xml` and referenced in [robots.txt](www/robots.txt) to generate sitemap for blogs.
-* Python3-compatible - using [Python Future](http://python-future.org/quickstart.html#installation)
+* Python3-compatible - using [Python Future](http://python-future.org/quickstart.html#installation) and [2to3](https://docs.python.org/2/library/2to3.html)
 
 ## Easy Setup
 
