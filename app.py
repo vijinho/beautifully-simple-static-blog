@@ -3,6 +3,8 @@
 Website Application - Runs webserver for markdown files and generates
 static content.
 """
+from builtins import str
+from builtins import object
 import os
 import sys
 import pickle
@@ -31,7 +33,7 @@ __email__ = "vijay.mahrra@gmail.com"
 __status__ = "Production"
 
 
-class MyUtils:
+class MyUtils(object):
     """General utility helper functions used by the app"""
 
     def __init__(self):
@@ -63,7 +65,7 @@ class MyUtils:
         return hashlib.sha1(key).hexdigest()
 
 
-class ObjectCache:
+class ObjectCache(object):
     """Handle caching for objects using picklet"""
 
     def __init__(self,
@@ -118,7 +120,7 @@ class ObjectCache:
         """Wipe the cache - return removed files list"""
         try:
             files = Files.by_extension('tmp', self.directory, cache=False)
-            removed = [os.remove(path) for filename, path in files.iteritems()]
+            removed = [os.remove(path) for filename, path in files.items()]
         except OSError:
             return []
         except IOError:
@@ -126,7 +128,7 @@ class ObjectCache:
         return removed
 
 
-class MyMarkdown:
+class MyMarkdown(object):
     """My Markdown Utility"""
 
     def __init__(self, output_format='html5', extensions=None):
@@ -145,7 +147,7 @@ class MyMarkdown:
         html = md.convert(text)
         meta = {}
         if len(md.Meta) > 0:
-            for k, v in md.Meta.iteritems():
+            for k, v in md.Meta.items():
                 v = "".join(v)
                 if k == 'tags' and len(v) > 2:
                     v = v[1:-1]
@@ -161,7 +163,7 @@ class MyMarkdown:
             return Markdown.parse(fh.read())
 
 
-class MyFiles:
+class MyFiles(object):
     """File handling methods"""
 
     def __init__(self):
@@ -185,7 +187,7 @@ class MyFiles:
         return matches
 
 
-class MyBlog:
+class MyBlog(object):
     def __init__(self, cfg=None, directory=None):
         self.config = cfg
         if directory is None:
@@ -199,7 +201,7 @@ class MyBlog:
         data = Cache.get(cache_key)
         if cache is False or data is False or len(data) is 0:
             documents = Files.by_extension('md', self.directory, cache)
-            for filename, filepath in documents.items():
+            for filename, filepath in list(documents.items()):
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
                 # add some extra information we might find useful
@@ -215,7 +217,7 @@ class MyBlog:
         """Generate static www/blog/*.html files from content/*.md files"""
         data = {}
         documents = Files.by_extension('md', self.directory)
-        for filename, filepath in documents.items():
+        for filename, filepath in list(documents.items()):
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
             meta['filename'] = filename
@@ -253,7 +255,7 @@ class MyBlog:
                                      outfile=filename[0:-3] + '.html')
 
 
-class MyGenerate:
+class MyGenerate(object):
     """Output file rendering and website generation"""
 
     def __init__(self, cfg=None, directory=None, docs_directory=None):
@@ -433,7 +435,7 @@ class MyGenerate:
         """Generate the static website files"""
         try:
             files = Files.by_extension('md', self.docs_directory, cache=False)
-            for filename, filepath in files.iteritems():
+            for filename, filepath in files.items():
                 docs(filename[:-3] + '.html')
         except OSError:
             pass
