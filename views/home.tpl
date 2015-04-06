@@ -15,7 +15,7 @@
           </p>
           <hr>
           <div class="scrollbox-all-blogposts">
-            %for filename, meta in sorted(data.get('blog_posts_meta').iteritems(), reverse=True):
+            %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
               <p>
                   <a href="/blog/{{filename[0:-3]}}.html">{{meta.get('title')}}</a>
                   <br/>

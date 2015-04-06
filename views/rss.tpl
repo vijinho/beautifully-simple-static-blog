@@ -13,7 +13,7 @@
    <lastBuildDate>{{date}}</lastBuildDate>
    <generator>https://github.com/vijinho/beautifully-simple-static-blog</generator>
    <ttl>1440</ttl>
-    %for filename, meta in sorted(data.get('blog_posts_meta').iteritems(), reverse=True):
+    %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
    <item>
         <pubDate>{{meta.get('rfc822date')}}</pubDate>
         <title>{{meta.get('title')}}</title>

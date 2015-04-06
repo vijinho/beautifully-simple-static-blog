@@ -63,7 +63,7 @@ class MyUtils(object):
     @staticmethod
     def hashed(key):
         """Generate a string hash from a given key string"""
-        return hashlib.sha1(key).hexdigest()
+        return hashlib.sha1(key.encode('utf-8')).hexdigest()
 
 
 class ObjectCache(object):
@@ -555,7 +555,7 @@ def server_static(filepath):
 
 
 imp.reload(sys)
-sys.setdefaultencoding('utf8')
+#sys.setdefaultencoding('utf8')
 application = default_app()
 
 if __name__ in '__main__':
