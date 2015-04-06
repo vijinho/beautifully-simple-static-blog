@@ -213,7 +213,7 @@ class MyBlog(object):
                 meta['filename'] = filename
                 meta['filepath'] = filepath
                 data[filename] = meta
-                Cache.set(cache_key, data)
+            Cache.set(cache_key, data)
         return data
 
     def generate(self):
