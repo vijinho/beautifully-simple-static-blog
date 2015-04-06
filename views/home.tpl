@@ -3,7 +3,7 @@
 
   <div class="container">
     <div class="row">
-        <div class="nine columns" style="margin-top: 25%">
+        <div class="nine columns" style="margin-top: 20%">
           <h1>{{!data.get('body_title')}}</h1>
           <p>
           I work mainly as a
@@ -24,7 +24,7 @@
             %end
           </div>
         </div>
-        <div class="three columns" style="margin-top: 25%">
+        <div class="three columns" style="margin-top: 20%">
             <h3>Hobbies</h3>
             <ul>
                 <li><a href="http://eyeem.com/u/vijinho">EyeEm</a></li>
