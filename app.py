@@ -20,7 +20,7 @@ import csscompressor
 import markdown
 from bottle import error, get, static_file, response, template, default_app, run
 
-import email.Utils
+import email
 import imp
 
 
@@ -418,7 +418,7 @@ class MyGenerate(object):
             xml = template(tpl,
                            data=data,
                            cfg=cfg,
-                           date=email.Utils.formatdate(),
+                           date=email.utils.formatdate(),
                            author=cfg['email'] + '(' + cfg[
                                'author'] + ')')
         try:
