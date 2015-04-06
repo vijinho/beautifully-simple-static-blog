@@ -283,17 +283,16 @@ class MyGenerate:
         if cfg is None:
             cfg = self.config
 
+        if minify is None:
+            minify = cfg['minify_html']
+
         styles = ''
         if len(cfg['css_inline']) > 0:
             cache_key = 'inline-styles'
             if self.config['cache'] is True:
                 styles = Cache.get(cache_key)
             if len(styles) is 0 or styles is False:
-                styles = "\n<!-- Inline CSS -->\n<style>\n"
-                for stylesheet in cfg['css_inline']:
-                    styles = "\n" + styles + self.css(
-                        self.config['css_dir'] + '/' + stylesheet)
-                styles += "\n</style>\n<!-- End Inline CSS -->\n"
+                styles = self.inline_css(cfg['css_inline'], cfg)
                 Cache.set(cache_key, styles)
         data['css'] = styles
 
@@ -303,28 +302,16 @@ class MyGenerate:
             if self.config['cache'] is True:
                 source = Cache.get(cache_key)
             if len(source) is 0 or source is False:
-                source = "\n<!-- Inline Javascript -->\n<script type=\"text/javascript\">\n/* <![CDATA[ */\n"
-                for script in cfg['js_inline']:
-                    source = "\n" + source + self.js(
-                        self.config['js_dir'] + '/' + script)
-                source += "\n/* ]]> */\n</script>\n<!-- End Inline Javascript -->\n"
+                source = self.inline_js(cfg['js_inline'], cfg)
                 Cache.set(cache_key, styles)
         data['js'] = source
 
-        if minify is None:
-            minify = cfg['minify_html']
         html = template(header, data=data, cfg=cfg) + \
                template(tpl, data=data, cfg=cfg) + \
                template(footer, data=data, cfg=cfg)
 
         if minify is True:
-            html = htmlmin.minify(html,
-                                  remove_comments=True,
-                                  remove_all_empty_space=True,
-                                  reduce_empty_attributes=True,
-                                  reduce_boolean_attributes=True,
-                                  remove_optional_attribute_quotes=True,
-                                  keep_pre=True)
+            html = self.minify_html(html)
         try:
             if outfile is not None and cfg['generate'] is True:
                 with open(self.directory + '/' + outfile, 'w') as fh:
@@ -334,6 +321,48 @@ class MyGenerate:
         except IOError:
             pass
         return html
+
+    def minify_html(self, html, cfg=None):
+        """Return minified HTML, TODO: config"""
+        if html is None:
+            return ''
+        if cfg is None:
+            cfg = self.cfg
+        return htmlmin.minify(html,
+                              remove_comments=True,
+                              remove_all_empty_space=True,
+                              reduce_empty_attributes=True,
+                              reduce_boolean_attributes=True,
+                              remove_optional_attribute_quotes=True,
+                              keep_pre=True)
+
+    def inline_css(self, stylesheets=None, cfg=None):
+        """Return oncatenated css files in html wrapper for inline css"""
+        if stylesheets is None:
+            return ''
+        if cfg is None:
+            cfg = self.cfg
+        css = "\n<!-- Inline CSS -->\n<style>\n"
+        for stylesheet in stylesheets:
+            css = "\n" + css + self.css(
+                cfg['css_dir'] + '/' + stylesheet)
+        css += "\n</style>\n<!-- End Inline CSS -->\n"
+        return css
+
+    def inline_js(self, scripts, cfg=None):
+        """Return oncatenated js files in html wrapper for inline css"""
+        if scripts is None:
+            return ''
+        if cfg is None:
+            cfg = self.cfg
+        source = ''
+        source = "\n<!-- Inline Javascript -->\n<script type=\"text/javascript\">\n/* <![CDATA[ */\n"
+        for script in scripts:
+            source = "\n" + source + self.js(
+                cfg['js_dir'] + '/' + script)
+        source += "\n/* ]]> */\n</script>\n<!-- End Inline Javascript -->\n"
+        return source
+
 
     def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml', cfg=None):
         """Render a multiple templates using the same data dict for header,
