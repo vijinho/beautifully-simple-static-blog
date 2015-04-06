@@ -6,7 +6,6 @@ static content.
 from builtins import str
 from builtins import object
 import os
-import sys
 import pickle
 import hashlib
 import time
@@ -21,7 +20,6 @@ import markdown
 from bottle import error, get, static_file, response, template, default_app, run
 
 import email
-import imp
 
 
 __author__ = "Vijay Mahrra"
@@ -123,8 +121,10 @@ class ObjectCache(object):
     def wipe(self):
         """Wipe the cache - return removed files list"""
         try:
-            files = self.MyFiles.by_extension('tmp', self.directory, cache=False)
-            removed = [os.remove(path) for filename, path in list(files.items())]
+            files = self.MyFiles.by_extension('tmp', self.directory,
+                                              cache=False)
+            removed = [os.remove(path) for filename, path in
+                       list(files.items())]
         except OSError:
             return []
         except IOError:
@@ -443,7 +443,8 @@ class MyGenerate(object):
     def website(self):
         """Generate the static website files"""
         try:
-            files = self.MyFiles.by_extension('md', self.docs_directory, cache=False)
+            files = self.MyFiles.by_extension('md', self.docs_directory,
+                                              cache=False)
             for filename, filepath in list(files.items()):
                 docs(filename[:-3] + '.html')
         except OSError:
@@ -569,6 +570,7 @@ if __name__ in '__main__':
     if not os.path.exists('config.py'):
         shutil.copyfile('config.py.example', 'config.py')
     import config
+
     CONFIG = config.Config().get()
 
     Blog = MyBlog(cfg=CONFIG)
