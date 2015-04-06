@@ -113,9 +113,7 @@ class ObjectCache(object):
                                               key=self.Utils.hashed(key))
             os.remove(filename)
             return True
-        except OSError:
-            return False
-        except IOError:
+        except (OSError, IOError):
             return False
 
     def wipe(self):
@@ -125,9 +123,7 @@ class ObjectCache(object):
                                               cache=False)
             removed = [os.remove(path) for filename, path in
                        list(files.items())]
-        except OSError:
-            return []
-        except IOError:
+        except (OSError, IOError):
             return []
         return removed
 
@@ -308,9 +304,7 @@ class MyGenerate(object):
                     path)
                 with open(outfile, 'w') as fh:
                     fh.write(data)
-        except OSError:
-            pass
-        except IOError:
+        except (OSError, IOError):
             pass
         return data
 
@@ -341,9 +335,7 @@ class MyGenerate(object):
                     path)
                 with open(outfile, 'w') as fh:
                     fh.write(data)
-        except OSError:
-            pass
-        except IOError:
+        except (OSError, IOError):
             pass
         return data
 
@@ -433,9 +425,7 @@ class MyGenerate(object):
             if outfile is not None and xml is not None:
                 with open(self.directory + '/' + outfile, 'w') as fh:
                     fh.write(xml)
-        except OSError:
-            pass
-        except IOError:
+        except (OSError, IOError):
             pass
 
         return xml
@@ -447,9 +437,7 @@ class MyGenerate(object):
                                               cache=False)
             for filename, filepath in list(files.items()):
                 docs(filename[:-3] + '.html')
-        except OSError:
-            pass
-        except IOError:
+        except (OSError, IOError):
             pass
         Blog.generate()
         rss()
@@ -570,6 +558,7 @@ if __name__ in '__main__':
     if not os.path.exists('config.py'):
         shutil.copyfile('config.py.example', 'config.py')
     import config
+
     CONFIG = config.Config().get()
 
     Markdown = MyMarkdown()
