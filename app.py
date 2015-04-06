@@ -269,6 +269,86 @@ class MyGenerate:
         else:
             self.docs_directory = docs_directory
 
+    @staticmethod
+    def minify_html(html):
+        """Return minified HTML"""
+        if html is None:
+            return ''
+        return htmlmin.minify(html,
+                              remove_comments=True,
+                              remove_all_empty_space=True,
+                              reduce_empty_attributes=True,
+                              reduce_boolean_attributes=True,
+                              remove_optional_attribute_quotes=True,
+                              keep_pre=True)
+
+    def css(self, path):
+        """Return optionally minified CSS for filepath"""
+        if self.config['minify_css'] is False:
+            with open(path) as fh:
+                data = fh.read()
+        else:
+            with open(path) as fh:
+                data = csscompressor.compress(fh.read())
+
+        try:
+            if self.config['generate'] is True and len(data) > 0:
+                outfile = self.config['css_output'] + '/' + os.path.basename(
+                    path)
+                with open(outfile, 'w') as fh:
+                    fh.write(data)
+        except OSError:
+            pass
+        except IOError:
+            pass
+        return data
+
+    def inline_css(self, stylesheets=None, cfg=None):
+        """Return concatenated css ready to insert into html document"""
+        if stylesheets is None:
+            return ''
+        if cfg is None:
+            cfg = self.config
+        html = "\n<!-- Inline CSS -->\n<style>\n"
+        for stylesheet in stylesheets:
+            html = "\n" + html + self.css(
+                cfg['css_dir'] + '/' + stylesheet)
+        html += "\n</style>\n<!-- End Inline CSS -->\n"
+        return html
+
+    def js(self, path):
+        """Return optionally minified JS for filepath"""
+        if self.config['minify_js'] is False:
+            with open(path) as fh:
+                data = fh.read()
+        else:
+            with open(path) as fh:
+                data = jsmin(fh.read(), quote_chars="'\"`")
+        try:
+            if self.config['generate'] is True and len(data) > 0:
+                outfile = self.config['js_output'] + '/' + os.path.basename(
+                    path)
+                with open(outfile, 'w') as fh:
+                    fh.write(data)
+        except OSError:
+            pass
+        except IOError:
+            pass
+        return data
+
+    def inline_js(self, scripts, cfg=None):
+        """Return concatenated js ready to insert into html document"""
+        if scripts is None:
+            return ''
+        if cfg is None:
+            cfg = self.config
+        html = "\n<!-- Inline Javascript -->\n<script type=\"text/javascript\">\n/* <![CDATA[ */\n"
+        for script in scripts:
+            html = "\n" + html + self.js(
+                cfg['js_dir'] + '/' + script)
+        html += "\n/* ]]> */\n</script>\n<!-- End Inline Javascript -->\n"
+        return html
+
     def page(self,
              data=None,
              header='header.tpl',
@@ -322,62 +402,24 @@ class MyGenerate:
             pass
         return html
 
-    def minify_html(self, html, cfg=None):
-        """Return minified HTML, TODO: config"""
-        if html is None:
-            return ''
-        if cfg is None:
-            cfg = self.cfg
-        return htmlmin.minify(html,
-                              remove_comments=True,
-                              remove_all_empty_space=True,
-                              reduce_empty_attributes=True,
-                              reduce_boolean_attributes=True,
-                              remove_optional_attribute_quotes=True,
-                              keep_pre=True)
-
-    def inline_css(self, stylesheets=None, cfg=None):
-        """Return oncatenated css files in html wrapper for inline css"""
-        if stylesheets is None:
-            return ''
-        if cfg is None:
-            cfg = self.cfg
-        css = "\n<!-- Inline CSS -->\n<style>\n"
-        for stylesheet in stylesheets:
-            css = "\n" + css + self.css(
-                cfg['css_dir'] + '/' + stylesheet)
-        css += "\n</style>\n<!-- End Inline CSS -->\n"
-        return css
-
-    def inline_js(self, scripts, cfg=None):
-        """Return oncatenated js files in html wrapper for inline css"""
-        if scripts is None:
-            return ''
-        if cfg is None:
-            cfg = self.cfg
-        source = ''
-        source = "\n<!-- Inline Javascript -->\n<script type=\"text/javascript\">\n/* <![CDATA[ */\n"
-        for script in scripts:
-            source = "\n" + source + self.js(
-                cfg['js_dir'] + '/' + script)
-        source += "\n/* ]]> */\n</script>\n<!-- End Inline Javascript -->\n"
-        return source
-
-
-    def feed(self, data=None, tpl='rss.tpl', outfile='rss.xml', cfg=None):
+    def feed(self, data=None, feedtype='rss', tpl='rss.tpl', outfile='rss.xml',
+             cfg=None):
         """Render a multiple templates using the same data dict for header,
         body, footer templates
         """
         if cfg is None:
             cfg = self.config
-        xml = template(tpl,
-                       data=data,
-                       cfg=cfg,
-                       date=email.Utils.formatdate(),
-                       author=cfg['email'] + '(' + cfg[
-                           'author'] + ')')
+
+        xml = None
+        if feedtype is 'rss':
+            xml = template(tpl,
+                           data=data,
+                           cfg=cfg,
+                           date=email.Utils.formatdate(),
+                           author=cfg['email'] + '(' + cfg[
+                               'author'] + ')')
         try:
-            if outfile is not None:
+            if outfile is not None and xml is not None:
                 with open(self.directory + '/' + outfile, 'w') as fh:
                     fh.write(xml)
         except OSError:
@@ -386,49 +428,6 @@ class MyGenerate:
             pass
 
         return xml
-
-    def css(self, path):
-        """Return minified CSS for filepath"""
-        if self.config['minify_css'] is False:
-            with open(path) as fh:
-                data = fh.read()
-        else:
-            with open(path) as fh:
-                data = csscompressor.compress(fh.read())
-
-        try:
-            if self.config['generate'] is True and len(data) > 0:
-                outfile = self.config['css_output'] + '/' + os.path.basename(
-                    path)
-                with open(outfile, 'w') as fh:
-                    fh.write(data)
-        except OSError:
-            pass
-        except IOError:
-            pass
-
-        return data
-
-    def js(self, path):
-        """Return minified JS for filepath"""
-        if self.config['minify_js'] is False:
-            with open(path) as fh:
-                data = fh.read()
-        else:
-            with open(path) as fh:
-                data = jsmin(fh.read(), quote_chars="'\"`")
-        try:
-            if self.config['generate'] is True and len(data) > 0:
-                outfile = self.config['js_output'] + '/' + os.path.basename(
-                    path)
-                with open(outfile, 'w') as fh:
-                    fh.write(data)
-        except OSError:
-            pass
-        except IOError:
-            pass
-
-        return data
 
     def website(self):
         """Generate the static website files"""
