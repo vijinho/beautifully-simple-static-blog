@@ -40,6 +40,7 @@
             </ul>
             <h3>Meta</h3>
             <ul>
+                <li><a href="http://www.amazon.co.uk/gp/registry/wishlist/F66L0QK92OJP/ref=cm_wl_huc_view">Wishlist</a>                        
                 <li><a href="http://about.me/vijay.mahrra">About Me</a></li>
                 <li><a href="/blog/cv.html">CV/Resumé</a></li>
                 <li><a href="https://github.com/vijinho/beautifully-simple-static-blog">Source Code</a></li>
