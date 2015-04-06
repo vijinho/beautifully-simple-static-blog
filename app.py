@@ -160,7 +160,7 @@ class MyMarkdown(object):
         """Read a file name and return contents as str html5,
         dict meta-information, original markdown
         """
-        with open(path) as fh:
+        with open(path, 'r') as fh:
             return Markdown.parse(fh.read())
 
 
@@ -288,10 +288,10 @@ class MyGenerate(object):
     def css(self, path):
         """Return optionally minified CSS for filepath"""
         if self.config['minify_css'] is False:
-            with open(path) as fh:
+            with open(path, 'r') as fh:
                 data = fh.read()
         else:
-            with open(path) as fh:
+            with open(path, 'r') as fh:
                 data = csscompressor.compress(fh.read())
 
         try:
@@ -325,7 +325,7 @@ class MyGenerate(object):
             with open(path) as fh:
                 data = fh.read()
         else:
-            with open(path) as fh:
+            with open(path, 'r') as fh:
                 data = jsmin(fh.read(), quote_chars="'\"`")
         try:
             if self.config['generate'] is True and len(data) > 0:
@@ -526,7 +526,7 @@ def js(filepath):
         try:
             return Generate.js(path)
         except IOError:
-            with open(path) as fh:
+            with open(path, 'r') as fh:
                 return fh.read()
     else:
         return error404()
@@ -542,7 +542,7 @@ def css(filepath):
         try:
             return Generate.css(path)
         except IOError:
-            with open(path) as fh:
+            with open(path, 'r') as fh:
                 return fh.read()
     else:
         return error404()
