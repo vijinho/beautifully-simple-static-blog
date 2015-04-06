@@ -302,8 +302,8 @@ class MyGenerate(object):
             if self.config['generate'] is True and len(data) > 0:
                 outfile = self.config['css_output'] + '/' + os.path.basename(
                     path)
-                with open(outfile, 'w') as fh:
-                    fh.write(data)
+                with open(outfile, 'wb') as fh:
+                    fh.write(str(data).encode('utf8'))
         except (OSError, IOError):
             pass
         return data
@@ -333,8 +333,8 @@ class MyGenerate(object):
             if self.config['generate'] is True and len(data) > 0:
                 outfile = self.config['js_output'] + '/' + os.path.basename(
                     path)
-                with open(outfile, 'w') as fh:
-                    fh.write(data)
+                with open(outfile, 'wb') as fh:
+                    fh.write(str(data).encode('utf8'))
         except (OSError, IOError):
             pass
         return data
@@ -397,8 +397,8 @@ class MyGenerate(object):
             html = self.minify_html(html)
         try:
             if outfile is not None and cfg['generate'] is True:
-                with open(self.directory + '/' + outfile, 'w') as fh:
-                    fh.write(html)
+                with open(self.directory + '/' + outfile, 'wb') as fh:
+                    fh.write(str(html).encode('utf8'))
         except OSError:
             pass
         except IOError:
@@ -423,8 +423,8 @@ class MyGenerate(object):
                                'author'] + ')')
         try:
             if outfile is not None and xml is not None:
-                with open(self.directory + '/' + outfile, 'w') as fh:
-                    fh.write(xml)
+                with open(self.directory + '/' + outfile, 'wb') as fh:
+                    fh.write(str(xml).encode('utf8'))
         except (OSError, IOError):
             pass
 
