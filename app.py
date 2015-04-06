@@ -570,12 +570,10 @@ if __name__ in '__main__':
     if not os.path.exists('config.py'):
         shutil.copyfile('config.py.example', 'config.py')
     import config
-
     CONFIG = config.Config().get()
 
+    Markdown = MyMarkdown()
     Blog = MyBlog(cfg=CONFIG)
-    Markdown = MyMarkdown(output_format='html5',
-                          extensions=['markdown.extensions.meta'])
     Cache = ObjectCache(cfg=CONFIG)
     Cache.wipe()
     Generate = MyGenerate(cfg=CONFIG)
