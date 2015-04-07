@@ -32,36 +32,9 @@ __email__ = "vijay.mahrra@gmail.com"
 __status__ = "Production"
 
 
-class MyUtils(object):
-    """General utility helper functions used by the app"""
-
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def ts_to_rfc822(timestamp=None, timezone='GMT'):
-        """Convert datetime from (mysql-style) timestamp format
-        1976-12-25 07:30:30 to RFC822 string
-        """
-        l = len(timestamp)
-        if l == 19:
-            fmt = '%Y-%m-%d %H:%M:%S'
-        elif l == 16:
-            fmt = '%Y-%m-%d %H:%M'
-        elif l == 10:
-            fmt = '%Y-%m-%d'
-        elif l == 8:
-            fmt = '%y-%m-%d'
-        else:
-            return ''
-
-        return time.strftime("%a, %d %b %Y %H:%M:%S " + timezone,
-                             time.strptime(timestamp, fmt))
-
-    @staticmethod
-    def hashed(key):
-        """Generate a string hash from a given key string"""
-        return hashlib.sha1(key.encode('utf-8')).hexdigest()
+def hashed(key):
+    """Generate a string hash from a given key string"""
+    return hashlib.sha1(key.encode('utf-8')).hexdigest()
 
 
 class ObjectCache(object):
@@ -82,7 +55,6 @@ class ObjectCache(object):
             self.directory = directory
 
         self.MyFiles = MyFiles()
-        self.Utils = MyUtils()
 
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
@@ -90,7 +62,7 @@ class ObjectCache(object):
             return False
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                              key=self.Utils.hashed(key))
+                                              key=hashed(key))
             pickle.dump(data, open(filename, "wb"))
             return True
         except IOError:
@@ -100,7 +72,7 @@ class ObjectCache(object):
         """Get an item of data from the cache - return data or empty dict"""
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                              key=self.Utils.hashed(key))
+                                              key=hashed(key))
             data = pickle.load(open(filename, "rb"))
             return data
         except IOError:
@@ -110,7 +82,7 @@ class ObjectCache(object):
         """Remove an item of data from the cache - return boolean success"""
         try:
             filename = self.fileformat.format(dir=self.directory,
-                                              key=self.Utils.hashed(key))
+                                              key=hashed(key))
             os.remove(filename)
             return True
         except (OSError, IOError):
@@ -196,7 +168,26 @@ class MyBlog(object):
             self.directory = directory
 
         self.MyFiles = MyFiles()
-        self.Utils = MyUtils()
+
+    @staticmethod
+    def ts_to_rfc822(timestamp=None, timezone='GMT'):
+        """Convert datetime from (mysql-style) timestamp format
+        1976-12-25 07:30:30 to RFC822 string
+        """
+        l = len(timestamp)
+        if l == 19:
+            fmt = '%Y-%m-%d %H:%M:%S'
+        elif l == 16:
+            fmt = '%Y-%m-%d %H:%M'
+        elif l == 10:
+            fmt = '%Y-%m-%d'
+        elif l == 8:
+            fmt = '%y-%m-%d'
+        else:
+            return ''
+
+        return time.strftime("%a, %d %b %Y %H:%M:%S " + timezone,
+                             time.strptime(timestamp, fmt))
 
     def metadata(self, cache=False):
         """Return a dict of meta-information for all blog posts"""
@@ -208,8 +199,8 @@ class MyBlog(object):
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
                 # add some extra information we might find useful
-                meta['id'] = self.Utils.hashed(filepath)
-                meta['rfc822date'] = self.Utils.ts_to_rfc822(meta['date'])
+                meta['id'] = hashed(filepath)
+                meta['rfc822date'] = self.ts_to_rfc822(meta['date'])
                 meta['filename'] = filename
                 meta['filepath'] = filepath
                 data[filename] = meta
