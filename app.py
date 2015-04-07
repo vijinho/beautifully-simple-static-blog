@@ -118,12 +118,13 @@ class MyMarkdown(object):
                                extensions=self.extensions)
         html = md.convert(text)
         meta = {}
-        if len(md.Meta) > 0:
-            for k, v in list(md.Meta.items()):
-                v = "".join(v)
-                if k == 'tags' and len(v) > 2:
-                    v = v[1:-1]
-                meta[k] = v
+        for k, v in md.Meta.items():
+            v = "".join(v)
+            # the tags in the markdown file are stored as [tag1, tag,2...]
+            # so clip the [ and the ] from the string
+            if k == 'tags' and len(v) > 2:
+                v = v[1:-1]
+            meta[k] = v
         return html, meta, text
 
     @staticmethod
