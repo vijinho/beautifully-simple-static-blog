@@ -40,9 +40,11 @@ def hashed(key):
 def files_by_ext(ext, path, caching=False):
     """Return a dict of all files of a given file extension"""
     cache_key = ext + path
-    if caching is True:
+    if caching:
         matches = Cache.get(cache_key)
-    if caching is False or matches is False or len(matches) is 0:
+    else:
+        matches = None
+    if not (caching or matches):
         matches = {}
         ext = '*.' + ext
         for root, dirs, files in os.walk(path):
