@@ -37,20 +37,28 @@ def hashed(key):
     return hashlib.sha1(key.encode('utf-8')).hexdigest()
 
 
-def files_by_ext(ext, path, caching=False):
-    """Return a dict of all files of a given file extension"""
+def files_by_extension(ext, path):
+    """Generator (filename,filepath) for a given file extension
+    in a directory tree
+    """
+    ext = '*.' + ext
+    for root, dirs, files in os.walk(path):
+        for f in files:
+            if fnmatch(f, ext):
+               yield f, str(os.path.join(root, f))
+
+
+def files_by_ext(ext, path, cache=False):
+    """Return a dict of all files of a given file extension, using caching"""
     cache_key = ext + path
-    if caching:
+    if cache:
         matches = Cache.get(cache_key)
     else:
         matches = None
-    if not (caching or matches):
+    if not (cache or matches):
         matches = {}
-        ext = '*.' + ext
-        for root, dirs, files in os.walk(path):
-            for f in files:
-                if fnmatch(f, ext):
-                    matches[f] = str(os.path.join(root, f))
+        for file, filepath in files_by_extension(ext, path):
+            matches[file] = filepath
         Cache.set(cache_key, matches)
     return matches
 
@@ -105,15 +113,13 @@ class ObjectCache(object):
             return False
 
     def wipe(self):
-        """Wipe the cache - return removed files list"""
+        """Wipe the cache return boolean success"""
         try:
-            files = files_by_ext('tmp', self.directory,
-                                              caching=False)
-            removed = [os.remove(path) for filename, path in
-                       files.items()]
+            for file, filepath in files_by_extension('tmp', self.directory):
+                os.remove(filepath)
         except (OSError, IOError):
-            return []
-        return removed
+            return False
+        return True
 
 
 class MyMarkdown(object):
@@ -414,7 +420,7 @@ class MyGenerate(object):
         """Generate the static website files"""
         try:
             files = files_by_ext('md', self.docs_directory,
-                                              caching=False)
+                                              cache=False)
             for filename, filepath in files.items():
                 docs(filename[:-3] + '.html')
         except (OSError, IOError):
