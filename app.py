@@ -37,6 +37,23 @@ def hashed(key):
     return hashlib.sha1(key.encode('utf-8')).hexdigest()
 
 
+def files_by_ext(ext, path, caching=False):
+    """Return a dict of all files of a given file extension"""
+    global matches
+    cache_key = ext + path
+    if caching is True:
+        matches = Cache.get(cache_key)
+    if caching is False or matches is False or len(matches) is 0:
+        matches = {}
+        ext = '*.' + ext
+        for root, dirs, files in os.walk(path):
+            for f in files:
+                if fnmatch(f, ext):
+                    matches[f] = str(os.path.join(root, f))
+        Cache.set(cache_key, matches)
+    return matches
+
+
 class ObjectCache(object):
     """Handle caching for objects using picklet"""
 
@@ -53,8 +70,6 @@ class ObjectCache(object):
             self.directory = directory
         else:
             self.directory = cfg['cache_dir']
-
-        self.MyFiles = MyFiles()
 
     def set(self, key, data):
         """Save an item of data to the cache - return boolean success"""
@@ -91,8 +106,8 @@ class ObjectCache(object):
     def wipe(self):
         """Wipe the cache - return removed files list"""
         try:
-            files = self.MyFiles.by_extension('tmp', self.directory,
-                                              cache=False)
+            files = files_by_ext('tmp', self.directory,
+                                              caching=False)
             removed = [os.remove(path) for filename, path in
                        list(files.items())]
         except (OSError, IOError):
@@ -136,30 +151,6 @@ class MyMarkdown(object):
             return Markdown.parse(fh.read())
 
 
-class MyFiles(object):
-    """File handling methods"""
-
-    def __init__(self):
-        pass
-
-    @staticmethod
-    def by_extension(ext, path, cache=False):
-        """Return a dict of all files of a given file extension"""
-        global matches
-        cache_key = ext + path
-        if cache is True:
-            matches = Cache.get(cache_key)
-        if cache is False or matches is False or len(matches) is 0:
-            matches = {}
-            ext = '*.' + ext
-            for root, dirs, files in os.walk(path):
-                for f in files:
-                    if fnmatch(f, ext):
-                        matches[f] = str(os.path.join(root, f))
-            Cache.set(cache_key, matches)
-        return matches
-
-
 class MyBlog(object):
     def __init__(self, cfg=None, directory=None):
         self.config = cfg
@@ -167,8 +158,6 @@ class MyBlog(object):
             self.directory = directory
         else:
             self.directory = cfg['content_dir']
-
-        self.MyFiles = MyFiles()
 
     @staticmethod
     def ts_to_rfc822(timestamp=None, timezone='GMT'):
@@ -195,7 +184,7 @@ class MyBlog(object):
         cache_key = 'blog_posts_meta'
         data = Cache.get(cache_key)
         if cache is False or data is False or len(data) is 0:
-            documents = self.MyFiles.by_extension('md', self.directory, cache)
+            documents = files_by_ext('md', self.directory, cache)
             for filename, filepath in list(documents.items()):
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
@@ -211,7 +200,7 @@ class MyBlog(object):
     def generate(self):
         """Generate static www/blog/*.html files from content/*.md files"""
         data = {}
-        documents = self.MyFiles.by_extension('md', self.directory)
+        documents = files_by_ext('md', self.directory)
         for filename, filepath in list(documents.items()):
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
@@ -228,7 +217,7 @@ class MyBlog(object):
         if cfg is None:
             cfg = self.config
 
-        documents = self.MyFiles.by_extension('md', self.directory)
+        documents = files_by_ext('md', self.directory)
         if filename in documents:
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
@@ -265,8 +254,6 @@ class MyGenerate(object):
             self.docs_directory = docs_directory
         else:
             self.docs_directory = cfg['docs_dir']
-
-        self.MyFiles = MyFiles()
 
     @staticmethod
     def minify_html(html):
@@ -425,8 +412,8 @@ class MyGenerate(object):
     def website(self):
         """Generate the static website files"""
         try:
-            files = self.MyFiles.by_extension('md', self.docs_directory,
-                                              cache=False)
+            files = files_by_ext('md', self.docs_directory,
+                                              caching=False)
             for filename, filepath in list(files.items()):
                 docs(filename[:-3] + '.html')
         except (OSError, IOError):
