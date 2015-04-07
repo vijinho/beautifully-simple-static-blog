@@ -49,10 +49,10 @@ class ObjectCache(object):
         """
         self.config = cfg
         self.fileformat = fileformat
-        if directory is None:
-            self.directory = cfg['cache_dir']
-        else:
+        if directory:
             self.directory = directory
+        else:
+            self.directory = cfg['cache_dir']
 
         self.MyFiles = MyFiles()
 
@@ -162,10 +162,10 @@ class MyFiles(object):
 class MyBlog(object):
     def __init__(self, cfg=None, directory=None):
         self.config = cfg
-        if directory is None:
-            self.directory = cfg['content_dir']
-        else:
+        if directory:
             self.directory = directory
+        else:
+            self.directory = cfg['content_dir']
 
         self.MyFiles = MyFiles()
 
@@ -255,15 +255,15 @@ class MyGenerate(object):
     def __init__(self, cfg=None, directory=None, docs_directory=None):
         self.config = cfg
 
-        if directory is None:
-            self.directory = cfg['output_dir']
-        else:
+        if directory:
             self.directory = directory
-
-        if docs_directory is None:
-            self.docs_directory = cfg['docs_dir']
         else:
+            self.directory = cfg['output_dir']
+
+        if docs_directory:
             self.docs_directory = docs_directory
+        else:
+            self.docs_directory = cfg['docs_dir']
 
         self.MyFiles = MyFiles()
 
