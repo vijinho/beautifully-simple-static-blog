@@ -39,7 +39,6 @@ def hashed(key):
 
 def files_by_ext(ext, path, caching=False):
     """Return a dict of all files of a given file extension"""
-    global matches
     cache_key = ext + path
     if caching is True:
         matches = Cache.get(cache_key)
