@@ -110,7 +110,7 @@ class ObjectCache(object):
             files = files_by_ext('tmp', self.directory,
                                               caching=False)
             removed = [os.remove(path) for filename, path in
-                       list(files.items())]
+                       files.items()]
         except (OSError, IOError):
             return []
         return removed
@@ -186,7 +186,7 @@ class MyBlog(object):
         data = Cache.get(cache_key)
         if cache is False or data is False or len(data) is 0:
             documents = files_by_ext('md', self.directory, cache)
-            for filename, filepath in list(documents.items()):
+            for filename, filepath in documents.items():
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
                 # add some extra information we might find useful
@@ -202,7 +202,7 @@ class MyBlog(object):
         """Generate static www/blog/*.html files from content/*.md files"""
         data = {}
         documents = files_by_ext('md', self.directory)
-        for filename, filepath in list(documents.items()):
+        for filename, filepath in documents.items():
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
             meta['filename'] = filename
@@ -415,7 +415,7 @@ class MyGenerate(object):
         try:
             files = files_by_ext('md', self.docs_directory,
                                               caching=False)
-            for filename, filepath in list(files.items()):
+            for filename, filepath in files.items():
                 docs(filename[:-3] + '.html')
         except (OSError, IOError):
             pass
