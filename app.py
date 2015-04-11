@@ -25,7 +25,7 @@ import email
 __author__ = "Vijay Mahrra"
 __copyright__ = "Copyright 2015, Vijay Mahrra"
 __credits__ = ["Vijay Mahrra"]
-__license__ = "GPL3"
+__license__ = "GPLv3"
 __version__ = "1.0"
 __maintainer__ = "Vijay Mahrra"
 __email__ = "vijay.mahrra@gmail.com"
