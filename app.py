@@ -504,13 +504,7 @@ def docs(filename):
 def rss():
     """Display the homepage"""
     response.content_type = 'application/rss+xml; charset=utf8'
-    data = {'body_title': CONFIG['title'],
-            'head_title': CONFIG['author'] + ': ¡Hola!',
-            'head_author': CONFIG['author'],
-            'head_keywords': 'Blog',
-            'head_description': 'Blog',
-            'blog_posts_meta': Blog.metadata(cache=True)}
-    return Generate.feed(data=data)
+    return Generate.feed(data={'blog_posts_meta': Blog.metadata(cache=True)})
 
 
 @get('/blog/js/<filepath:path>')
