@@ -169,19 +169,31 @@ class MyBlog(object):
     @staticmethod
     def ts_to_rfc822(timestamp=None, timezone='GMT'):
         """Convert datetime from (mysql-style) timestamp format
-        1976-12-25 07:30:30 to RFC822 string
+        :rtype : 1976-12-25 07:30:30 to RFC822 string
         """
-        l = len(timestamp)
-        if l == 19:
-            fmt = '%Y-%m-%d %H:%M:%S'
-        elif l == 16:
-            fmt = '%Y-%m-%d %H:%M'
-        elif l == 10:
+        # match timestamp format (yy|yyyy)-mm-dd hh:mm:ss
+        r = re.match("(?P<year>\d{2,4})-?(?P<month>\d{1,2})?-?(?P<day>\d{1,2})?\s*(?P<hour>\d{1,2})?:?(?P<minute>\d{1,2})?:?(?P<second>\d{1,2})?.*", timestamp)
+
+        # return nothing if we do not have at least year-month-day
+        if not (r.group('year') and r.group('month') and r.group('day')):
+            return ''
+
+        # setup format string, starting with 2 or 4 digit year-month-day
+        y = len(r.group('year'))
+        if y is 4:
             fmt = '%Y-%m-%d'
-        elif l == 8:
+        elif y is 2:
             fmt = '%y-%m-%d'
         else:
             return ''
+
+        # add time format
+        if r.group('hour'):
+            fmt = fmt + ' %H'
+            if r.group('minute'):
+                fmt = fmt + ':%M'
+                if r.group('second'):
+                    fmt = fmt + ':%S'
 
         return time.strftime("%a, %d %b %Y %H:%M:%S " + timezone,
                              time.strptime(timestamp, fmt))
