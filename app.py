@@ -481,11 +481,13 @@ def docs(filename):
     r = re.match("(?P<doc>.+)\.(?P<ext>html)", filename)
     if not hasattr(r, 'group'):
         return error404()
-    html, meta, text = Markdown.file('docs/' + r.group('doc') + '.md')
-    data = {'head_title': filename[:-5],
+    docfile = r.group('doc') + '.md'
+    title = r.group('doc').title()
+    html, meta, text = Markdown.file('docs/' + docfile)
+    data = {'head_title': CONFIG['author'] + ': ' + title,
             'head_author': CONFIG['author'],
-            'head_keywords': filename[:-5] + ' file',
-            'head_description': filename[:-5] + ' for website ' + CONFIG[
+            'head_keywords': title + ' file',
+            'head_description': title + ' for website ' + CONFIG[
                 'title'],
             'blog_posts_meta': Blog.metadata(cache=True),
             'body_content': html}
