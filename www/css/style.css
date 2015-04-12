@@ -113,13 +113,6 @@ footer {
     color:#aaa
 }
 
-footer .coins {
-    float:right;
-    margin-top:-.5em;
-    font-size:.7em;
-    color:#ccc
-}
-
 footer a {
     color:#aaa
 }
@@ -164,7 +157,7 @@ blockquote p {
 }
 
 .scrollbox-all-blogposts {
-    height:300px;
+    height:350px;
     width:100%;
     overflow:auto
 }
@@ -173,4 +166,8 @@ img {
     min-width:100%;
     max-width:100%;
     height:auto
+}
+
+li {
+    font-size:.85em;
 }

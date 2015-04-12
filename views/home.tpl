@@ -3,7 +3,7 @@
 
   <div class="container">
     <div class="row">
-        <div class="nine columns" style="margin-top: 15%">
+        <div class="eight columns" style="margin-top: 15%">
           <h1>{{!data.get('body_title')}}</h1>
           <p>
           I work mainly as a
@@ -13,6 +13,23 @@
           <a href="http://about.me/vijay.mahrra">about.me</a> or drop a mail to
           vijay.mahrra@gmail.com
           </p>
+            <hr/>
+          <div class="scrollbox-all-blogposts">
+            %last = 0
+            %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
+              %year = int(meta.get('date')[0:4])
+              %if year != last:
+                <h3><a name="{{year}}"></a>{{year}}</h3>
+              %end
+              <p>
+                  <a href="/blog/{{filename[0:-3]}}.html">{{meta.get('title')}}</a>
+                  <br/>
+                  <small>{{meta.get('date')[0:11]}}</small>
+              </p>
+            %last = year
+            %end
+          </div>
+            <br/>
             <small>
             %last = 0
             %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
@@ -23,24 +40,8 @@
             %last = year
             %end
             </small>
-            <hr/>
-          <div class="scrollbox-all-blogposts">
-            %last = 0
-            %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
-              %year = int(meta.get('date')[0:4])
-              %if year != last:
-                <h3><a name="{{year}}">{{year}}</a></h3>
-              %end
-              <p>
-                  <a href="/blog/{{filename[0:-3]}}.html">{{meta.get('title')}}</a>
-                  <br/>
-                  <small>{{meta.get('date')[0:11]}}</small>
-              </p>
-            %last = year
-            %end
-          </div>
         </div>
-        <div class="three columns" style="margin-top: 15%">
+        <div class="four columns" style="margin-top: 15%">
             <h3>Hobbies</h3>
             <ul>
                 <li><a href="http://eyeem.com/u/vijinho">EyeEm</a></li>
