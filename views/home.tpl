@@ -35,7 +35,7 @@
             %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
               %year = int(meta.get('date')[0:4])
               %if year != last:
-                <a href="#{{year}}">{{year}}</a>
+                <a href="#{{year}}">{{year}}</a>&nbsp;
               %end
             %last = year
             %end

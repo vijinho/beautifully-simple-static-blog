@@ -464,9 +464,9 @@ def index():
 @get('/blog/<url>')
 def blog(url):
     """Display the blog post"""
-    m = re.match('^[\d]+[\d]+[\d]+.*\.html', url)
-    if hasattr(m, 'group'):
-        filename = url[:-5] + '.md'
+    r = re.match("(?P<slug>\d{2,4}-\d{1,2}-\d{1,2}-.+)\.(?P<ext>html)", url)
+    if r.group:
+        filename = r.group('slug') + '.md'
         return Blog.html(filename)
     else:
         m = re.match('^[^\.]+\.html', url)
