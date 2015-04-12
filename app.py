@@ -465,12 +465,12 @@ def index():
 def blog(url):
     """Display the blog post"""
     r = re.match("(?P<slug>\d{2,4}-\d{1,2}-\d{1,2}-.+)\.(?P<ext>html)", url)
-    if r.group:
+    if hasattr(r, 'group'):
         filename = r.group('slug') + '.md'
         return Blog.html(filename)
     else:
-        m = re.match('^[^\.]+\.html', url)
-        if hasattr(m, 'group'):
+        r = re.match("(?P<doc>.+)\.(?P<ext>html)", url)
+        if hasattr(r, 'group'):
             return docs(url)
         return error404()
 
@@ -478,10 +478,10 @@ def blog(url):
 @get('/blog/docs/<filename>')
 def docs(filename):
     """Display the docs folder files"""
-    m = re.match('^[^\.]+\.html', filename)
-    if not hasattr(m, 'group'):
+    r = re.match("(?P<doc>.+)\.(?P<ext>html)", filename)
+    if not hasattr(r, 'group'):
         return error404()
-    html, meta, text = Markdown.file('docs/' + filename[:-5] + '.md')
+    html, meta, text = Markdown.file('docs/' + r.group('doc') + '.md')
     data = {'head_title': filename[:-5],
             'head_author': CONFIG['author'],
             'head_keywords': filename[:-5] + ' file',
