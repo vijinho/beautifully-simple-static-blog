@@ -207,9 +207,11 @@ class MyBlog(object):
             for filename, filepath in documents.items():
                 filepath = documents[filename]
                 html, meta, document = Markdown.file(filepath)
+                if not meta:
+                    continue
                 # add some extra information we might find useful
                 meta['id'] = hashed(filepath)
-                meta['rfc822date'] = self.ts_to_rfc822(meta['date'])
+                meta['rfc822date'] = MyBlog.ts_to_rfc822(meta['date'])
                 meta['filename'] = filename
                 meta['filepath'] = filepath
                 data[filename] = meta
@@ -240,6 +242,8 @@ class MyBlog(object):
         if filename in documents:
             filepath = documents[filename]
             html, meta, document = Markdown.file(filepath)
+            if not meta:
+                return
             data = {
                 'body_title': "".join(meta['title']),
                 'head_title': cfg['author'] + ": " + "".join(
