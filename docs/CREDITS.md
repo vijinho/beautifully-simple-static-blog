@@ -20,6 +20,7 @@
 * [Blind Text "Lorem Ipsum" Generator](http://www.blindtextgenerator.com/lorem-ipsum)
 * [W3C RSS Spec](http://validator.w3.org/feed/docs/rss2.html) and [W3C RSS Feed Validator](http://validator.w3.org/feed/check.cgi)
 * [Dirty Markup](http://www.dirtymarkup.com/) - HTML, JS, CSS cleaning
+* (Hodge)[https://github.com/avelino/hodge] - Used some ideas from the project structure/layout
 
 ### Python
 #### Web Serving

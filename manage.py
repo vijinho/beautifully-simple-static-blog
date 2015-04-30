@@ -19,11 +19,23 @@ __maintainer__ = "Vijay Mahrra"
 __email__ = "vijay.mahrra@gmail.com"
 __status__ = "Development"
 
-@click.command()
+@click.group()
+def cmds():
+    pass
+
+def main():
+    cmds()
+
+@cmds.command()
 @click.option('-v', '--verbose', count=True, help='Set the level of verbosity.')
-def manage(verbose):
+def generate(verbose):
+    print('Verbosity is: {0}'.format(verbose))
+
+@cmds.command()
+@click.option('-v', '--verbose', count=True, help='Set the level of verbosity.')
+def serve(verbose):
     print('Verbosity is: {0}'.format(verbose))
 
 if __name__ == '__main__':
     root_directory = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '.'))
-    manage()
+    main()

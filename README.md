@@ -101,14 +101,17 @@ Config.data is a dict() of the following configuration values:
 ### Command Line Interface
 * The file [manage.py](manage.py) is implemented using [click](http://click.pocoo.org/4/) (TO BE DONE!)
 
-`python manage.py --help`
+`> python manage.py --help`
 
 <pre>
-Usage: manage.py [OPTIONS]
+Usage: manage.py [OPTIONS] COMMAND [ARGS]...
 
 Options:
-  -v, --verbose  Set the level of verbosity.
-  --help         Show this message and exit.
+  --help  Show this message and exit.
+
+Commands:
+  generate
+  serve
 </pre>
   
 ## Documentation
