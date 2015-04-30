@@ -20,22 +20,22 @@ __email__ = "vijay.mahrra@gmail.com"
 __status__ = "Development"
 
 @click.group()
-def cmds():
-    pass
+@click.option('-v', '--verbose', count=True, help='Set the level of verbosity.')
+def cli():
+    print('Verbosity is: {0}'.format(verbose))
 
-def main():
-    cmds()
-
-@cmds.command()
+@cli.command()
 @click.option('-v', '--verbose', count=True, help='Set the level of verbosity.')
 def generate(verbose):
-    print('Verbosity is: {0}'.format(verbose))
+    pass
 
-@cmds.command()
-@click.option('-v', '--verbose', count=True, help='Set the level of verbosity.')
+@cli.command()
 def serve(verbose):
-    print('Verbosity is: {0}'.format(verbose))
+    pass
+
+def yelp():
+    cli()
 
 if __name__ == '__main__':
-    root_directory = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '.'))
-    main()
+    os.environ.setdefault("BASEDIR", os.path.abspath(os.path.join(os.path.dirname( __file__ ))))
+    yelp()
