@@ -99,7 +99,7 @@ Config.data is a dict() of the following configuration values:
 ```
 
 ### Command Line Interface
-* The file [cli.py](cli.py) is implemented using [click](http://click.pocoo.org/4/) (TO BE DONE!)
+* The file [manage.py](manage.py) is implemented using [click](http://click.pocoo.org/4/) (TO BE DONE!)
 
 ## Documentation
 
