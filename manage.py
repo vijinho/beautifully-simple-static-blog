@@ -5,7 +5,25 @@ Beautifully Simple Static Bottle Blog Generator
 ===============================================
 Command Line Interface using Click http://click.pocoo.org/
 """
+import os
 import click
 
+from builtins import *
+
+__author__ = "Vijay Mahrra"
+__copyright__ = "Copyright 2015, Vijay Mahrra"
+__credits__ = ["Vijay Mahrra"]
+__license__ = "GPLv3"
+__version__ = "1.0"
+__maintainer__ = "Vijay Mahrra"
+__email__ = "vijay.mahrra@gmail.com"
+__status__ = "Development"
+
+@click.command()
+@click.option('-v', '--verbose', count=True, help='Set the level of verbosity.')
+def manage(verbose):
+    print('Verbosity is: {0}'.format(verbose))
+
 if __name__ == '__main__':
-    pass
+    root_directory = os.path.abspath(os.path.join(os.path.dirname( __file__ ), '.'))
+    manage()
