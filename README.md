@@ -92,6 +92,9 @@ Config.data is a dict() of the following configuration values:
     'css_output': 'www/blog/css',     # minified js output directory
     'css_inline': ["normalize.css", "skeleton.css"] # inline css to compile into page  (default:header) <style>
     'ga_code': 'UA-00000000-1',       # google analytics code UA-XXXX-Y
+    'keen_project_id'='',             # https://keen.io/ project id
+    'keen_write_key'='',
+    'keen_read_key'='',
     'title': 'Blog',                  # name of the blog
     'author': 'Anonymous',            # author of the blog
     'email': 'anonymous@example.com', # email of author

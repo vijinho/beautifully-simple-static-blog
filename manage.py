@@ -33,6 +33,14 @@ def generate(verbose):
 def serve(verbose):
     pass
 
+@cli.command()
+def newpost(verbose):
+    pass
+
+@cli.command()
+def newpage(verbose):
+    pass
+
 def yelp():
     cli()
 
