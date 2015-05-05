@@ -3,7 +3,7 @@
 
   <div class="container">
     <div class="row">
-        <div class="eight columns" style="margin-top: 15%">
+        <div class="eight columns" style="margin-top: 5%">
           <h1>{{!data.get('body_title')}}</h1>
           <p>
           I work mainly as a
@@ -13,7 +13,6 @@
           <a href="http://about.me/vijay.mahrra">about.me</a> or drop a mail to
           vijay.mahrra@gmail.com
           </p>
-            <hr/>
           <div class="scrollbox-all-blogposts">
             %last = 0
             %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
@@ -41,21 +40,19 @@
             %end
             </small>
         </div>
-        <div class="four columns" style="margin-top: 15%">
-            <h3>Hobbies</h3>
+        <div class="four columns" style="margin-top: 10%">
+            <h5>Hobbies</h5>
+            <small>
             <ul>
                 <li><a href="http://eyeem.com/u/vijinho">EyeEm</a></li>
-                <li><a href="http://vijinho.tumblr.com/">Tumblr</a></li>
-                <li><a href="http://instagram.com/vijinho/">Instagram</a></li>
                 <li><a href="http://vimeo.com/vijinho">Vimeo</a></li>
-            </ul>
-            <h3>Music</h3>
-            <ul>
                 <li><a href="http://www.last.fm/user/vijinho">Last.fm</a></li>
                 <li><a href="http://www.mixcloud.com/vijinho/">Mixcloud</a></li>
                 <li><a href="http://soundcloud.com/vijinho">SoundCloud</a></li>
             </ul>
-            <h3>Meta</h3>
+            </small>
+            <h5>Meta</h5>
+            <small>
             <ul>
                 <li><a href="http://www.amazon.co.uk/gp/registry/wishlist/F66L0QK92OJP/ref=cm_wl_huc_view">Wishlist</a>                        
                 <li><a href="http://about.me/vijay.mahrra">About Me</a></li>
@@ -63,6 +60,7 @@
                 <li><a href="https://github.com/vijinho/beautifully-simple-static-blog">Source Code</a></li>
                 <li><a href="/blog/rss.xml">Subscribe (RSS)</a></li>
             </ul>
+            </small>
         </div>
     </div>
   </div>
