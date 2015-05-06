@@ -78,7 +78,8 @@ blockquote {
 }
 
 .scrollbox-all-blogposts {
-    height:350px;
+    line-height:1.2em;
+    height:300px;
     width:100%;
     overflow:auto
 }
