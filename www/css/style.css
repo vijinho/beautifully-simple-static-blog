@@ -1,8 +1,8 @@
 @import "//fonts.googleapis.com/css?family=Raleway";
 
 body {
-    font-size:1.65rem;
-    line-height:1.7;
+    font-size:1.6rem;
+    line-height:2.5rem;
     color:#404040;
     font-family:'Raleway',sans-serif
 }
@@ -11,20 +11,19 @@ body {
     max-width:1024px
 }
 
-h1 {
-    font-weight:600;
-}
-
-h2,h3,h4,h5,h6 {
+h1,h2,h3,h4,h5,h6 {
+    margin-bottom:0.25em;
+    margin-top:0.5em;
     font-weight:300;
+    line-height:1em;
 }
 
+ h1 {
+     font-weight:600;
+     font-size:3em;
+ }
 a {
     text-decoration:none
-}
-
-h1 {
-    font-size:5rem
 }
 
 h1 a,h1 a:hover,h2 a,h2 a:hover {
@@ -32,8 +31,8 @@ h1 a,h1 a:hover,h2 a,h2 a:hover {
 }
 
 header {
-    margin-top:40px;
-    margin-bottom:40px
+    margin-top:30px;
+    margin-bottom:30px
 }
 
 footer {
@@ -104,4 +103,17 @@ pre {
     font-weight:400;
     color:#fff;
     background-color:#333;
+}
+
+ol,ul {
+    color:#444;
+    margin-top:0.5rem;
+    margin-left:2rem;
+    line-height:0;
+}
+
+li {
+    margin:0;
+    line-height:1.5em;
+    padding:.2em;
 }
