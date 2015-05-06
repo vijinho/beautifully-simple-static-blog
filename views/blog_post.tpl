@@ -2,7 +2,7 @@
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
   <div class="container">
     <div class="row">
-      <div class="twelve columns" style="margin-top: 10%">
+      <div class="twelve columns">
           <h1>{{!data.get('body_title')}}</h1>
           {{!data.get('body_content')}}
           <hr>

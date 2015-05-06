@@ -6,6 +6,7 @@
 {{!data.get('js')}}
 %end
 
+<footer>
 <small>
 <a href="https://github.com/vijinho/beautifully-simple-static-blog">Source
 Code</a>
@@ -14,6 +15,7 @@ Code</a>
 &nbsp|&nbsp;
 <a href="/blog/index.html">Home</a>
 </small>
+</footer>
 
 </body>
 </html>
