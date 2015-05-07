@@ -10,7 +10,6 @@ websites</a> - see my <a href="/blog/cv.html">CV/Resumé</a> - and I'm
 passionate about <a
 href="http://gettyimages.co.uk/search/photographer?family=creative&photographer=Vijay+Mahrra+%2F+EyeEm">photography</a>&nbsp;and&nbsp;<a
 href="/blog/2014-11-09-touring-latin-america.html">cycling</a>, occassionally <a href="http://vimeo.com/vijinho">shooting videos</a> whilst listening to music on <a href="http://www.last.fm/user/vijinho">last.fm</a>, <a href="http://www.mixcloud.com/vijinho/">Mixcloud</a>&nbsp;and&nbsp; <a href="http://soundcloud.com/vijinho">SoundCloud</a>, Find out more <a href="http://about.me/vijay.mahrra">about.me</a>...  and then kindly buy me <a href="http://www.amazon.co.uk/gp/registry/wishlist/F66L0QK92OJP/ref=cm_wl_huc_view">a gift</a>.
-          <h2>Blog</h2>
           <div class="scrollbox-all-blogposts">
             %last = 0
             %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
@@ -26,7 +25,7 @@ href="/blog/2014-11-09-touring-latin-america.html">cycling</a>, occassionally <a
             %last = year
             %end
           </div>
-            <br/>
+            <small>
             %last = 0
             %for filename, meta in sorted(data.get('blog_posts_meta').items(), reverse=True):
               %year = int(meta.get('date')[0:4])
@@ -35,6 +34,7 @@ href="/blog/2014-11-09-touring-latin-america.html">cycling</a>, occassionally <a
               %end
             %last = year
             %end
+            </small>
         </div>
     </div>
   </div>
