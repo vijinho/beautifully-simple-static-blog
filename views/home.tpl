@@ -6,7 +6,7 @@
         <div class="twelve columns">
               <h1>{{!data.get('body_title')}}</h1>
               I make <a href="https://github.com/vijinho/">software, apps and
-websites</a> - see my <a href="/blog/cv.html">CV/Resumé</a> - and I'm
+websites</a> and I'm
 passionate about <a
 href="http://gettyimages.co.uk/search/photographer?family=creative&photographer=Vijay+Mahrra+%2F+EyeEm">photography</a>&nbsp;and&nbsp;<a
 href="/blog/2014-11-09-touring-latin-america.html">cycling</a>, occassionally

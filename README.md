@@ -7,7 +7,7 @@
 * Can run dynamically serving files via WSCGI or generate a static site from the files
 * No database required
 * Uses [Waitress WSCGI Server](http://docs.pylonsproject.org/projects/waitress/en/latest/index.html): it is pure-Python, standard library only, cross-platform, deployment-oriented, production-quality.
-* Generated HTML, JS and CSS is optionally minified and saved 
+* Generated HTML, JS and CSS is optionally minified and saved
 * Supports in-line concatenation and embedding of javascript and CSS files.
 * Caching, minification and static files can be disabled if needed
 * JS files in [/www/js/](www/js) optionally minified to [/blog/js/](/blog/js/)
@@ -25,23 +25,23 @@
 
 ## Running
 
-* `python app.py` 
+* `python app.py`
 * Browse the website at [http://localhost:8080](http://localhost:8080/)
 
 All the .html files are generated at startup in the [www/blog](www/blog) and [www/blog/docs](www/blog/docs) folders.  
 The files in [www](www/) can then be synchronised with your website using a tool like [rsync](http://en.wikipedia.org/wiki/Rsync)
 
 ## Why?
-Because there aren't enough static website generators already in existence that 
-look beautiful. 
+Because there aren't enough static website generators already in existence that
+look beautiful.
 
 This is one I created for [my personal blog](http://www.urunu.com)
 to learn how to build a Python website from scratch.  It's a bit of a hack but
-it does the job perfectly for my needs. For simplicity and ease-of-learning, 
+it does the job perfectly for my needs. For simplicity and ease-of-learning,
 and following the single-file Bottle design, all of the main web code lives in one
-file, [app.py](app.py) 
+file, [app.py](app.py)
 
-Check the [TODO.md](docs/TODO.md) or [ROADMAP.md](docs/ROADMAP.md) 
+Check the [TODO.md](docs/TODO.md) or [ROADMAP.md](docs/ROADMAP.md)
 to see what's left to do and if you make some [CHANGES.md](docs/CHANGES.md) I'll be
 sure to add you to the [CREDITS.md](docs/CREDITS.md) and [humans.txt](www/humans.txt) files.
 
@@ -92,9 +92,6 @@ Config.data is a dict() of the following configuration values:
     'css_output': 'www/blog/css',     # minified js output directory
     'css_inline': ["normalize.css", "skeleton.css"] # inline css to compile into page  (default:header) <style>
     'ga_code': 'UA-00000000-1',       # google analytics code UA-XXXX-Y
-    'keen_project_id'='',             # https://keen.io/ project id
-    'keen_write_key'='',
-    'keen_read_key'='',
     'title': 'Blog',                  # name of the blog
     'author': 'Anonymous',            # author of the blog
     'email': 'anonymous@example.com', # email of author
@@ -116,7 +113,7 @@ Commands:
   generate
   serve
 </pre>
-  
+
 ## Documentation
 
 * Everything's in the [docs/](docs/) folder.
