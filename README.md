@@ -117,3 +117,7 @@ Commands:
 ## Documentation
 
 * Everything's in the [docs/](docs/) folder.
+
+# IMPORTANT
+
+I decided to use the excellent [grav](https://github.com/getgrav/grav) for my blog now, so I wrote a script to migrate markdown files from this project to work with grav, run the [tograv.php](tograv.php) file to convert files from here.
