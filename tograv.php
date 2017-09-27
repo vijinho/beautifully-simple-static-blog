@@ -1,13 +1,14 @@
 <?php
 // Covert markdown content pages to grav
 // https://learn.getgrav.org/
+// see https://learn.getgrav.org/cookbook/tutorials/create-a-blog
 
 // get all markdown files
 $files = array_merge(glob('content/*.md'), glob('content.private/*.md'));
 
 // where to save converted markdown files for grav
-$targetfolder = "grav/";
-$targetfile = 'default.md';
+$targetfolder = "grav/01.blog/";
+$targetfile = 'item.md';
 
 foreach ($files as $file) {
     $private = (false !== stristr($file, 'content.private/'));
@@ -78,10 +79,20 @@ foreach ($files as $file) {
     }
     $header .= "---\n";
         // content text
-    $content = join("\n", $lines);
+    $content = str_replace('(/content/', '(../content/', join("\n", $lines));
     $filecontents = $header . $content;
     $newfile = $newfolder . '/' . $targetfile;
     if (!file_put_contents($newfile, $filecontents)) {
-        echo "FAILED writing fkle: $newfile\n";
+        echo "FAILED writing file: $newfile\n";
     }
+}
+
+
+$newfile = $targetfolder . '/blog.md';
+$filecontents = "---\n
+content:\n
+    items: '@self.children'\n
+---\n";
+if (!file_put_contents($newfile, $filecontents)) {
+    echo "FAILED writing blog index file: $newfile\n";
 }
