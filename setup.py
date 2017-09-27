@@ -29,11 +29,11 @@ config = {
         'console_scripts': []
     },
     'author': 'Vijay Mahrra',
-    'author_email': 'vijay.mahrra@gmail.com',
+    'author_email': 'vijay@yoyo.org',
     'maintainer': 'Vijay Mahrra',
-    'maintainer_email': 'vijay.mahrra@gmail.com',
+    'maintainer_email': 'vijay@yoyo.org',
     'contact': 'Vijay Mahrra',
-    'contact_email': 'vijay.mahrra@gmail.com'
+    'contact_email': 'vijay@yoyo.org'
 }
 
 setup(**config)

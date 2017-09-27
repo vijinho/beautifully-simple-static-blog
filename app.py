@@ -28,7 +28,7 @@ __credits__ = ["Vijay Mahrra"]
 __license__ = "GPLv3"
 __version__ = "1.0"
 __maintainer__ = "Vijay Mahrra"
-__email__ = "vijay.mahrra@gmail.com"
+__email__ = "vijay@yoyo.org"
 __status__ = "Production"
 
 

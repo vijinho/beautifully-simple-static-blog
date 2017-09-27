@@ -7,7 +7,7 @@
           {{!data.get('body_content')}}
           <hr>
           <small>
-            &copy;&nbsp;<a href="http://about.me/vijay.mahrra">Vijay Mahrra</a>&nbsp;{{data.get('date')[0:11]}}
+            &copy;&nbsp;<a href="http://www.urunu.com">Vijay Mahrra</a>&nbsp;{{data.get('date')[0:11]}}
           </small>
       </div>
     </div>
