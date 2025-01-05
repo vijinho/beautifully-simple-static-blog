@@ -1,4 +1,4 @@
-ErrorDocument 404 http://www.urunu.com/error/404.html
+ErrorDocument 404 /error/404.html
 
 # Turn on URL rewriting
 RewriteEngine On
