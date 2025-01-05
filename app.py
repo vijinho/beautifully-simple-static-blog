@@ -23,7 +23,7 @@ import email
 
 
 __author__ = "Vijay Mahrra"
-__copyright__ = "Copyright 2015, Vijay Mahrra"
+__copyright__ = "Copyright 2015-2025, Vijay Mahrra"
 __credits__ = ["Vijay Mahrra"]
 __license__ = "GPLv3"
 __version__ = "1.0"
@@ -180,9 +180,9 @@ class MyBlog(object):
 
         # setup format string, starting with 2 or 4 digit year-month-day
         y = len(r.group('year'))
-        if y is 4:
+        if y == 4:
             fmt = '%Y-%m-%d'
-        elif y is 2:
+        elif y == 2:
             fmt = '%y-%m-%d'
         else:
             return ''
@@ -202,7 +202,7 @@ class MyBlog(object):
         """Return a dict of meta-information for all blog posts"""
         cache_key = 'blog_posts_meta'
         data = Cache.get(cache_key)
-        if cache is False or data is False or len(data) is 0:
+        if cache == False or data == False or len(data) == 0:
             documents = files_by_ext('md', self.directory, cache)
             for filename, filepath in documents.items():
                 filepath = documents[filename]
@@ -376,7 +376,7 @@ class MyGenerate(object):
             cache_key = 'inline-styles'
             if self.config['cache'] is True:
                 styles = Cache.get(cache_key)
-            if len(styles) is 0 or styles is False:
+            if len(styles) == 0 or styles == False:
                 styles = self.inline_css(cfg['css_inline'], cfg)
                 Cache.set(cache_key, styles)
         data['css'] = styles
@@ -386,7 +386,7 @@ class MyGenerate(object):
             cache_key = 'inline-js'
             if self.config['cache'] is True:
                 source = Cache.get(cache_key)
-            if len(source) is 0 or source is False:
+            if len(source) == 0 or source == False:
                 source = self.inline_js(cfg['js_inline'], cfg)
                 Cache.set(cache_key, styles)
         data['js'] = source
@@ -416,7 +416,7 @@ class MyGenerate(object):
             cfg = self.config
 
         xml = None
-        if feedtype is 'rss':
+        if feedtype == 'rss':
             xml = template(tpl,
                            data=data,
                            cfg=cfg,
