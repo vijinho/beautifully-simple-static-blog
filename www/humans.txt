@@ -3,11 +3,11 @@
 
 # AUTHOR
 
-    Vijay Mahrra -- http://www.urunu.com -- @vijinho
+    Vijay Mahrra -- https://github.com/vijinho/beautifully-simple-static-blog
 
 # THANKS
 
-    Vijay Mahrra -- http://www.urunu.com -- @vijinho
+    Vijay Mahrra -- https://github.com/vijinho/ 
 
 # TECHNOLOGY COLOPHON
 
